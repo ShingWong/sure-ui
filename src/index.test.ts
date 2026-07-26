@@ -49,6 +49,16 @@ describe('sure-ui', () => {
     expect(forest).not.toBe(dracula)
   })
 
+  it('all themes include auth classes', () => {
+    for (const theme of [nord, forest, dracula]) {
+      expect(theme).toContain('sure-auth__form')
+      expect(theme).toContain('sure-auth__input')
+      expect(theme).toContain('sure-auth__btn')
+      expect(theme).toContain('sure-auth__error')
+      expect(theme).toContain('sure-auth__divider')
+    }
+  })
+
   it('all themes include form field styles', () => {
     for (const theme of [nord, forest, dracula]) {
       expect(theme).toContain('__field')
