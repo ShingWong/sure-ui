@@ -206,6 +206,43 @@ form.addEventListener('submit', async () => {
 })
 ```
 
+### Auth Forms
+
+Login, register, and password-reset forms using `.sure-auth__*` CSS classes. Styled consistently across all three themes:
+
+```html
+<form class="sure-auth__form">
+  <div class="sure-auth__header">
+    <h1>Sign In</h1>
+  </div>
+  <div class="sure-auth__field">
+    <label class="sure-auth__label">Email</label>
+    <input class="sure-auth__input" type="email">
+  </div>
+  <div class="sure-auth__field">
+    <label class="sure-auth__label">Password</label>
+    <input class="sure-auth__input" type="password">
+  </div>
+  <button class="sure-auth__btn">Sign In</button>
+  <div class="sure-auth__divider">or continue with</div>
+  <button class="sure-auth__btn--social">Sign in with Google</button>
+  <div class="sure-auth__footer">
+    <a href="#">Create an account</a>
+  </div>
+</form>
+```
+
+| Class | Purpose |
+|-------|---------|
+| `.sure-auth__form` | Form container |
+| `.sure-auth__input` | Text/password/email input |
+| `.sure-auth__input--error` | Input with validation error |
+| `.sure-auth__btn` | Primary submit button |
+| `.sure-auth__btn--social` | OAuth provider button |
+| `.sure-auth__divider` | "or" separator with line |
+| `.sure-auth__error` | Error message text |
+| `.sure-auth__alert` | Info/success/error banner |
+
 ## Development
 
 ```bash
