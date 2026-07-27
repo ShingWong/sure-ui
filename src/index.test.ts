@@ -52,12 +52,21 @@ describe('sure-ui', () => {
   })
 
   it('all themes include auth classes', () => {
-    for (const theme of [nord, forest, dracula]) {
+    for (const theme of [nord, forest, dracula, dark]) {
       expect(theme).toContain('sure-auth__form')
       expect(theme).toContain('sure-auth__input')
       expect(theme).toContain('sure-auth__btn')
       expect(theme).toContain('sure-auth__error')
       expect(theme).toContain('sure-auth__divider')
+    }
+  })
+
+  it('all themes include dialog classes', () => {
+    for (const theme of [nord, forest, dracula, dark]) {
+      expect(theme).toContain('sure-dialog-overlay')
+      expect(theme).toContain('sure-dialog__header')
+      expect(theme).toContain('sure-dialog__body')
+      expect(theme).toContain('sure-dialog__resize--se')
     }
   })
 
