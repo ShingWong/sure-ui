@@ -1,21 +1,23 @@
 import { describe, it, expect } from 'vitest'
-import { VERSION, nord, forest, dracula, themes, showNotification, clearNotifications } from './index'
+import { VERSION, nord, forest, dracula, dark, themes, showNotification, clearNotifications } from './index'
 
 describe('sure-ui', () => {
   it('exports VERSION', () => {
     expect(VERSION).toBe('0.1.0')
   })
 
-  it('exports all three themes', () => {
+  it('exports all four themes', () => {
     expect(nord).toBeTruthy()
     expect(forest).toBeTruthy()
     expect(dracula).toBeTruthy()
+    expect(dark).toBeTruthy()
   })
 
   it('themes object contains all themes', () => {
     expect(themes.nord).toBe(nord)
     expect(themes.forest).toBe(forest)
     expect(themes.dracula).toBe(dracula)
+    expect(themes.dark).toBe(dark)
   })
 
   it('nord theme contains expected CSS classes', () => {
