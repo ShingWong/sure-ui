@@ -144,6 +144,24 @@ export const forest = `
 .sure-dialog__resize--ne { top:0; right:0; width:16px; height:16px; cursor:nesw-resize; }
 .sure-dialog__resize--sw { bottom:0; left:0; width:16px; height:16px; cursor:nesw-resize; }
 
+
+/* ── Markdown ── */
+.sure-markdown code { background:var(--highlight); padding:0.125rem 0.375rem; border-radius:3px; font-size:0.8125rem; }
+.sure-markdown pre { background:var(--bg); padding:0.75rem; border-radius:6px; overflow-x:auto; margin:0.5rem 0; }
+.sure-markdown pre code { background:transparent; padding:0; }
+.sure-markdown table { border-collapse:collapse; width:100%; margin:0.5rem 0; font-size:0.8125rem; }
+.sure-markdown table td, .sure-markdown table th { border:1px solid var(--border); padding:0.375rem 0.5rem; text-align:left; }
+.sure-markdown table th { background:var(--highlight); font-weight:600; }
+.sure-markdown blockquote { border-left:3px solid var(--accent); margin:0.5rem 0; padding:0.25rem 0.75rem; color:var(--muted); font-style:italic; }
+.sure-markdown ul { margin:0.25rem 0; padding-left:1.25rem; }
+.sure-markdown ul li { list-style:disc; margin-bottom:0.125rem; }
+.sure-markdown h2, .sure-markdown h3, .sure-markdown h4 { margin:0.75rem 0 0.25rem; }
+.sure-markdown hr { border:none; border-top:1px solid var(--border); margin:0.75rem 0; }
+.sure-markdown p { margin:0 0 0.5rem; }
+.sure-markdown a { color:var(--accent); }
+.sure-markdown a:hover { text-decoration:underline; }
+.sure-markdown img { max-width:100%; border-radius:6px; }
+
 .sure-auth__alert--success { background: color-mix(in srgb, var(--success) 10%, transparent); color: var(--success); border: 1px solid color-mix(in srgb, var(--success) 30%, transparent); }
 .sure-auth__alert--info { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
 `.trim()

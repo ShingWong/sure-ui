@@ -61,6 +61,15 @@ describe('sure-ui', () => {
     }
   })
 
+  it('all themes include markdown classes', () => {
+    for (const theme of [nord, forest, dracula, dark]) {
+      expect(theme).toContain('sure-markdown')
+      expect(theme).toContain('sure-markdown table')
+      expect(theme).toContain('sure-markdown pre')
+      expect(theme).toContain('sure-markdown blockquote')
+    }
+  })
+
   it('all themes include dialog classes', () => {
     for (const theme of [nord, forest, dracula, dark]) {
       expect(theme).toContain('sure-dialog-overlay')

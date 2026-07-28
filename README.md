@@ -206,6 +206,32 @@ form.addEventListener('submit', async () => {
 })
 ```
 
+### Markdown Rendering
+
+Render LLM responses with `.sure-markdown` class. Supports tables, code blocks, lists, headings, blockquotes, and links — all themed via CSS variables.
+
+```html
+<div class="sure-markdown">
+  <h2>Electron</h2>
+  <p>An <strong>electron</strong> carries a <strong>negative charge</strong>.</p>
+  <table>
+    <tr><th>Feature</th><th>Value</th></tr>
+    <tr><td>Charge</td><td>Negative (−)</td></tr>
+  </table>
+  <pre><code>const e = new Electron()</code></pre>
+</div>
+```
+
+| Class | Purpose |
+|-------|---------|
+| `.sure-markdown` | Root container |
+| `.sure-markdown h2, h3, h4` | Headings |
+| `.sure-markdown table` | Tables with bordered cells |
+| `.sure-markdown pre code` | Code blocks |
+| `.sure-markdown ul li` | Lists |
+| `.sure-markdown blockquote` | Blockquotes |
+| `.sure-markdown a` | Links |
+
 ### Auth Forms
 
 Login, register, and password-reset forms using `.sure-auth__*` CSS classes. Styled consistently across all three themes:
