@@ -70,6 +70,13 @@ describe('sure-ui', () => {
     }
   })
 
+  it('all themes include menu classes', () => {
+    for (const theme of [nord, forest, dracula, dark]) {
+      expect(theme).toContain('sure-menu__item')
+      expect(theme).toContain('sure-menu__divider')
+    }
+  })
+
   it('all themes include dialog classes', () => {
     for (const theme of [nord, forest, dracula, dark]) {
       expect(theme).toContain('sure-dialog-overlay')

@@ -179,4 +179,11 @@ export const dark = `
 .msg-actions button:hover { background:var(--highlight); color:var(--text); }
 .msg-body { line-height:1.5; }
 
+/* ── Horizontal Menu ── */
+.sure-menu { display:flex; align-items:center; gap:0.25rem; }
+.sure-menu__item { padding:0.375rem; background:transparent; border:none; cursor:pointer; color:var(--muted); font-size:1.125rem; line-height:1; border-radius:4px; transition:background 0.15s, color 0.15s; }
+.sure-menu__item:hover { background:var(--highlight); color:var(--text); }
+.sure-menu__item.active { color:var(--accent); }
+.sure-menu__divider { width:1px; height:1.25rem; background:var(--border); margin:0 0.25rem; flex-shrink:0; }
+
 `
