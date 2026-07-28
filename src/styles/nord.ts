@@ -235,6 +235,19 @@ export const nord = `
 .sure-markdown a:hover { text-decoration:underline; }
 .sure-markdown img { max-width:100%; border-radius:6px; }
 
+
+/* ── Sessions ── */
+.sure-session-list { flex:1; overflow-y:auto; padding:0.375rem; }
+.sure-session-item { display:flex; align-items:center; gap:0.25rem; padding:0.375rem 0.5rem; border-radius:6px; cursor:pointer; margin-bottom:1px; font-size:0.8125rem; overflow:hidden; transition:background 0.15s; }
+.sure-session-item:hover { background:var(--highlight); }
+.sure-session-item.active { background:var(--accent); color:#fff; }
+.sure-session-item.active .sure-session-actions button { color:#fff; }
+.sure-session-title { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sure-session-actions { display:none; flex-shrink:0; gap:0.125rem; }
+.sure-session-item:hover .sure-session-actions { display:flex; }
+.sure-session-actions button { background:none; border:none; cursor:pointer; font-size:0.625rem; padding:0.125rem; opacity:0.6; }
+.sure-session-actions button:hover { opacity:1; }
+
 .sure-auth__alert--success { background: color-mix(in srgb, var(--success) 10%, transparent); color: var(--success); border: 1px solid color-mix(in srgb, var(--success) 30%, transparent); }
 .sure-auth__alert--info { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
 `.trim()
