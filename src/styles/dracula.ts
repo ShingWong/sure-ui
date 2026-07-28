@@ -169,6 +169,14 @@ export const dracula = `
 .sure-session-actions button { background:none; border:none; cursor:pointer; font-size:0.625rem; padding:0.125rem; opacity:0.6; }
 .sure-session-actions button:hover { opacity:1; }
 
+
+/* ── Message Actions ── */
+.msg-actions { display:none; gap:0.25rem; margin-top:0.375rem; }
+.message:hover .msg-actions { display:flex; }
+.msg-actions button { background:none; border:none; cursor:pointer; font-size:0.75rem; padding:0.125rem 0.25rem; border-radius:3px; color:var(--muted); line-height:1; }
+.msg-actions button:hover { background:var(--highlight); color:var(--text); }
+.msg-body { line-height:1.5; }
+
 .sure-auth__alert--success { background: color-mix(in srgb, var(--success) 10%, transparent); color: var(--success); border: 1px solid color-mix(in srgb, var(--success) 30%, transparent); }
 .sure-auth__alert--info { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
 `.trim()

@@ -172,4 +172,11 @@ export const dark = `
 .sure-session-actions button { background:none; border:none; cursor:pointer; font-size:0.625rem; padding:0.125rem; opacity:0.6; }
 .sure-session-actions button:hover { opacity:1; }
 
+/* ── Message Actions ── */
+.msg-actions { display:none; gap:0.25rem; margin-top:0.375rem; }
+.message:hover .msg-actions { display:flex; }
+.msg-actions button { background:none; border:none; cursor:pointer; font-size:0.75rem; padding:0.125rem 0.25rem; border-radius:3px; color:var(--muted); line-height:1; }
+.msg-actions button:hover { background:var(--highlight); color:var(--text); }
+.msg-body { line-height:1.5; }
+
 `
