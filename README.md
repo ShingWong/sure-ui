@@ -2,8 +2,10 @@
 
 **Runtime UI library for sure-factor generated interfaces.** Three preset themes (Nord, Forest, Dracula) matching sure-factor's semantic class conventions, plus a notification system with four display modes. Drop in a theme, call `showNotification`, and go.
 
+> **npm package name:** `@shingwong/sure-ui` (published scoped — the unscoped `sure-ui` name is owned by an unrelated publisher). The repo and directory remain `sure-ui`.
+
 ```ts
-import { nord } from 'sure-ui'
+import { nord } from '@shingwong/sure-ui'
 
 const style = document.createElement('style')
 style.textContent = nord
@@ -35,7 +37,7 @@ document.head.appendChild(style)
 ## Installation
 
 ```bash
-npm install sure-ui
+npm install @shingwong/sure-ui
 ```
 
 Zero peer dependencies. Works with any framework (React, Vue, Svelte, vanilla JS).
@@ -45,8 +47,8 @@ Zero peer dependencies. Works with any framework (React, Vue, Svelte, vanilla JS
 Three preset themes matching sure-factor's BEM-style generated classes.
 
 ```ts
-import { nord, forest, dracula, themes } from 'sure-ui'
-import type { ThemeName } from 'sure-ui'
+import { nord, forest, dracula, themes } from '@shingwong/sure-ui'
+import type { ThemeName } from '@shingwong/sure-ui'
 
 // Inject a theme at runtime:
 const style = document.createElement('style')
@@ -93,7 +95,7 @@ Plus form states: `input:focus`, `[aria-invalid="true"]`, `input:disabled`.
 Four notification modes in one consistent API. Levels: `error`, `success`, `info`.
 
 ```ts
-import { showNotification, clearNotifications } from 'sure-ui'
+import { showNotification, clearNotifications } from '@shingwong/sure-ui'
 
 // Inline — field-level error, appended to the field container
 showNotification({ id: '1', message: 'Required', level: 'error', mode: 'inline', field: 'email' })
@@ -163,8 +165,8 @@ sure-ui is designed to pair with [sure-factor](https://github.com/ShingWong/sure
 
 ```ts
 import { generateForm } from 'sure-factor'
-import { nord } from 'sure-ui'
-import { showNotification } from 'sure-ui'
+import { nord } from '@shingwong/sure-ui'
+import { showNotification } from '@shingwong/sure-ui'
 
 // Inject theme
 const style = document.createElement('style')
@@ -193,13 +195,13 @@ AI coding assistants can use sure-ui to theme generated interfaces:
 
 ```ts
 // Prompt: "Theme this sure-factor form with the Dracula theme"
-import { dracula } from 'sure-ui'
+import { dracula } from '@shingwong/sure-ui'
 const style = document.createElement('style')
 style.textContent = dracula
 document.head.appendChild(style)
 
 // Prompt: "Add toast notifications on form submit"
-import { showNotification } from 'sure-ui'
+import { showNotification } from '@shingwong/sure-ui'
 
 form.addEventListener('submit', async () => {
   showNotification({ id: 'ok', message: 'Success', level: 'success', mode: 'toast' })

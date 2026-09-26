@@ -1,9 +1,16 @@
 {
-  "name": "sure-ui",
+  "name": "@shingwong/sure-ui",
   "version": "0.1.0",
   "description": "UI component library for sure-factor generated interfaces — forms, data tables, modals, and CRUD layouts with accessibility and theme support.",
   "license": "MIT",
   "author": "ShingWong",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShingWong/sure-ui"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
