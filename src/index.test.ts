@@ -1,9 +1,14 @@
 import { describe, it, expect } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { VERSION, nord, forest, dracula, dark, themes, showNotification, clearNotifications } from './index.js'
 
 describe('sure-ui', () => {
-  it('exports VERSION', () => {
-    expect(VERSION).toBe('0.1.0')
+  it('exports VERSION matching package.json', () => {
+    const pkg = JSON.parse(readFileSync(join(process.cwd(), 'package.json'), 'utf8')) as {
+      version: string
+    }
+    expect(VERSION).toBe(pkg.version)
   })
 
   it('exports all four themes', () => {
