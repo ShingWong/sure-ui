@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { VERSION, nord, forest, dracula, dark, themes, showNotification, clearNotifications } from './index'
+import { VERSION, nord, forest, dracula, dark, themes, showNotification, clearNotifications } from './index.js'
 
 describe('sure-ui', () => {
   it('exports VERSION', () => {
