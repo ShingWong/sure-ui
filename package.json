@@ -6,7 +6,7 @@
   "author": "ShingWong",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ShingWong/sure-ui"
+    "url": "git+https://github.com/ShingWong/sure-ui.git"
   },
   "publishConfig": {
     "access": "public"
