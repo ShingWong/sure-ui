@@ -17,6 +17,26 @@ export const dracula = `
 *, *::before, *::after { box-sizing: border-box; }
 
 .sure-form { max-width: 480px; }
+  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--drac-text); }
+  .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+  .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .btn-icon:hover { background: rgba(255,255,255,0.08); }
+  .btn-icon:disabled { opacity: 0.5; cursor: not-allowed; }
+
 .sure-form__field { margin-bottom: 1rem; }
 .sure-form__label { display: block; margin-bottom: 0.25rem; font-weight: 600; color: var(--drac-text); font-size: 0.875rem; }
 .sure-form input, .sure-form select, .sure-form textarea {
