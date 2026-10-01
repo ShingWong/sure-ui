@@ -174,13 +174,19 @@ describe('themes: generic aliases', () => {
 // nothing caught it.
 describe('themes: button contrast', () => {
   const luminance = (hex: string): number => {
-    const parts = hex.match(/[0-9a-f]{2}/gi)!.map((p) => parseInt(p, 16) / 255)
-    const [r, g, b] = parts.map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4))
+    const parts = hex.match(/[0-9a-f]{2}/gi) ?? []
+    if (parts.length < 3) throw new Error(`not a hex colour: ${hex}`)
+    const [r = 0, g = 0, b = 0] = parts.slice(0, 3).map((p) => {
+      const v = parseInt(p, 16) / 255
+      return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4
+    })
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
   }
   const contrast = (a: string, b: string): number => {
-    const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x)
-    return (hi + 0.05) / (lo + 0.05)
+    const hi = luminance(a)
+    const lo = luminance(b)
+    const [top = 0, bottom = 0] = [hi, lo].sort((x, y) => y - x)
+    return (top + 0.05) / (bottom + 0.05)
   }
   /** Resolve `var(--x)` against the theme's own :root declarations. */
   const resolve = (css: string, value: string): string => {
