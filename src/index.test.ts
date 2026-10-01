@@ -167,3 +167,46 @@ describe('themes: generic aliases', () => {
     })
   }
 })
+
+// A button's label must be readable against its own background. Measured from
+// the shipped CSS, because that is what a browser applies — nord's primary
+// button was 4.03:1, under the 4.5 WCAG AA threshold for normal text, and
+// nothing caught it.
+describe('themes: button contrast', () => {
+  const luminance = (hex: string): number => {
+    const parts = hex.match(/[0-9a-f]{2}/gi)!.map((p) => parseInt(p, 16) / 255)
+    const [r, g, b] = parts.map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4))
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+  }
+  const contrast = (a: string, b: string): number => {
+    const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x)
+    return (hi + 0.05) / (lo + 0.05)
+  }
+  /** Resolve `var(--x)` against the theme's own :root declarations. */
+  const resolve = (css: string, value: string): string => {
+    // A literal hex (including the 3-digit shorthand) needs no lookup.
+    if (/^#[0-9a-fA-F]{3,8}$/.test(value.trim())) {
+      const hex = value.trim()
+      return hex.length === 4 ? `#${[...hex.slice(1)].map((c) => c + c).join("")}` : hex
+    }
+    const ref = /var\((--[a-z0-9-]+)\)/i.exec(value)?.[1]
+    if (!ref) return value.trim()
+    const hex = new RegExp(`${ref}:\\s*(#[0-9a-fA-F]{3,8})`).exec(css)?.[1]
+    if (!hex) throw new Error(`cannot resolve ${ref}`)
+    return hex.length === 4
+      ? `#${[...hex.slice(1)].map((c) => c + c).join("")}`
+      : hex
+  }
+
+  for (const [name, css] of Object.entries(themes)) {
+    it(`${name} primary button text is readable (>= 4.5:1)`, () => {
+      const rule = /\.btn-primary\s*\{([^}]*)\}/.exec(css)?.[1] ?? ""
+      const bg = /background:\s*([^;]+)/.exec(rule)?.[1]
+      const fg = /color:\s*([^;]+)/.exec(rule)?.[1]
+      expect(bg, `${name} has no .btn-primary background`).toBeTruthy()
+      expect(fg, `${name} has no .btn-primary colour`).toBeTruthy()
+      const ratio = contrast(resolve(css, resolve(css, bg!)), resolve(css, resolve(css, fg!)))
+      expect(ratio, `${name} .btn-primary is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5)
+    })
+  }
+})
