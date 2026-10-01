@@ -3,6 +3,7 @@
   "version": "0.1.5",
   "description": "UI component library for sure-factor generated interfaces \u2014 forms, data tables, modals, and CRUD layouts with accessibility and theme support.",
   "license": "MIT",
+  "engines": { "node": ">=20" },
   "author": "ShingWong",
   "repository": {
     "type": "git",
