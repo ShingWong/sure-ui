@@ -134,3 +134,36 @@ describe('sure-ui', () => {
     expect(document.querySelector('.toast')).toBeNull()
   })
 })
+
+// Every theme must expose the same generic names, and they must sit inside a
+// selector. A block of `--x: y;` with no enclosing rule is silently discarded
+// by every browser, which is exactly what happened: `--bg` and `--text` were
+// declared outside `:root` in all four themes, so any app styling itself with
+// `var(--bg)` got no background at all.
+describe('themes: generic aliases', () => {
+  const GENERIC = ['--bg', '--surface', '--text', '--muted', '--border', '--accent', '--error', '--success', '--warn']
+
+  for (const [name, css] of Object.entries(themes)) {
+    it(`${name} declares every generic alias`, () => {
+      const missing = GENERIC.filter((v) => !css.includes(`${v}:`))
+      expect(missing, `${name} is missing ${missing.join(', ')}`).toEqual([])
+    })
+
+    it(`${name} declares them inside a selector, not orphaned`, () => {
+      for (const variable of GENERIC) {
+        const at = css.indexOf(`${variable}:`)
+        expect(at, `${name} does not declare ${variable}`).toBeGreaterThan(-1)
+        const before = css.slice(0, at)
+        const depth = (before.match(/{/g) ?? []).length - (before.match(/}/g) ?? []).length
+        expect(depth, `${name} declares ${variable} at nesting depth 0 — the browser ignores it`).toBeGreaterThan(0)
+      }
+    })
+
+    it(`${name} references no undefined variable`, () => {
+      const declared = new Set([...css.matchAll(/(--[a-z0-9-]+)\s*:/gi)].map((m) => m[1]!))
+      const used = [...css.matchAll(/var\((--[a-z0-9-]+)/gi)].map((m) => m[1]!)
+      const unknown = [...new Set(used)].filter((v) => !declared.has(v))
+      expect(unknown, `${name} uses variables it never declares: ${unknown.join(', ')}`).toEqual([])
+    })
+  }
+})

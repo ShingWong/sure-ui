@@ -12,12 +12,25 @@ export const dark = `
   --dark-success: #51cf66;
   --dark-warn: #ffd43b;
   --dark-highlight: #1e2d50;
+
+  /* Generic aliases: the same names in every theme, so an app can style
+     itself with var(--bg) and still follow whichever theme is active. */
+  --bg: var(--dark-bg);
+  --surface: var(--dark-surface);
+  --text: var(--dark-text);
+  --muted: var(--dark-muted);
+  --border: var(--dark-border);
+  --accent: var(--dark-primary);
+  --error: var(--dark-error);
+  --success: var(--dark-success);
+  --warn: var(--dark-warn);
+  --highlight: var(--dark-highlight);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
 .sure-form { max-width: 480px; }
-  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--drk-text); }
+  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--dark-text); }
   .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
   .btn-icon {
     display: inline-flex;

@@ -12,6 +12,19 @@ export const dracula = `
   --drac-success: #50fa7b;
   --drac-warn: #f1fa8c;
   --drac-highlight: #44475a;
+
+  /* Generic aliases: the same names in every theme, so an app can style
+     itself with var(--bg) and still follow whichever theme is active. */
+  --bg: var(--drac-bg);
+  --surface: var(--drac-bg);
+  --text: var(--drac-text);
+  --muted: var(--drac-muted);
+  --border: var(--drac-border);
+  --accent: var(--drac-primary);
+  --error: var(--drac-error);
+  --success: var(--drac-success);
+  --highlight: var(--drac-highlight);
+  --warn: var(--drac-warn);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -104,17 +117,6 @@ export const dracula = `
 
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* ── Auth ── */
-  --bg: var(--drac-bg);
-  --surface: var(--drac-surface);
-  --text: var(--drac-text);
-  --muted: var(--drac-muted);
-  --border: var(--drac-border);
-  --accent: var(--drac-focus);
-  --highlight: var(--drac-highlight);
-  --error: var(--drac-error);
-  --success: var(--drac-success);
-  --warn: var(--drac-warn);
 .sure-auth__form { max-width: 400px; margin: 2rem auto; padding: 2rem; background: var(--surface); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 .sure-auth__header { text-align: center; margin-bottom: 1.5rem; }
 .sure-auth__header h1 { font-size: 1.5rem; font-weight: 700; color: var(--text); }
