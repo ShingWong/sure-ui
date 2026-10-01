@@ -139,10 +139,10 @@ export const nord = `
   display: inline-flex; align-items: center; gap: 0.5rem;
   padding: 0.5rem 1.25rem; border: none; border-radius: 6px;
   font-size: 0.9rem; font-weight: 600; cursor: pointer;
-  color: #fff; background: var(--nord10);
+  color: var(--nord0); background: var(--nord9);
   transition: background 0.15s;
 }
-.btn-primary:hover { background: var(--nord9); }
+.btn-primary:hover { background: var(--nord8); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .btn-secondary {
