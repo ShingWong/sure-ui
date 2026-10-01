@@ -12,6 +12,19 @@ export const forest = `
   --frst-success: #5b8c5a;
   --frst-warn: #c4903a;
   --frst-highlight: #e8e3d8;
+
+  /* Generic aliases: the same names in every theme, so an app can style
+     itself with var(--bg) and still follow whichever theme is active. */
+  --bg: var(--frst-bg);
+  --surface: var(--frst-bg);
+  --text: var(--frst-text);
+  --muted: var(--frst-muted);
+  --border: var(--frst-border);
+  --accent: var(--frst-primary);
+  --error: var(--frst-error);
+  --success: var(--frst-success);
+  --highlight: var(--frst-highlight);
+  --warn: var(--frst-warn);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -110,17 +123,6 @@ export const forest = `
 
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* ── Auth ── */
-  --bg: var(--frst-bg);
-  --surface: var(--frst-surface);
-  --text: var(--frst-text);
-  --muted: var(--frst-muted);
-  --border: var(--frst-border);
-  --accent: var(--frst-focus);
-  --highlight: var(--frst-highlight);
-  --error: var(--frst-error);
-  --success: var(--frst-success);
-  --warn: var(--frst-warn);
 .sure-auth__form { max-width: 400px; margin: 2rem auto; padding: 2rem; background: var(--surface); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 .sure-auth__header { text-align: center; margin-bottom: 1.5rem; }
 .sure-auth__header h1 { font-size: 1.5rem; font-weight: 700; color: var(--text); }

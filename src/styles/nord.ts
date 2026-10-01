@@ -16,13 +16,26 @@ export const nord = `
   --nord13: #ebcb8b;
   --nord14: #a3be8c;
   --nord15: #b48ead;
+
+  /* Generic aliases: the same names in every theme, so an app can style
+     itself with var(--bg) and still follow whichever theme is active. */
+  --bg: var(--nord6);
+  --surface: var(--nord6);
+  --text: var(--nord0);
+  --muted: var(--nord3);
+  --border: var(--nord4);
+  --accent: var(--nord9);
+  --error: var(--nord11);
+  --success: var(--nord14);
+  --highlight: var(--nord5);
+  --warn: var(--nord13);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
 /* ── Form ── */
 .sure-form { max-width: 480px; }
-  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--nord-text); }
+  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--nord0); }
   .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
   .btn-icon {
     display: inline-flex;
@@ -31,7 +44,7 @@ export const nord = `
     width: 1.75rem;
     height: 1.75rem;
     padding: 0;
-    border: 1px solid var(--nord-border, currentColor);
+    border: 1px solid var(--border);
     border-radius: 4px;
     background: transparent;
     color: inherit;
@@ -39,7 +52,7 @@ export const nord = `
     line-height: 1;
     cursor: pointer;
   }
-  .btn-icon:hover { background: var(--nord-bg2, rgba(0,0,0,0.05)); }
+  .btn-icon:hover { background: var(--highlight); }
   .btn-icon:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .sure-form__field { margin-bottom: 1rem; }
@@ -183,17 +196,6 @@ export const nord = `
   to { transform: translateX(0); opacity: 1; }
 }
 
-/* ── Auth ── */
-  --bg: var(--nord6);
-  --surface: #fff;
-  --text: var(--nord0);
-  --muted: var(--nord3);
-  --border: var(--nord4);
-  --accent: var(--nord9);
-  --highlight: var(--nord5);
-  --error: var(--nord11);
-  --success: var(--nord14);
-  --warn: var(--nord13);
 .sure-auth__form { max-width: 400px; margin: 2rem auto; padding: 2rem; background: var(--surface); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 .sure-auth__header { text-align: center; margin-bottom: 1.5rem; }
 .sure-auth__header h1 { font-size: 1.5rem; font-weight: 700; color: var(--text); }
