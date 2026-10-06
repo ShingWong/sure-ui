@@ -216,3 +216,87 @@ describe('themes: button contrast', () => {
     })
   }
 })
+
+/**
+ * The page-region classes were promoted out of the management console, which had
+ * carried them privately. Four themes means four places to forget one, and a
+ * consumer that switches themes at runtime sees an unstyled page with nothing
+ * in the logs to explain it. These assert presence, not appearance.
+ *
+ * The contrast of the *status* colours is a separate, known problem and is not
+ * claimed here — see `describe('themes: status colours are not yet readable')`.
+ */
+const REGION_CLASSES = [
+  '.sure-toolbar', '.sure-filters', '.sure-note', '.sure-panel',
+  '.sure-help', '.sure-help__title', '.sure-help__item', '.sure-help__summary',
+  '.sure-help__details', '.sure-help__example',
+  '.sure-toggle-group', '.sure-toggle', '.sure-row-actions',
+  '.sure-nav__item', '.sure-nav__item--active', '.sure-nav__item:hover',
+  '.visually-hidden', '.sure-table tr.is-selected',
+]
+
+describe('themes: page regions', () => {
+  for (const [name, css] of Object.entries(themes)) {
+    it(`${name} styles every promoted region class`, () => {
+      const missing = REGION_CLASSES.filter((c) => !css.includes(c))
+      expect(missing, `${name} is missing: ${missing.join(', ')}`).toEqual([])
+    })
+
+    it(`${name} hardcodes no colour in the promoted regions`, () => {
+      // The whole point of the promotion is that a consumer can hand these to a
+      // theme. A hex here would pin one palette, which is the bug that moved
+      // the console's own stylesheet in the first place.
+      const start = css.indexOf('.sure-toolbar')
+      const block = start === -1 ? '' : css.slice(start)
+      const hexes = [...block.matchAll(/#[0-9a-fA-F]{3,8}\b/g)].map((m) => m[0])
+      expect([...new Set(hexes)], `${name} pins colours: ${[...new Set(hexes)].join(', ')}`).toEqual([])
+    })
+
+    it(`${name} derives the nav hover from the theme, not a fixed white`, () => {
+      // A hardcoded white tint is invisible on the light themes. The console
+      // shipped exactly that until it was promoted.
+      const hover = /\.sure-nav__item:hover\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
+      expect(hover, `${name} has no .sure-nav__item:hover`).not.toBe('')
+      expect(hover, `${name} uses a hardcoded rgba on nav hover`).not.toMatch(/rgba\(\s*255/)
+      expect(hover, `${name} does not derive the hover from the theme`).toMatch(/var\(--/)
+    })
+  }
+})
+
+/**
+ * Known defect, recorded so it cannot be forgotten and cannot be mistaken for
+ * something already handled.
+ *
+ * The alert pattern is a 10% tint of the status colour with the status colour
+ * as the text. On the light themes the status colours are mid-tone, so the text
+ * lands at 1.7:1 (nord success) against a near-white page — far below the 4.5
+ * WCAG AA threshold for normal text. Measured in Chromium, compositing the
+ * translucent background over the page the way a user sees it:
+ *
+ *     nord     success 1.7   info 2.1   error 3.2
+ *     forest   success 3.1   info 4.8   error 4.3
+ *     dracula  success 8.2   info 5.0   error 4.1
+ *     dark     success 7.1   info 13.9  error 5.4
+ *
+ * Fixing it means giving each theme a foreground that reads on its own status
+ * fill — black clears 4.5:1 on warn/success/accent in nord, dracula and dark,
+ * but forest needs white on error and accent. That is a visual change to a
+ * shipped component, so it is a decision rather than a drive-by fix.
+ *
+ * This test asserts the defect is still present. When it is fixed, delete it and
+ * replace it with the contrast assertion it was standing in for.
+ */
+describe('themes: status colours are not yet readable', () => {
+  it('records that the light themes fail AA on the alert pattern', () => {
+    const failing = ['nord', 'forest', 'dracula']
+    expect(failing).toContain('nord')
+    // The assertion that matters is the one this test cannot yet make. Rather
+    // than pretend, assert the shape of the problem so a future edit that
+    // silently changes the pattern is noticed.
+    const alert = /\.sure-auth__alert--success\s*\{([^}]*)\}/.exec(themes.nord)?.[1] ?? ''
+    expect(alert, 'the alert pattern changed shape; re-measure before trusting this note')
+      .toMatch(/background:\s*color-mix\(in srgb, var\(--success\) 10%, transparent\)/)
+    expect(alert, 'the alert pattern changed shape; re-measure before trusting this note')
+      .toMatch(/color:\s*var\(--success\)/)
+  })
+})
