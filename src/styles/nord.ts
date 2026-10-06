@@ -29,6 +29,15 @@ export const nord = `
   --success: var(--nord14);
   --highlight: var(--nord5);
   --warn: var(--nord13);
+
+  /* Status inks: text that reads on a 10% tint of its status colour (alerts,
+     badges). The status hues are mid-tone, so as text they land at 1.7–3.2:1
+     on a near-white page. Each ink is its hue darkened until it clears 4.5:1,
+     verified in index.test.ts. */
+  --error-ink: #86444a;
+  --success-ink: #525f46;
+  --accent-ink: #4d6174;
+  --warn-ink: #6a5b3f;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -219,7 +228,7 @@ export const nord = `
 .sure-auth__footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
 .sure-auth__footer a:hover { text-decoration: underline; }
 .sure-auth__alert { padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
-.sure-auth__alert--error { background: color-mix(in srgb, var(--error) 10%, transparent); color: var(--error); border: 1px solid color-mix(in srgb, var(--error) 30%, transparent); }
+.sure-auth__alert--error { background: color-mix(in srgb, var(--error) 10%, transparent); color: var(--error-ink); border: 1px solid color-mix(in srgb, var(--error) 30%, transparent); }
 
 /* ── Dialog ── */
 .sure-dialog-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; display:flex; align-items:center; justify-content:center; }
@@ -286,8 +295,8 @@ export const nord = `
 .sure-menu__item.active { color:var(--accent); }
 .sure-menu__divider { width:1px; height:1.25rem; background:var(--border); margin:0 0.25rem; flex-shrink:0; }
 
-.sure-auth__alert--success { background: color-mix(in srgb, var(--success) 10%, transparent); color: var(--success); border: 1px solid color-mix(in srgb, var(--success) 30%, transparent); }
-.sure-auth__alert--info { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
+.sure-auth__alert--success { background: color-mix(in srgb, var(--success) 10%, transparent); color: var(--success-ink); border: 1px solid color-mix(in srgb, var(--success) 30%, transparent); }
+.sure-auth__alert--info { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent-ink); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
 
   /* ── Page regions ──
      Layout for the parts of a page that are not the page itself: a region
