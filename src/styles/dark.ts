@@ -219,4 +219,85 @@ export const dark = `
 .sure-menu__item.active { color:var(--accent); }
 .sure-menu__divider { width:1px; height:1.25rem; background:var(--border); margin:0 0.25rem; flex-shrink:0; }
 
-`
+  /* ── Page regions ──
+     Layout for the parts of a page that are not the page itself: a region
+     wrapper, a toolbar above it, a filter row, a quiet note, a help panel.
+     Promoted from the management console, which carried all of this privately
+     — these patterns are not console-specific and a second consumer would
+     otherwise copy them again. */
+
+  .sure-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem;
+  }
+  .sure-toolbar h2 { margin: 0; }
+
+  .sure-filters { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .sure-filters input,
+  .sure-filters select {
+    width: 100%; box-sizing: border-box;
+    padding: 0.45rem 0.55rem;
+    border: 1px solid var(--border); border-radius: 4px;
+    font: inherit; background: var(--surface); color: var(--text);
+  }
+
+  .sure-note { font-size: 0.82rem; opacity: 0.75; margin: 0.5rem 0; }
+
+  .sure-panel {
+    margin-top: 1rem; padding: 0.75rem 1rem;
+    border: 1px solid var(--border); border-radius: 6px;
+    background: var(--surface);
+  }
+
+  .sure-help {
+    margin: 0.5rem 0 1rem;
+    border: 1px solid var(--border); border-radius: 6px;
+    background: var(--highlight);
+  }
+  .sure-help__title {
+    margin: 0; padding: 0.5rem 0.75rem; font-size: 0.95rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface); border-radius: 6px 6px 0 0;
+  }
+  .sure-help__item { padding: 0.4rem 0.75rem; border-bottom: 1px solid var(--highlight); }
+  .sure-help__item:last-child { border-bottom: none; }
+  .sure-help__summary { cursor: pointer; font-size: 0.85rem; }
+  .sure-help__summary code,
+  .sure-help__example code {
+    background: var(--highlight); padding: 0.05rem 0.3rem; border-radius: 3px;
+  }
+  .sure-help__details { margin: 0.35rem 0 0; font-size: 0.82rem; opacity: 0.85; }
+  .sure-help__example { margin: 0.3rem 0 0; font-size: 0.8rem; }
+
+  /* ── Small composites ── */
+
+  .sure-toggle-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .sure-toggle {
+    display: flex; align-items: center; gap: 0.35rem;
+    text-transform: capitalize;
+  }
+  .sure-row-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+  .sure-nav__item {
+    background: transparent;
+    border: 1px solid transparent;
+    color: inherit;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font: inherit;
+  }
+  /* Derived from the theme's own text colour so it reads on a light or a dark
+     background. A hardcoded white tint is invisible on a light theme. */
+  .sure-nav__item:hover { background: color-mix(in srgb, var(--text) 8%, transparent); }
+  .sure-nav__item--active { background: var(--accent); border-color: var(--bg); }
+
+  /* ── State hooks & utilities ── */
+
+  .sure-table tr.is-selected { background: var(--border); }
+
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  `
