@@ -141,7 +141,8 @@ describe('sure-ui', () => {
 // declared outside `:root` in all four themes, so any app styling itself with
 // `var(--bg)` got no background at all.
 describe('themes: generic aliases', () => {
-  const GENERIC = ['--bg', '--surface', '--text', '--muted', '--border', '--accent', '--error', '--success', '--warn']
+  const GENERIC = ['--bg', '--surface', '--text', '--muted', '--border', '--accent', '--error', '--success', '--warn',
+    '--error-ink', '--success-ink', '--accent-ink', '--warn-ink']
 
   for (const [name, css] of Object.entries(themes)) {
     it(`${name} declares every generic alias`, () => {
@@ -223,8 +224,8 @@ describe('themes: button contrast', () => {
  * consumer that switches themes at runtime sees an unstyled page with nothing
  * in the logs to explain it. These assert presence, not appearance.
  *
- * The contrast of the *status* colours is a separate, known problem and is not
- * claimed here — see `describe('themes: status colours are not yet readable')`.
+ * The contrast of the *status* colours is asserted, not assumed — see
+ * `describe('themes: status contrast')`.
  */
 const REGION_CLASSES = [
   '.sure-toolbar', '.sure-filters', '.sure-note', '.sure-panel',
@@ -264,39 +265,95 @@ describe('themes: page regions', () => {
 })
 
 /**
- * Known defect, recorded so it cannot be forgotten and cannot be mistaken for
- * something already handled.
+ * Status contrast: text that reads on a 10% tint of its status colour.
  *
- * The alert pattern is a 10% tint of the status colour with the status colour
- * as the text. On the light themes the status colours are mid-tone, so the text
- * lands at 1.7:1 (nord success) against a near-white page — far below the 4.5
- * WCAG AA threshold for normal text. Measured in Chromium, compositing the
- * translucent background over the page the way a user sees it:
+ * The alert pattern is a 10% tint of the status colour with a darker or
+ * lighter cut of the same hue — the `*-ink` alias — as the text. The bare
+ * status hues are mid-tone, so as text they landed at 1.7:1 (nord success)
+ * against a near-white page. Each ink is its hue pushed until it clears the
+ * 4.5 WCAG AA threshold, keeping the hue so the colour coding survives:
  *
- *     nord     success 1.7   info 2.1   error 3.2
- *     forest   success 3.1   info 4.8   error 4.3
- *     dracula  success 8.2   info 5.0   error 4.1
- *     dark     success 7.1   info 13.9  error 5.4
+ *     nord     error #86444a  success #525f46  accent #4d6174  warn #6a5b3f
+ *     forest   error #7d2e2e  success #40623f  accent itself   warn #765623
+ *     dracula  error #ff8888  the rest themselves
+ *     dark     all themselves (each already clears it)
  *
- * Fixing it means giving each theme a foreground that reads on its own status
- * fill — black clears 4.5:1 on warn/success/accent in nord, dracula and dark,
- * but forest needs white on error and accent. That is a visual change to a
- * shipped component, so it is a decision rather than a drive-by fix.
- *
- * This test asserts the defect is still present. When it is fixed, delete it and
- * replace it with the contrast assertion it was standing in for.
+ * The test composites the translucent background over the page the way a user
+ * sees it, then measures the ink against that — comparing against the raw
+ * 10%-alpha colour instead is what let the original failure report all-OK.
  */
-describe('themes: status colours are not yet readable', () => {
-  it('records that the light themes fail AA on the alert pattern', () => {
-    const failing = ['nord', 'forest', 'dracula']
-    expect(failing).toContain('nord')
-    // The assertion that matters is the one this test cannot yet make. Rather
-    // than pretend, assert the shape of the problem so a future edit that
-    // silently changes the pattern is noticed.
-    const alert = /\.sure-auth__alert--success\s*\{([^}]*)\}/.exec(themes.nord)?.[1] ?? ''
-    expect(alert, 'the alert pattern changed shape; re-measure before trusting this note')
-      .toMatch(/background:\s*color-mix\(in srgb, var\(--success\) 10%, transparent\)/)
-    expect(alert, 'the alert pattern changed shape; re-measure before trusting this note')
-      .toMatch(/color:\s*var\(--success\)/)
-  })
+describe('themes: status contrast', () => {
+  const luminance = (hex: string): number => {
+    const parts = hex.match(/[0-9a-f]{2}/gi) ?? []
+    if (parts.length < 3) throw new Error(`not a hex colour: ${hex}`)
+    const [r = 0, g = 0, b = 0] = parts.slice(0, 3).map((p) => {
+      const v = parseInt(p, 16) / 255
+      return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4
+    })
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+  }
+  const contrast = (a: string, b: string): number => {
+    const hi = luminance(a)
+    const lo = luminance(b)
+    const [top = 0, bottom = 0] = [hi, lo].sort((x, y) => y - x)
+    return (top + 0.05) / (bottom + 0.05)
+  }
+  /** Follow `var(--x)` through alias chains to the palette hex. */
+  const resolve = (css: string, value: string, depth = 0): string => {
+    const v = value.trim()
+    if (/^#[0-9a-fA-F]{3,8}$/.test(v)) {
+      return v.length === 4 ? `#${[...v.slice(1)].map((c) => c + c).join('')}` : v
+    }
+    if (depth > 6) throw new Error(`cannot resolve ${value}: chain too deep`)
+    const ref = /var\((--[a-z0-9-]+)\)/i.exec(v)?.[1]
+    if (!ref) throw new Error(`cannot resolve ${value}: not a hex or a var()`)
+    const decl = new RegExp(`${ref}:\\s*([^;]+);`).exec(css)?.[1]
+    if (!decl) throw new Error(`cannot resolve ${ref}: never declared`)
+    return resolve(css, decl, depth + 1)
+  }
+  /** What the eye sees: a translucent layer composited over the page. */
+  const over = (fg: string, bg: string, alpha: number): string => {
+    const a = fg.match(/[0-9a-f]{2}/gi)!.map((h) => parseInt(h, 16))
+    const b = bg.match(/[0-9a-f]{2}/gi)!.map((h) => parseInt(h, 16))
+    const c = a.map((v, i) => Math.round(v * alpha + (b[i] ?? 0) * (1 - alpha)))
+    return '#' + c.map((v) => v.toString(16).padStart(2, '0')).join('')
+  }
+
+  const ALERTS = [
+    { alert: 'error', status: '--error', ink: '--error-ink' },
+    { alert: 'success', status: '--success', ink: '--success-ink' },
+    { alert: 'info', status: '--accent', ink: '--accent-ink' },
+  ] as const
+  const INKS: ReadonlyArray<readonly [string, string]> = [
+    ['--error', '--error-ink'],
+    ['--success', '--success-ink'],
+    ['--accent', '--accent-ink'],
+    ['--warn', '--warn-ink'],
+  ]
+
+  for (const [name, css] of Object.entries(themes)) {
+    for (const { alert, status, ink } of ALERTS) {
+      it(`${name} alert--${alert} text clears AA on its own tint`, () => {
+        const rule = new RegExp(`\\.sure-auth__alert--${alert}\\s*\\{([^}]*)\\}`).exec(css)?.[1] ?? ''
+        expect(rule, `${name} has no .sure-auth__alert--${alert}`).not.toBe('')
+        const bg = /background:\s*([^;]+);/.exec(rule)?.[1] ?? ''
+        expect(bg, `${name} alert--${alert} is not a 10% tint of ${status}`)
+          .toMatch(new RegExp(`color-mix\\(in srgb, var\\(${status}\\) 10%, transparent\\)`))
+        const fg = /(?:^|;)\s*color\s*:\s*([^;]+);/.exec(`;${rule}`)?.[1] ?? ''
+        expect(fg, `${name} alert--${alert} does not use its ink`)
+          .toMatch(new RegExp(`var\\(${ink}\\)`))
+        const seen = over(resolve(css, `var(${status})`), resolve(css, 'var(--bg)'), 0.1)
+        const ratio = contrast(resolve(css, fg), seen)
+        expect(ratio, `${name} alert--${alert} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5)
+      })
+    }
+
+    it(`${name} declares a readable ink for every status`, () => {
+      for (const [status, ink] of INKS) {
+        const seen = over(resolve(css, `var(${status})`), resolve(css, 'var(--bg)'), 0.1)
+        const ratio = contrast(resolve(css, `var(${ink})`), seen)
+        expect(ratio, `${name} ${ink} is ${ratio.toFixed(2)}:1 on its tint`).toBeGreaterThanOrEqual(4.5)
+      }
+    })
+  }
 })

@@ -25,6 +25,14 @@ export const dark = `
   --success: var(--dark-success);
   --warn: var(--dark-warn);
   --highlight: var(--dark-highlight);
+
+  /* Status inks: text that reads on a 10% tint of its status colour (alerts,
+     badges). Every status hue already clears 4.5:1 here, so each ink is
+     itself — declared explicitly so consumers can depend on the names. */
+  --error-ink: var(--error);
+  --success-ink: var(--success);
+  --accent-ink: var(--accent);
+  --warn-ink: var(--warn);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -155,8 +163,9 @@ export const dark = `
 .sure-auth__footer a { color: var(--dark-primary); text-decoration: none; font-weight: 600; }
 .sure-auth__footer a:hover { text-decoration: underline; }
 .sure-auth__alert { padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
-.sure-auth__alert--error { background: rgba(255,107,107,0.1); color: var(--dark-error); border: 1px solid rgba(255,107,107,0.3); }
-.sure-auth__alert--success { background: rgba(81,207,102,0.1); color: var(--dark-success); border: 1px solid rgba(81,207,102,0.3); }
+.sure-auth__alert--error { background: color-mix(in srgb, var(--error) 10%, transparent); color: var(--error-ink); border: 1px solid color-mix(in srgb, var(--error) 30%, transparent); }
+.sure-auth__alert--success { background: color-mix(in srgb, var(--success) 10%, transparent); color: var(--success-ink); border: 1px solid color-mix(in srgb, var(--success) 30%, transparent); }
+.sure-auth__alert--info { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent-ink); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
 
 /* ── Dialog ── */
 .sure-dialog-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; display:flex; align-items:center; justify-content:center; }
