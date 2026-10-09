@@ -1,10 +1,15 @@
 export const forest = `
 :root {
+  /* Typography contract (all sure-ui themes declare these). */
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font-size: 100%;
+  --line-height: 1.6;
   --frst-bg: #f4f1ea;
   --frst-surface: #fff;
   --frst-text: #2d2a24;
-  --frst-muted: #7a7568;
-  --frst-border: #c9c3b3;
+  --frst-muted: #615d52;
+  --frst-border: #8b8574;
   --frst-focus: #5b8c5a;
   --frst-primary: #3d6b3c;
   --frst-primary-hover: #2d522c;
@@ -306,4 +311,18 @@ export const forest = `
     position: absolute; width: 1px; height: 1px;
     overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
   }
+  
+
+/* Typography consumption — the theme decides the stack and scale; these
+   rules are what actually apply them. Kept identical in every theme so a
+   runtime swap never drops the base typography. */
+html { font-size: var(--font-size, 100%); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: var(--line-height, 1.6);
+}
+code, pre { font-family: var(--font-mono); }
   `.trim()

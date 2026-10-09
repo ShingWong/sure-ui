@@ -1,50 +1,62 @@
-export const dracula = `
+// Light, WCAG-AAA palette with a Verdana-first stack at 125% — the low-vision system-font variant
+// AAA on white: text >= 7:1, muted >= 7:1, links >= 7:1,
+// borders >= 3:1 — asserted in index.test.ts alongside the
+// shared font contract (--font-body/--font-mono/--font-size/
+// --line-height). The two vision themes share this palette and
+// differ only in --font-body, so a reader compares fonts.
+export const visionSystem = `
+
 :root {
   /* Typography contract (all sure-ui themes declare these). */
-  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-body: Verdana, Tahoma, "Segoe UI", -apple-system, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  --font-size: 100%;
-  --line-height: 1.6;
-  --drac-bg: #282a36;
-  --drac-surface: #44475a;
-  --drac-text: #f8f8f2;
-  --drac-muted: #93a0c9;
-  --drac-border: #6272a4;
-  --drac-focus: #bd93f9;
-  --drac-primary: #bd93f9;
-  --drac-primary-hover: #cba6f7;
-  --drac-error: #ff5555;
-  --drac-success: #50fa7b;
-  --drac-warn: #f1fa8c;
-  --drac-highlight: #44475a;
+  --font-size: 125%;
+  --line-height: 1.7;
+  --vsys0: #101418;
+  --vsys1: #1d232a;
+  --vsys2: #2b323a;
+  --vsys3: #3f464f;
+  --vsys4: #6b7280;
+  --vsys5: #e7ebf0;
+  --vsys6: #ffffff;
+  --vsys7: #0f766e;
+  --vsys8: #1a55d8;
+  --vsys9: #0d47c8;
+  --vsys10: #16389c;
+  --vsys11: #b3261e;
+  --vsys12: #b45309;
+  --vsys13: #f0b429;
+  --vsys14: #14663a;
+  --vsys15: #6d28d9;
 
   /* Generic aliases: the same names in every theme, so an app can style
      itself with var(--bg) and still follow whichever theme is active. */
-  --bg: var(--drac-bg);
-  --surface: var(--drac-bg);
-  --text: var(--drac-text);
-  --muted: var(--drac-muted);
-  --border: var(--drac-border);
-  --accent: var(--drac-primary);
-  --error: var(--drac-error);
-  --success: var(--drac-success);
-  --highlight: var(--drac-highlight);
-  --warn: var(--drac-warn);
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --text: var(--vsys0);
+  --muted: var(--vsys3);
+  --border: var(--vsys4);
+  --accent: var(--vsys9);
+  --error: var(--vsys11);
+  --success: var(--vsys14);
+  --highlight: var(--vsys5);
+  --warn: var(--vsys13);
 
   /* Status inks: text that reads on a 10% tint of its status colour (alerts,
-     badges). Only error needs one — at 4.0:1 it sits just under the line, so
-     its ink is the hue lightened until it clears 4.5:1, verified in
-     index.test.ts. The rest already clear it, so their inks are themselves. */
-  --error-ink: #ff8888;
-  --success-ink: var(--success);
-  --accent-ink: var(--accent);
-  --warn-ink: var(--warn);
+     badges). The status hues are mid-tone, so as text they land at 1.7–3.2:1
+     on a near-white page. Each ink is its hue darkened until it clears 4.5:1,
+     verified in index.test.ts. */
+  --error-ink: #7a1610;
+  --success-ink: #0c4426;
+  --accent-ink: #0a3599;
+  --warn-ink: #5c4200;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* ── Form ── */
 .sure-form { max-width: 480px; }
-  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--drac-text); }
+  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--vsys0); }
   .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
   .btn-icon {
     display: inline-flex;
@@ -53,7 +65,7 @@ export const dracula = `
     width: 1.75rem;
     height: 1.75rem;
     padding: 0;
-    border: 1px solid currentColor;
+    border: 1px solid var(--border);
     border-radius: 4px;
     background: transparent;
     color: inherit;
@@ -61,75 +73,149 @@ export const dracula = `
     line-height: 1;
     cursor: pointer;
   }
-  .btn-icon:hover { background: rgba(255,255,255,0.08); }
+  .btn-icon:hover { background: var(--highlight); }
   .btn-icon:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .sure-form__field { margin-bottom: 1rem; }
-.sure-form__label { display: block; margin-bottom: 0.25rem; font-weight: 600; color: var(--drac-text); font-size: 0.875rem; }
+.sure-form__label {
+  display: block; margin-bottom: 0.25rem;
+  font-weight: 600; color: var(--vsys0);
+  font-size: 0.875rem;
+}
 .sure-form input, .sure-form select, .sure-form textarea {
   width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--drac-border); border-radius: 6px;
-  font-size: 1rem; color: var(--drac-text);
-  background: var(--drac-surface);
-  transition: border-color 0.15s;
+  border: 1px solid var(--vsys4); border-radius: 6px;
+  font-size: 1rem; color: var(--vsys0);
+  background: #fff; transition: border-color 0.15s;
 }
 .sure-form input:focus, .sure-form select:focus, .sure-form textarea:focus {
-  outline: none; border-color: var(--drac-focus); box-shadow: 0 0 0 3px rgba(189,147,249,0.25);
+  outline: none; border-color: var(--vsys9); box-shadow: 0 0 0 3px rgba(129,161,193,0.2);
 }
-.sure-form__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--drac-error); }
-.sure-form__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--drac-muted); }
-.sure-form input[aria-invalid="true"] { border-color: var(--drac-error); }
+.sure-form__error {
+  display: block; margin-top: 0.25rem;
+  font-size: 0.8rem; color: var(--vsys11);
+}
+.sure-form__help {
+  display: block; margin-top: 0.25rem;
+  font-size: 0.8rem; color: var(--vsys3);
+}
+.sure-form input[aria-invalid="true"] { border-color: var(--vsys11); }
 
+/* ── Modal ── */
 .sure-modal__form { max-width: 560px; }
 .sure-modal__field { margin-bottom: 1rem; }
-.sure-modal__label { display: block; margin-bottom: 0.25rem; font-weight: 600; color: var(--drac-text); font-size: 0.875rem; }
-.sure-modal__form input, .sure-modal__form select, .sure-modal__form textarea { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--drac-border); border-radius: 6px; font-size: 1rem; color: var(--drac-text); background: var(--drac-surface); }
-.sure-modal__form input:focus, .sure-modal__form select:focus, .sure-modal__form textarea:focus { outline: none; border-color: var(--drac-focus); box-shadow: 0 0 0 3px rgba(189,147,249,0.25); }
-.sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--drac-error); }
-.sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--drac-muted); }
+.sure-modal__label {
+  display: block; margin-bottom: 0.25rem;
+  font-weight: 600; color: var(--vsys0); font-size: 0.875rem;
+}
+.sure-modal__form input, .sure-modal__form select, .sure-modal__form textarea {
+  width: 100%; padding: 0.5rem 0.75rem;
+  border: 1px solid var(--vsys4); border-radius: 6px;
+  font-size: 1rem; color: var(--vsys0); background: #fff;
+}
+.sure-modal__form input:focus, .sure-modal__form select:focus, .sure-modal__form textarea:focus {
+  outline: none; border-color: var(--vsys9); box-shadow: 0 0 0 3px rgba(129,161,193,0.2);
+}
+.sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--vsys11); }
+.sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--vsys3); }
 
+/* ── Table ── */
 .sure-table { width: 100%; border-collapse: collapse; }
-.sure-table__header { text-align: left; padding: 0.75rem 1rem; background: var(--drac-surface); color: var(--drac-text); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid var(--drac-border); }
-.sure-table__cell { padding: 0.75rem 1rem; border-bottom: 1px solid var(--drac-surface); color: var(--drac-text); }
-.sure-table tr:hover .sure-table__cell { background: var(--drac-surface); }
-.sure-table__error { color: var(--drac-error); font-size: 0.8rem; }
-.sure-table__help { color: var(--drac-muted); font-size: 0.8rem; }
+.sure-table__header {
+  text-align: left; padding: 0.75rem 1rem;
+  background: var(--vsys5); color: var(--vsys0);
+  font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
+  border-bottom: 2px solid var(--vsys4);
+}
+.sure-table__cell { padding: 0.75rem 1rem; border-bottom: 1px solid var(--vsys5); }
+.sure-table tr:hover .sure-table__cell { background: var(--vsys6); }
+.sure-table__error { color: var(--vsys11); font-size: 0.8rem; }
+.sure-table__help { color: var(--vsys3); font-size: 0.8rem; }
 
+/* ── CRUD ── */
 .sure-crud { max-width: 720px; }
 .sure-crud__field { margin-bottom: 1rem; }
-.sure-crud__label { display: block; margin-bottom: 0.25rem; font-weight: 600; color: var(--drac-text); font-size: 0.875rem; }
-.sure-crud input, .sure-crud select, .sure-crud textarea { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--drac-border); border-radius: 6px; font-size: 1rem; color: var(--drac-text); background: var(--drac-surface); }
-.sure-crud input:focus, .sure-crud select:focus, .sure-crud textarea:focus { outline: none; border-color: var(--drac-focus); box-shadow: 0 0 0 3px rgba(189,147,249,0.25); }
-.sure-crud__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--drac-error); }
-.sure-crud__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--drac-muted); }
+.sure-crud__label { display: block; margin-bottom: 0.25rem; font-weight: 600; color: var(--vsys0); font-size: 0.875rem; }
+.sure-crud input, .sure-crud select, .sure-crud textarea {
+  width: 100%; padding: 0.5rem 0.75rem;
+  border: 1px solid var(--vsys4); border-radius: 6px;
+  font-size: 1rem; color: var(--vsys0); background: #fff;
+}
+.sure-crud input:focus, .sure-crud select:focus, .sure-crud textarea:focus {
+  outline: none; border-color: var(--vsys9); box-shadow: 0 0 0 3px rgba(129,161,193,0.2);
+}
+.sure-crud__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--vsys11); }
+.sure-crud__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--vsys3); }
 
+/* ── Search ── */
 .sure-search { max-width: 360px; }
-.sure-search__input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--drac-border); border-radius: 20px; font-size: 0.9rem; background: var(--drac-surface); color: var(--drac-text); }
-.sure-search__input:focus { outline: none; border-color: var(--drac-focus); box-shadow: 0 0 0 3px rgba(189,147,249,0.25); }
-.sure-search__error { font-size: 0.8rem; color: var(--drac-error); }
-.sure-search__help { font-size: 0.8rem; color: var(--drac-muted); }
+.sure-search__input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--vsys4); border-radius: 20px; font-size: 0.9rem; }
+.sure-search__input:focus { outline: none; border-color: var(--vsys9); box-shadow: 0 0 0 3px rgba(129,161,193,0.2); }
+.sure-search__error { font-size: 0.8rem; color: var(--vsys11); }
+.sure-search__help { font-size: 0.8rem; color: var(--vsys3); }
 .sure-search__label { display: none; }
 
-.btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; color: var(--drac-bg); background: var(--drac-primary); transition: background 0.15s; }
-.btn-primary:hover { background: var(--drac-primary-hover); }
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 1.25rem; border: none; border-radius: 6px;
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  color: #ffffff; background: var(--vsys9);
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--vsys8); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-secondary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; border: 1px solid var(--drac-border); border-radius: 6px; font-size: 0.9rem; font-weight: 500; cursor: pointer; color: var(--drac-text); background: transparent; }
-.btn-secondary:hover { background: var(--drac-surface); }
 
-.toast { position: fixed; top: 1rem; right: 1rem; z-index: 1000; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 6px; background: var(--drac-surface); color: var(--drac-text); box-shadow: 0 4px 12px rgba(0,0,0,0.3); font-size: 0.9rem; max-width: 360px; animation: slideIn 0.2s ease-out; }
-.toast--error { border-left: 4px solid var(--drac-error); }
-.toast--success { border-left: 4px solid var(--drac-success); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 1.25rem; border: 1px solid var(--vsys4); border-radius: 6px;
+  font-size: 0.9rem; font-weight: 500; cursor: pointer;
+  color: var(--vsys0); background: #fff;
+  transition: background 0.15s;
+}
+.btn-secondary:hover { background: var(--vsys6); }
 
-.status-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 1rem; background: var(--drac-surface); color: var(--drac-text); font-size: 0.85rem; }
-.status-bar--error { border-bottom: 3px solid var(--drac-error); }
-.status-bar--success { border-bottom: 3px solid var(--drac-success); }
+/* ── Notifications ── */
+.toast {
+  position: fixed; top: 1rem; right: 1rem; z-index: 1000;
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem 1rem; border-radius: 8px;
+  background: var(--vsys0); color: var(--vsys6);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-size: 0.9rem; max-width: 360px;
+  animation: slideIn 0.2s ease-out;
+}
+.toast--error { background: var(--vsys11); }
+.toast--success { background: var(--vsys14); }
 
-.side-panel { position: fixed; top: 0; right: 0; bottom: 0; z-index: 1000; width: 360px; padding: 1.5rem; background: var(--drac-bg); border-left: 1px solid var(--drac-border); overflow-y: auto; }
-.side-panel__title { font-weight: 600; margin-bottom: 1rem; color: var(--drac-text); }
-.side-panel__item { padding: 0.5rem 0; border-bottom: 1px solid var(--drac-surface); font-size: 0.85rem; color: var(--drac-error); cursor: pointer; }
-.side-panel__item:hover { color: var(--drac-text); }
+.status-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: var(--vsys0); color: var(--vsys6);
+  font-size: 0.85rem;
+}
+.status-bar--error { background: var(--vsys11); }
+.status-bar--success { background: var(--vsys14); }
 
-@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.side-panel {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 1000;
+  width: 360px; padding: 1.5rem;
+  background: #fff; box-shadow: -4px 0 12px rgba(0,0,0,0.1);
+  overflow-y: auto;
+}
+.side-panel__title { font-weight: 600; margin-bottom: 1rem; color: var(--vsys0); }
+.side-panel__item {
+  padding: 0.5rem 0; border-bottom: 1px solid var(--vsys5);
+  font-size: 0.85rem; color: var(--vsys11);
+  cursor: pointer;
+}
+.side-panel__item:hover { color: var(--vsys0); }
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
 
 .sure-auth__form { max-width: 400px; margin: 2rem auto; padding: 2rem; background: var(--surface); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 .sure-auth__header { text-align: center; margin-bottom: 1.5rem; }
@@ -305,7 +391,6 @@ export const dracula = `
     position: absolute; width: 1px; height: 1px;
     overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
   }
-  
 
 /* Typography consumption — the theme decides the stack and scale; these
    rules are what actually apply them. Kept identical in every theme so a
@@ -319,4 +404,4 @@ body {
   line-height: var(--line-height, 1.6);
 }
 code, pre { font-family: var(--font-mono); }
-  `.trim()
+`.trim()

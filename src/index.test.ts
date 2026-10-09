@@ -357,3 +357,145 @@ describe('themes: status contrast', () => {
     })
   }
 })
+
+/**
+ * Typography is part of the theme contract (added with the vision themes):
+ * every theme declares the font vars AND ships the html/body rules that
+ * apply them, so a runtime swap never drops the base typography. The site
+ * additionally extracts only `:root` blocks — which is why every knob a
+ * theme can turn must live in `:root` as a variable.
+ */
+describe('themes: typography contract', () => {
+  const TYPO = ['--font-body', '--font-mono', '--font-size', '--line-height']
+
+  for (const [name, css] of Object.entries(themes)) {
+    it(`${name} declares the font variables`, () => {
+      const missing = TYPO.filter((v) => !css.includes(`${v}:`))
+      expect(missing, `${name} is missing ${missing.join(', ')}`).toEqual([])
+    })
+
+    it(`${name} ships the consumption rules`, () => {
+      expect(css, `${name} html rule`).toMatch(/html \{ font-size: var\(--font-size, 100%\)/)
+      expect(css, `${name} body font-family`).toMatch(/\nbody \{\n[^}]*font-family: var\(--font-body\)/)
+      expect(css, `${name} body line-height`).toMatch(/\nbody \{\n[^}]*line-height: var\(--line-height/)
+      expect(css, `${name} mono rule`).toMatch(/code, pre \{ font-family: var\(--font-mono\)/)
+    })
+  }
+})
+
+/**
+ * The landing-page audit (2026-10-09) measured every theme with this same
+ * math: two themes served sub-AA body text and four shipped sub-3:1 borders.
+ * These assert the floor on the shipped CSS — measured, not assumed.
+ */
+describe('themes: readable text and borders (AA)', () => {
+  const luminance = (hex: string): number => {
+    const parts = hex.match(/[0-9a-f]{2}/gi) ?? []
+    if (parts.length < 3) throw new Error(`not a hex colour: ${hex}`)
+    const [r = 0, g = 0, b = 0] = parts.slice(0, 3).map((p) => {
+      const v = parseInt(p, 16) / 255
+      return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4
+    })
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+  }
+  const contrast = (a: string, b: string): number => {
+    const hi = luminance(a)
+    const lo = luminance(b)
+    const [top = 0, bottom = 0] = [hi, lo].sort((x, y) => y - x)
+    return (top + 0.05) / (bottom + 0.05)
+  }
+  const resolve = (css: string, value: string, depth = 0): string => {
+    const v = value.trim()
+    if (/^#[0-9a-fA-F]{3,8}$/.test(v)) {
+      return v.length === 4 ? `#${[...v.slice(1)].map((c) => c + c).join("")}` : v
+    }
+    if (depth > 6) throw new Error(`cannot resolve ${value}`)
+    const ref = /var\((--[a-z0-9-]+)\)/i.exec(v)?.[1]
+    if (!ref) throw new Error(`not a hex or var(): ${value}`)
+    const decl = new RegExp(`${ref}:\\s*([^;]+);`).exec(css)?.[1]
+    if (!decl) throw new Error(`never declared: ${ref}`)
+    return resolve(css, decl, depth + 1)
+  }
+
+  for (const [name, css] of Object.entries(themes)) {
+    const pair = (label: string, fg: string, bg: string, min: number) => {
+      it(`${name} ${label} >= ${min}:1`, () => {
+        const ratio = contrast(resolve(css, `var(${fg})`), resolve(css, `var(${bg})`))
+        expect(ratio, `${name} ${label} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(min)
+      })
+    }
+    pair('body text on page', '--text', '--bg', 4.5)
+    pair('muted text on page', '--muted', '--bg', 4.5)
+    pair('muted text on card', '--muted', '--surface', 4.5)
+    pair('links on page', '--accent', '--bg', 4.5)
+    pair('links on card', '--accent', '--surface', 4.5)
+    pair('border on page', '--border', '--bg', 3)
+    pair('border on card', '--border', '--surface', 3)
+  }
+})
+
+/**
+ * The two vision themes: AAA text, large print. They share a palette and
+ * differ only in --font-body, so a reader compares fonts, not colours.
+ */
+describe('vision themes: AAA contrast and large print', () => {
+  const VISION = ['vision-system', 'vision-atkinson']
+  const luminance = (hex: string): number => {
+    const parts = hex.match(/[0-9a-f]{2}/gi) ?? []
+    const [r = 0, g = 0, b = 0] = parts.slice(0, 3).map((p) => {
+      const v = parseInt(p, 16) / 255
+      return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4
+    })
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+  }
+  const contrast = (a: string, b: string): number => {
+    const [top = 0, bottom = 0] = [luminance(a), luminance(b)].sort((x, y) => y - x)
+    return (top + 0.05) / (bottom + 0.05)
+  }
+  const resolve = (css: string, value: string, depth = 0): string => {
+    const v = value.trim()
+    if (/^#[0-9a-fA-F]{3,8}$/.test(v)) {
+      return v.length === 4 ? `#${[...v.slice(1)].map((c) => c + c).join("")}` : v
+    }
+    if (depth > 6) throw new Error(`cannot resolve ${value}`)
+    const ref = /var\((--[a-z0-9-]+)\)/i.exec(v)?.[1]
+    if (!ref) throw new Error(`not a hex or var(): ${value}`)
+    const decl = new RegExp(`${ref}:\\s*([^;]+);`).exec(css)?.[1]
+    if (!decl) throw new Error(`never declared: ${ref}`)
+    return resolve(css, decl, depth + 1)
+  }
+
+  for (const name of VISION) {
+    const css = themes[name as keyof typeof themes]
+    it(`${name} clears AAA on body, muted and link text`, () => {
+      for (const [label, fg, bg] of [
+        ['text', '--text', '--bg'], ['muted', '--muted', '--bg'],
+        ['muted on card', '--muted', '--surface'],
+        ['links', '--accent', '--bg'], ['links on card', '--accent', '--surface'],
+      ] as const) {
+        const ratio = contrast(resolve(css, `var(${fg})`), resolve(css, `var(${bg})`))
+        expect(ratio, `${name} ${label} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(7)
+      }
+    })
+
+    it(`${name} keeps borders at non-text contrast (>= 3:1)`, () => {
+      const ratio = contrast(resolve(css, 'var(--border)'), resolve(css, 'var(--surface)'))
+      expect(ratio, `${name} border is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(3)
+    })
+
+    it(`${name} ships large print (>= 112.5% of the browser default)`, () => {
+      const m = /--font-size:\s*([\d.]+)%/.exec(css)
+      expect(m, `${name} has no percentage --font-size`).toBeTruthy()
+      expect(parseFloat(m![1]!), `${name} --font-size`).toBeGreaterThanOrEqual(112.5)
+      const lh = /--line-height:\s*([\d.]+)/.exec(css)
+      expect(parseFloat(lh![1]!), `${name} --line-height`).toBeGreaterThanOrEqual(1.6)
+    })
+  }
+
+  it('vision-atkinson leads with Atkinson Hyperlegible; vision-system with Verdana', () => {
+    expect(themes['vision-atkinson']).toMatch(/--font-body: 'Atkinson Hyperlegible'/)
+    expect(themes['vision-atkinson']).toMatch(/@font-face/)
+    expect(themes['vision-system']).toMatch(/--font-body: Verdana/)
+    expect(themes['vision-system']).not.toMatch(/@font-face/)
+  })
+})

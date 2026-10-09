@@ -1,10 +1,15 @@
 export const nord = `
 :root {
+  /* Typography contract (all sure-ui themes declare these). */
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font-size: 100%;
+  --line-height: 1.6;
   --nord0: #2e3440;
   --nord1: #3b4252;
   --nord2: #434c5e;
   --nord3: #4c566a;
-  --nord4: #d8dee9;
+  --nord4: #767f94;
   --nord5: #e5e9f0;
   --nord6: #eceff4;
   --nord7: #8fbcbb;
@@ -24,7 +29,7 @@ export const nord = `
   --text: var(--nord0);
   --muted: var(--nord3);
   --border: var(--nord4);
-  --accent: var(--nord9);
+  --accent: #415e9c;
   --error: var(--nord11);
   --success: var(--nord14);
   --highlight: var(--nord5);
@@ -379,4 +384,18 @@ export const nord = `
     position: absolute; width: 1px; height: 1px;
     overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
   }
+  
+
+/* Typography consumption — the theme decides the stack and scale; these
+   rules are what actually apply them. Kept identical in every theme so a
+   runtime swap never drops the base typography. */
+html { font-size: var(--font-size, 100%); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: var(--line-height, 1.6);
+}
+code, pre { font-family: var(--font-mono); }
   `.trim()
