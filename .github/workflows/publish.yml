@@ -101,12 +101,16 @@ jobs:
       # brand-new package, so a first release still needs a local publish with
       # a 2FA-protected token.
       #
-      # E409 "Cannot stage previously published version" means this exact
-      # version was already staged or published outside CI — e.g. staged
-      # locally with NPM_TOKEN before the bump landed (the 0.1.8 release,
-      # 2026-10-09). That is a completed stage, not a failure: the pending
-      # approval on npmjs.com is untouched and re-staging would not replace
-      # it. Every other error still fails the run.
+      # E409 "already staged or published" means this exact version exists
+      # outside this run — staged locally with NPM_TOKEN before the bump
+      # landed (the 0.1.8 release, 2026-10-09) or already approved and
+      # published. That is a completed stage, not a failure: re-staging
+      # cannot replace it. npm words this two ways, observed in the wild:
+      #   local npm 11.18: Cannot stage previously published version "x"
+      #   runner npm 11.x: You cannot publish over the previously published
+      #                    versions: x
+      # Both contain "previously published version"; every other error
+      # still fails the run.
       - name: Stage for publishing
         if: steps.detect.outputs.changed == 'true'
         run: |
@@ -115,7 +119,7 @@ jobs:
             printf '%s\n' "$out"
           else
             printf '%s\n' "$out"
-            if printf '%s' "$out" | grep -q 'Cannot stage previously published version'; then
+            if printf '%s' "$out" | grep -q 'previously published version'; then
               echo "::notice::already staged or published outside CI (E409) — nothing left to do"
               exit 0
             fi
