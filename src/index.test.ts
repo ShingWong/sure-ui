@@ -384,6 +384,45 @@ describe('themes: typography contract', () => {
 })
 
 /**
+ * Mobile & touch is part of the theme contract too (added 2026-10-09): the
+ * layer is appended centrally in styles/index.ts, so what these assert is
+ * that no theme escapes it and that the layer really is one shared block —
+ * byte-identical across all seven — not seven hand-maintained copies.
+ */
+describe('themes: mobile and touch layer', () => {
+  const MARK = '/* ── Mobile & touch'
+
+  for (const [name, css] of Object.entries(themes)) {
+    it(`${name} ships the shared mobile layer`, () => {
+      const i = css.indexOf(MARK)
+      expect(i, `${name} is missing the mobile & touch layer`).toBeGreaterThan(-1)
+      const layer = css.slice(i)
+      expect(layer, `${name} small screens`).toContain('@media (max-width: 640px)')
+      expect(layer, `${name} touch reveals`).toContain('@media (hover: none)')
+      expect(layer, `${name} coarse pointers`).toContain('@media (pointer: coarse)')
+      expect(layer, `${name} 44px targets`).toContain('44px')
+      // Last, so it wins ties against the component rules above it.
+      expect(i, `${name} layer must follow the body rules`).toBeGreaterThan(css.indexOf('body {'))
+    })
+  }
+
+  it('the layer is byte-identical in every theme', () => {
+    const layers = Object.entries(themes).map(([name, css]) => {
+      const i = css.indexOf(MARK)
+      return i < 0 ? `MISSING in ${name}` : css.slice(i)
+    })
+    expect(new Set(layers).size).toBe(1)
+  })
+
+  it('touch reveals hover-only affordances', () => {
+    const css: string = themes.nord
+    const layer = css.slice(css.indexOf(MARK))
+    expect(layer).toContain('.message .msg-actions { display: flex; }')
+    expect(layer).toContain('.sure-session-item .sure-session-actions { display: flex; }')
+  })
+})
+
+/**
  * The landing-page audit (2026-10-09) measured every theme with this same
  * math: two themes served sub-AA body text and four shipped sub-3:1 borders.
  * These assert the floor on the shipped CSS — measured, not assumed.

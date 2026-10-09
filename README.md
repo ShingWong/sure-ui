@@ -31,7 +31,7 @@ document.head.appendChild(style)
 | `forest` | Warm organic |
 | `dracula` | Dark modern |
 | `dark` | Neutral dark with generic aliases |
-| `positronic` | **Positronic brand** — dark default, light variant via `prefers-color-scheme`, generic tokens plus `pp-*` helper classes (see below) |
+| `positronic` | **Positronic brand** — dark default, generic tokens plus `pp-*` helper classes (see below) |
 | `vision-system` | **Vision / low vision** — WCAG-AAA light palette, Verdana-first system stack at 125% type |
 | `vision-atkinson` | **Vision / low vision** — the same AAA palette on vendored Atkinson Hyperlegible (OFL; serve the two `.woff2` files from `/fonts/`, copies live in `fonts/`) |
 
@@ -52,6 +52,38 @@ Consumption rules (`html { font-size: var(--font-size, 100%) }`,
 are embedded in every theme. Consumers that extract only `:root` blocks —
 like the positronic landing page — still get every knob, which is why all
 theme settings must live in `:root` as variables.
+
+### Mobile & touch
+
+Every theme appends one shared block (`src/styles/mobile.ts`, exported as
+`mobileLayer`), so all seven carry it **byte-identical** — asserted in
+`index.test.ts`, not maintained by hand. It is colour-free: layout and hit
+targets only, so shipping it changes no contrast maths and no `:root` knob.
+
+| Media query | Detects | Does |
+|---|---|---|
+| `max-width: 640px` | phones holding fixed-width chrome | forms, the side panel, dialogs and toasts stop overflowing the viewport; action rows wrap; table padding tightens |
+| `hover: none` | touch has no hover | reveals the two hover-only affordances (message actions, session actions), which are otherwise unreachable |
+| `pointer: coarse` | fingers are not cursors | 44px targets for buttons, inputs and nav items; larger dialog resize handles |
+
+Following the system light/dark scheme is deliberately the consumer's call —
+`prefers-color-scheme` is a *behaviour*, not a palette. The recommended
+pattern (what the positronic landing page runs): store the **mode**, not the
+theme, and let `auto` map it live.
+
+```js
+const scheme = matchMedia('(prefers-color-scheme: dark)')
+const AUTO = 'auto', DEF = 'positronic'
+let mode = localStorage.getItem('theme') || AUTO
+const theme = () => mode === AUTO ? (scheme.matches ? 'dark' : DEF) : mode
+const paint = () => {
+  const t = theme()
+  if (t === DEF) delete document.documentElement.dataset.theme
+  else document.documentElement.dataset.theme = t
+  localStorage.setItem('theme', mode)
+}
+scheme.addEventListener('change', () => mode === AUTO && paint())
+```
 
 ### Contrast is measured, not promised
 
@@ -105,7 +137,7 @@ Zero peer dependencies. Works with any framework (React, Vue, Svelte, vanilla JS
 
 ## Themes
 
-Three preset themes matching sure-factor's BEM-style generated classes.
+Seven preset themes matching sure-factor's BEM-style generated classes.
 
 ```ts
 import { nord, forest, dracula, themes } from '@shing.wong/sure-ui'
