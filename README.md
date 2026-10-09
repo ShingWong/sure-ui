@@ -1,6 +1,6 @@
 # sure-ui
 
-**Runtime UI library for sure-factor generated interfaces.** Three preset themes (Nord, Forest, Dracula) matching sure-factor's semantic class conventions, plus a notification system with four display modes. Drop in a theme, call `showNotification`, and go.
+**Runtime UI library for sure-factor generated interfaces.** Seven preset themes (Nord, Forest, Dracula, Dark, Positronic, vision-system, vision-atkinson) matching sure-factor's semantic class conventions, plus a notification system with four display modes. Drop in a theme, call `showNotification`, and go.
 
 > **npm package name:** `@shing.wong/sure-ui` (published scoped — the unscoped `sure-ui` name is owned by an unrelated publisher). The repo and directory remain `sure-ui`.
 
@@ -17,17 +17,78 @@ document.head.appendChild(style)
 | Problem | How sure-ui solves it |
 |---------|--------------------------|
 | **Generated code has no styles** | sure-factor generates semantic HTML (`.sure-form`, `.sure-table`, `.sure-crud`). sure-ui provides production CSS for all of them — no design work needed. |
-| **Hopping between UI libraries** | Three cohesive themes (cool professional, warm organic, dark modern). Switch by changing one import. |
+| **Hopping between UI libraries** | Seven cohesive themes — five everyday palettes plus two WCAG-AAA vision themes. Switch by changing one import. |
 | **Scattered notification patterns** | Four modes from one function: `inline` (field-level), `toast` (pop-up), `statusBar` (banner), `sidePanel` (error list). Consistent API, consistent styling. |
 | **Accessibility afterthought** | Themes include focus rings (`:focus-visible`), `aria-invalid` styling, semantic color contrast, and proper `font-size` units. |
 | **Theme lock-in** | Themes are plain CSS strings — inject at runtime, swap without rebuilding. No CSS-in-JS, no bundler config, no framework dependency. |
+
+
+## Themes
+
+| Export | Character |
+|---|---|
+| `nord` | Cool professional |
+| `forest` | Warm organic |
+| `dracula` | Dark modern |
+| `dark` | Neutral dark with generic aliases |
+| `positronic` | **Positronic brand** — dark default, light variant via `prefers-color-scheme`, generic tokens plus `pp-*` helper classes (see below) |
+| `vision-system` | **Vision / low vision** — WCAG-AAA light palette, Verdana-first system stack at 125% type |
+| `vision-atkinson` | **Vision / low vision** — the same AAA palette on vendored Atkinson Hyperlegible (OFL; serve the two `.woff2` files from `/fonts/`, copies live in `fonts/`) |
+
+### Typography contract
+
+Every theme declares four variables in its `:root` and ships the rules that
+apply them — a runtime swap can never drop the base typography:
+
+| Var | Meaning |
+|---|---|
+| `--font-body` | Body font stack |
+| `--font-mono` | Monospace stack for `code`/`pre` |
+| `--font-size` | `html` font size as a percentage of the *browser default* (so user preferences still multiply through) |
+| `--line-height` | Body leading |
+
+Consumption rules (`html { font-size: var(--font-size, 100%) }`,
+`body { font-family: var(--font-body); line-height: var(--line-height, 1.6) }`)
+are embedded in every theme. Consumers that extract only `:root` blocks —
+like the positronic landing page — still get every knob, which is why all
+theme settings must live in `:root` as variables.
+
+### Contrast is measured, not promised
+
+`index.test.ts` asserts, for **every** theme: body text, muted text and
+links at **≥ 4.5:1** (WCAG AA) against both the page and card surfaces, and
+borders at **≥ 3:1** (WCAG 1.4.11). The two vision themes go further:
+**≥ 7:1 (AAA)** on all text pairs plus **≥ 112.5%** type. The vision pair
+shares one palette and differs only in `--font-body`, so a reader compares
+fonts, not colours.
+
+### `positronic` theme
+
+Usage identical to other themes:
+
+```ts
+import { positronic } from '@shing.wong/sure-ui'
+const style = document.createElement('style')
+style.textContent = positronic
+document.head.appendChild(style)
+```
+
+Tokens: `--bg`, `--surface`, `--text`, `--muted`, `--border`, `--accent`, `--error`, `--success`, `--warn`, `--highlight` (all aliased to `--positronic-*` internals). Helper classes available out of the box:
+
+| Class | Purpose |
+|---|---|
+| `.pp-wrap` | Centered max-width page container |
+| `.pp-btn` / `.pp-btn--ghost` | Primary / outline buttons |
+| `.pp-card` | Elevated surface card |
+| `.pp-badge` / `--ok` / `--warn` / `--beta` | Status pill |
+| `pre`, `code` | Monospace code blocks on the surface token |
 
 ### How it compares
 
 | | sure-ui | Tailwind UI | shadcn/ui | Bootstrap |
 |---|---|---|---|---|
 | Generated code ready | ✅ `.sure-form`, `.sure-table`, etc. | ❌ Custom classes needed | ❌ Custom components | ❌ |
-| Preset themes | ✅ 3 (Nord, Forest, Dracula) | ✅ Unlimited (custom) | ⚠️ Single (copy-to-project) | ✅ 5 built-in |
+| Preset themes | ✅ 7 (incl. 2 AAA vision) | ✅ Unlimited (custom) | ⚠️ Single (copy-to-project) | ✅ 5 built-in |
 | Theme injection | ✅ CSS string, runtime swap | ❌ Build-time only | ⚠️ CSS variables | ⚠️ SASS vars |
 | Notification modes | ✅ inline, toast, statusBar, sidePanel | ❌ | ⚠️ Sonner (toast only) | ⚠️ Toast only |
 | Bundle size | ~4 KB CSS + ~2 KB JS | ~300 KB CSS | ~40 KB per component | ~150 KB CSS + JS |

@@ -3,7 +3,7 @@
 // every release until someone remembered to edit it by hand.
 export const VERSION: string = (await import('../package.json', { with: { type: 'json' } })).default.version
 
-export { nord, forest, dracula, dark, themes } from './styles/index.js'
+export { nord, forest, dracula, dark, themes, positronic } from './styles/index.js'
 export type { ThemeName } from './styles/index.js'
 
 export { showNotification, clearNotifications } from './notifications.js'

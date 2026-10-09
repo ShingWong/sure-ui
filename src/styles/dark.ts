@@ -1,10 +1,15 @@
 export const dark = `
 :root {
+  /* Typography contract (all sure-ui themes declare these). */
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font-size: 100%;
+  --line-height: 1.6;
   --dark-bg: #1a1a2e;
   --dark-surface: #16213e;
   --dark-text: #e8e8e8;
   --dark-muted: #8892b0;
-  --dark-border: #2d3a5c;
+  --dark-border: #62719d;
   --dark-focus: #64ffda;
   --dark-primary: #64ffda;
   --dark-primary-hover: #45e0be;
@@ -309,4 +314,18 @@ export const dark = `
     position: absolute; width: 1px; height: 1px;
     overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
   }
+  
+
+/* Typography consumption — the theme decides the stack and scale; these
+   rules are what actually apply them. Kept identical in every theme so a
+   runtime swap never drops the base typography. */
+html { font-size: var(--font-size, 100%); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: var(--line-height, 1.6);
+}
+code, pre { font-family: var(--font-mono); }
   `
