@@ -1,0 +1,7 @@
+# Regenerable / heavy artifacts (TEST_HYGIENE R4). The committed record of
+# every run is meta.json + metrics.json + report.md (+ INDEX.md at the root).
+# Re-create: baseline via `node scripts/make-baseline.mjs`,
+# raw.json + screenshots via `python3 drive.py <label>` (needs serve.mjs on :8123).
+baseline-0.1.9.json
+runs/*/raw.json
+runs/*/screenshots/

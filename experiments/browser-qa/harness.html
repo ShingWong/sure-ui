@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sure-ui browser QA harness</title>
+<!-- The theme under test: injected by window.__qa.setTheme() from dist/compose.js -->
+<style id="theme"></style>
+<style>
+  /* Harness chrome: layout ONLY — no colour declarations, so every measured
+     colour comes from the theme under test. */
+  body { padding: 3.25rem 1rem 4rem 1rem; padding-right: 376px; box-sizing: border-box; }
+  .qa-h { font: 600 1rem/1.4 inherit; margin: 2.25rem 0 .75rem; padding-bottom: .3rem; border-bottom: 1px dashed; }
+  .qa-h:first-of-type { margin-top: 0; }
+  .qa-sub { font-size: .8rem; opacity: .8; margin: 0 0 .5rem; }
+  .qa-grid { display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-start; }
+  .qa-col { display: flex; flex-direction: column; gap: .5rem; min-width: 16rem; }
+  .qa-wide { max-width: 46rem; }
+  /* Toasts are all fixed at the same spot; stagger them for visual review only
+     (measured properties are untouched: position/top of .toast itself). */
+  .toast:nth-of-type(2) { top: 4.5rem; }
+  .toast:nth-of-type(3) { top: 8rem; }
+  .toast:nth-of-type(4) { top: 11.5rem; }
+  /* Dialog overlay covers the page; hidden by default (html.qa-clean) so other
+     sections screenshot cleanly. Measured styles are unaffected. */
+  html.qa-clean .sure-dialog-overlay { visibility: hidden; }
+</style>
+</head>
+<body>
+<script type="module">
+import { compose, COMPONENTS } from '/dist/compose.js'
+
+const style = document.getElementById('theme')
+const THEMES = ['nord', 'forest', 'dracula', 'dark', 'positronic', 'vision-system', 'vision-atkinson']
+
+// Measurement mode: kill transitions/animations so a theme switch is read
+// atomically (otherwise 0.15s colour transitions leak the PREVIOUS theme's
+// values into the measurement — caught 2026-10-10).
+const MEASURE_CSS = '\n*, *::before, *::after { transition: none !important; animation-duration: 0s !important; }'
+
+window.__qa = {
+  themes: THEMES,
+  components: COMPONENTS,
+  setTheme(name, components = 'all') {
+    const css = compose({ theme: name, components }) + MEASURE_CSS
+    style.textContent = css
+    document.documentElement.dataset.qaTheme = name
+    return css.length
+  },
+  /* baseline mode: inject a RAW 0.1.9 theme string (from master's fixture)
+     so every pair can be A/B'd against the pre-unification original */
+  setThemeRaw(name, css) {
+    style.textContent = css + MEASURE_CSS
+    document.documentElement.dataset.qaTheme = name + '-0.1.9'
+    return css.length
+  },
+  /* Raw measurements for the current theme. No verdicts here — record.mjs
+     applies thresholds and the known-flags allowlist. */
+  run() {
+    const cs = (sel, prop) => {
+      const el = document.querySelector(sel)
+      if (!el) return { missing: sel }
+      return getComputedStyle(el).getPropertyValue(prop)
+    }
+    const root = getComputedStyle(document.documentElement)
+    const tok = (n) => root.getPropertyValue(n).trim()
+    // normalise a custom-property value to an rgb() string via a probe
+    const probe = document.createElement('span')
+    document.body.appendChild(probe)
+    const norm = (v) => { if (!v) return v; probe.style.color = ''; probe.style.color = v; return getComputedStyle(probe).color }
+    const rgb = (v) => {
+      const s = norm(v)
+      let m = /rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/.exec(s)
+      if (m) {
+        const [r, g, b] = [m[1], m[2], m[3]].map(Number)
+        // alpha: parse when present; 1 when absent; NEVER `|| 1` (0 must stay 0)
+        const a = s.includes('rgba') ? parseFloat(s.split(',')[3].replace(')', '')) : 1
+        return [r, g, b, Number.isFinite(a) ? a : 1]
+      }
+      // Chromium serialises color-mix() results as color(srgb ...)
+      m = /color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)/.exec(s)
+      if (m) {
+        const a = m[4] === undefined ? 1 : parseFloat(m[4])
+        return [m[1] * 255, m[2] * 255, m[3] * 255, Number.isFinite(a) ? a : 1]
+      }
+      return null
+    }
+    const lum = ([r, g, b]) => {
+      const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4 }
+      return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b)
+    }
+    const ratio = (fg, bg) => { const a = lum(fg), b = lum(bg); const [hi, lo] = a > b ? [a, b] : [b, a]; return +((hi + 0.05) / (lo + 0.05)).toFixed(2) }
+    const over = (fg, bg) => fg[3] >= 1 ? fg : fg.slice(0, 3).map((c, i) => c * fg[3] + bg[i] * (1 - fg[3])).concat(1)
+    const pair = (name, fgSel, bgSel, fgProp = 'color', bgProp = 'background-color') => {
+      const f = rgb(cs(fgSel, fgProp)), b = rgb(cs(bgSel, bgProp))
+      if (!f || !b) return { name, error: !f ? `${fgSel}.${fgProp}` : `${bgSel}.${bgProp}` }
+      // transparent backgrounds composite over the page background
+      const body = rgb(cs('body', 'background-color'))
+      const base = b[3] < 1 && body ? over(b, body) : b
+      return { name, fg: norm(cs(fgSel, fgProp)), bg: norm(cs(bgSel, bgProp)), ratio: ratio(over(f, base), base) }
+    }
+
+    const contrasts = [
+      pair('body-text', 'body', 'body'),
+      pair('label', '.sure-form__label', 'body'),
+      pair('form-error', '.sure-form__error', 'body'),
+      pair('form-help', '.sure-form__help', 'body'),
+      pair('input-text', '.sure-form input', '.sure-form input'),
+      pair('search-input-text', '.sure-search__input', '.sure-search__input'),
+      pair('crud-label', '.sure-crud__label', 'body'),
+      pair('table-header', '.sure-table__header', '.sure-table__header'),
+      pair('table-cell', '.sure-table__cell', '.sure-table'),
+      pair('primary-btn', '.btn-primary', '.btn-primary'),
+      pair('secondary-btn', '.btn-secondary', '.btn-secondary'),
+      pair('toast-error', '.toast--error', '.toast--error'),
+      pair('toast-success', '.toast--success', '.toast--success'),
+      pair('toast-info', '.toast--info', '.toast--info'),
+      pair('status-base', '.status-bar', '.status-bar'),
+      pair('status-error', '.status-bar--error', '.status-bar--error'),
+      pair('status-success', '.status-bar--success', '.status-bar--success'),
+      pair('status-info', '.status-bar--info', '.status-bar--info'),
+      pair('sidepanel-title', '.side-panel__title', '.side-panel'),
+      pair('sidepanel-item', '.side-panel__item', '.side-panel'),
+      pair('auth-btn', '.sure-auth__btn', '.sure-auth__btn'),
+      pair('auth-alert-error', '.sure-auth__alert--error', '.sure-auth__alert--error'),
+      pair('menu-active', '.sure-menu__item.active', '.sure-menu__item.active'),
+      pair('session-active', '.sure-session-item.active', '.sure-session-item.active'),
+      pair('session-title', '.sure-session-title', '.sure-session-item.active'),
+      pair('markdown-code', '.sure-markdown code', '.sure-markdown code'),
+      pair('link', 'body a', 'body'),
+    ]
+
+    // focus behaviour: programmatic focus triggers :focus for real
+    const formInput = document.querySelector('.sure-form input')
+    formInput.focus()
+    const focusShadow = getComputedStyle(formInput).boxShadow
+    const focusBorder = getComputedStyle(formInput).borderColor
+    formInput.blur()
+
+    // token completeness: every var() without fallback must resolve
+    const cssText = [...document.styleSheets].map((s) => { try { return [...s.cssRules].map((r) => r.cssText).join('\n') } catch { return '' } }).join('\n')
+    const needed = new Set(), optional = new Set()
+    for (const m of cssText.matchAll(/var\((--[a-z0-9-]+)(\s*,)?/g)) (m[2] ? optional : needed).add(m[1])
+    const tokenGaps = [...needed].filter((n) => !tok(n))
+    const fallbackGaps = [...optional].filter((n) => !tok(n))
+
+    // structural expectations
+    const sel = (s) => document.querySelector(s)
+    const struct = {
+      statusFixed: cs('.status-bar', 'position'),
+      toastFixed: cs('.toast', 'position'),
+      toastAnim: cs('.toast', 'animation-name'),
+      toastAnimDur: cs('.toast', 'animation-duration'),
+      sidepanelWidth: cs('.side-panel', 'width'),
+      sidepanelZ: cs('.side-panel', 'z-index'),
+      searchRadius: cs('.sure-search__input', 'border-radius'),
+      searchMax: cs('.sure-search', 'max-width'),
+      crudInputWidth: cs('.sure-crud input', 'width'),
+      // the width RULE is 100% but computed returns the used px value —
+      // assert the input actually fills its container instead
+      crudFills: (() => {
+        const inp = document.querySelector('.sure-crud input')
+        const box = document.querySelector('.sure-crud')
+        return !!inp && !!box && Math.abs(inp.getBoundingClientRect().width - box.getBoundingClientRect().width) < 2
+      })(),
+      crudInputBg: cs('.sure-crud input', 'background-color'),
+      formMax: cs('.sure-form', 'max-width'),
+      tableHeaderBg: cs('.sure-table__header', 'background-color'),
+      mobileLayer: /@media \(max-width: 640px\)/.test(cssText),
+      ppBtn: !!sel('.pp-btn'),
+      infoVariant: !!sel('.status-bar--info') && !!sel('.toast--info'),
+      focusShadow: focusShadow === 'none' ? '' : focusShadow,
+      focusBorder,
+      cssBytes: style.textContent.length,
+      tokenGaps,
+      fallbackGaps,
+    }
+
+    probe.remove()
+    return { theme: document.documentElement.dataset.qaTheme, contrasts, struct }
+  },
+  /* compile-time inclusion proof: subset must carry form rules and NO table
+     rules. Tested on the COMPONENT layer (mobile: false) — the responsive
+     layer legitimately names every component's selectors by design, so it is
+     asserted separately. */
+  subset(components) {
+    const bytes = this.setTheme('nord', components) // default: mobile included
+    const mobileCss = compose({ theme: 'nord', components, mobile: true })
+    const css = compose({ theme: 'nord', components, mobile: false })
+    style.textContent = mobileCss
+    const rules = [...document.styleSheets[0].cssRules].map((r) => r.selectorText || r.cssText).join('\n')
+    return {
+      bytes,
+      hasForm: /\.sure-form/.test(css),
+      hasTable: /\.sure-table/.test(css),
+      hasToast: /\.toast/.test(css),
+      hasMobile: /max-width: 640px/.test(mobileCss),
+      formBg: cs0('.sure-form input', 'background-color'),
+      // width: assert the RULE exists (computed width is the used px value,
+      // e.g. 720px — the assertion must not expect the literal '100%')
+      crudFullWidth: /\.sure-crud input[^{]*\{[^}]*width:\s*100%/m.test(css),
+      crudInputFillsContainer: (() => {
+        const inp = document.querySelector('.sure-crud input')
+        const box = document.querySelector('.sure-crud')
+        return !!inp && !!box && Math.abs(inp.getBoundingClientRect().width - box.getBoundingClientRect().width) < 2
+      })(),
+    }
+    function cs0(sel, prop) {
+      const el = document.querySelector(sel)
+      return el ? getComputedStyle(el).getPropertyValue(prop) : 'missing'
+    }
+  },
+}
+document.documentElement.classList.add('qa-clean')
+</script>
+
+<h1 class="qa-h" id="h-base">base + page</h1>
+<p class="qa-sub">body text on theme background · <a href="#h-base">a link</a> · <code>inline code</code></p>
+<div class="qa-grid">
+  <div class="pp-card qa-col" style="max-width:20rem">
+    <span class="pp-badge">beta</span><span class="pp-badge pp-badge--ok">ok</span><span class="pp-badge pp-badge--warn">warn</span>
+    <button class="pp-btn" type="button">pp-btn</button>
+    <button class="pp-btn pp-btn--ghost" type="button">ghost</button>
+  </div>
+  <pre class="qa-wide"><code>const x = compose({ theme: 'nord' })</code></pre>
+</div>
+
+<h2 class="qa-h" id="h-auth">auth</h2>
+<form class="sure-auth__form qa-wide">
+  <div class="sure-auth__header"><h1>Sign in</h1><p>Continue to the console</p></div>
+  <div class="sure-auth__alert sure-auth__alert--error">That did not work.</div>
+  <div class="sure-auth__alert sure-auth__alert--success">Welcome back.</div>
+  <div class="sure-auth__alert sure-auth__alert--info">New here? Create an account.</div>
+  <div class="sure-auth__field">
+    <label class="sure-auth__label" for="qa-a1">Email</label>
+    <input class="sure-auth__input" id="qa-a1" type="email" value="you@example.com">
+    <div class="sure-auth__error">Enter a valid email.</div>
+    <div class="sure-auth__help">We never share it.</div>
+  </div>
+  <div class="sure-auth__field">
+    <label class="sure-auth__label" for="qa-a2">Password</label>
+    <input class="sure-auth__input sure-auth__input--error" id="qa-a2" type="password" value="hunter2">
+  </div>
+  <button class="sure-auth__btn" type="button">Sign in</button>
+  <button class="sure-auth__btn sure-auth__btn--social" type="button">Continue with SSO</button>
+  <button class="sure-auth__btn" type="button" disabled>Disabled</button>
+  <div class="sure-auth__divider">or</div>
+  <div class="sure-auth__footer">No account? <a href="#h-auth">Sign up</a></div>
+</form>
+
+<h2 class="qa-h" id="h-buttons">buttons</h2>
+<div class="qa-grid">
+  <button class="btn-primary" type="button">Primary</button>
+  <button class="btn-secondary" type="button">Secondary</button>
+  <button class="btn-icon" type="button" title="icon">+</button>
+  <button class="btn-primary" type="button" disabled>Disabled</button>
+  <div class="sure-row-actions">
+    <button class="btn-secondary" type="button">Edit</button>
+    <button class="btn-secondary" type="button">Delete</button>
+  </div>
+  <div class="sure-nav">
+    <button class="sure-nav__item sure-nav__item--active" type="button">Active</button>
+    <button class="sure-nav__item" type="button">Idle</button>
+  </div>
+</div>
+
+<h2 class="qa-h" id="h-form">form</h2>
+<form class="sure-form">
+  <div class="sure-form__title">Profile</div>
+  <div class="sure-form__field">
+    <label class="sure-form__label" for="qa-f1">Name</label>
+    <input class="sure-form__input" id="qa-f1" value="Ada">
+    <div class="sure-form__error">Name is required.</div>
+    <div class="sure-form__help">Shown on your profile.</div>
+  </div>
+  <div class="sure-form__field">
+    <label class="sure-form__label" for="qa-f2">Invalid field</label>
+    <input id="qa-f2" aria-invalid="true" value="???">
+  </div>
+  <div class="sure-form__actions">
+    <button class="btn-primary" type="button">Save</button>
+    <button class="btn-secondary" type="button">Cancel</button>
+  </div>
+</form>
+
+<h2 class="qa-h" id="h-search">search</h2>
+<div class="sure-search">
+  <label class="sure-search__label" for="qa-s1">Search</label>
+  <input class="sure-search__input" id="qa-s1" placeholder="Search…">
+  <div class="sure-search__error">No results.</div>
+  <div class="sure-search__help">Try fewer words.</div>
+</div>
+
+<h2 class="qa-h" id="h-crud">crud</h2>
+<div class="sure-crud">
+  <div class="sure-crud__field">
+    <label class="sure-crud__label" for="qa-c1">Title</label>
+    <input id="qa-c1" value="Hello">
+    <div class="sure-crud__error">Title taken.</div>
+    <div class="sure-crud__help">Max 80 chars.</div>
+  </div>
+</div>
+
+<h2 class="qa-h" id="h-table">table</h2>
+<table class="sure-table qa-wide">
+  <thead><tr><th class="sure-table__header">Name</th><th class="sure-table__header">State</th></tr></thead>
+  <tbody>
+    <tr><td class="sure-table__cell">alpha</td><td class="sure-table__cell">live</td></tr>
+    <tr class="is-selected"><td class="sure-table__cell">beta</td><td class="sure-table__cell">draft</td></tr>
+    <tr><td class="sure-table__cell">gamma</td><td class="sure-table__cell">live</td></tr>
+  </tbody>
+</table>
+<div class="sure-table__error">Load failed.</div>
+<div class="sure-table__help">3 rows.</div>
+
+<h2 class="qa-h" id="h-modal">modal form</h2>
+<form class="sure-modal__form">
+  <div class="sure-modal__field">
+    <label class="sure-modal__label" for="qa-m1">Invite</label>
+    <input id="qa-m1" value="teammate@example.com">
+    <div class="sure-modal__error">Already a member.</div>
+    <div class="sure-modal__help">One seat per invite.</div>
+  </div>
+</form>
+
+<h2 class="qa-h" id="h-menu">menu + sessions</h2>
+<div class="qa-grid">
+  <nav class="sure-menu qa-col">
+    <a class="sure-menu__item active" href="#h-menu">Overview</a>
+    <a class="sure-menu__item" href="#h-menu">Usage</a>
+    <div class="sure-menu__divider"></div>
+    <a class="sure-menu__item" href="#h-menu">Settings</a>
+  </nav>
+  <div class="sure-session-list qa-col">
+    <div class="sure-session-item active">
+      <div class="sure-session-title">Morning pass</div>
+      <div class="sure-session-actions"><button type="button">open</button><button type="button">del</button></div>
+    </div>
+    <div class="sure-session-item">
+      <div class="sure-session-title">Nightly run</div>
+      <div class="sure-session-actions"><button type="button">open</button><button type="button">del</button></div>
+    </div>
+    <div class="message"><div class="msg-body">A message row</div><div class="msg-actions"><button type="button">copy</button></div></div>
+  </div>
+</div>
+
+<h2 class="qa-h" id="h-regions">regions</h2>
+<div class="sure-toolbar"><h2>Records</h2><button class="btn-primary" type="button">New</button></div>
+<div class="sure-filters">
+  <input placeholder="filter">
+  <select><option>all</option></select>
+</div>
+<div class="sure-note">A quiet note.</div>
+<div class="sure-panel qa-wide"><p>Panel content.</p></div>
+<div class="sure-help">
+  <div class="sure-help__title">Help</div>
+  <div class="sure-help__item">First tip</div>
+  <div class="sure-help__item">Second tip</div>
+  <details><summary class="sure-help__summary">More</summary>
+    <div class="sure-help__example"><code>sure compose</code></div>
+  </details>
+</div>
+
+<h2 class="qa-h" id="h-markdown">markdown</h2>
+<div class="sure-markdown qa-wide">
+  <h2>Heading</h2>
+  <p>Paragraph with <code>code</code> and a <a href="#h-markdown">link</a>.</p>
+  <pre><code>const x = 1</code></pre>
+  <blockquote>Quoted.</blockquote>
+  <ul><li>one</li><li>two</li></ul>
+  <table><thead><tr><th>k</th></tr></thead><tbody><tr><td>v</td></tr></tbody></table>
+  <hr>
+  <img alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Crect width='40' height='20' fill='%23888'/%3E%3C/svg%3E">
+</div>
+
+<h2 class="qa-h" id="h-composites">composites</h2>
+<div class="qa-grid">
+  <div class="sure-toggle-group">
+    <label class="sure-toggle"><input type="checkbox" checked> toggle a</label>
+    <label class="sure-toggle"><input type="checkbox"> toggle b</label>
+  </div>
+  <span class="visually-hidden">hidden from sight</span>
+</div>
+
+<h2 class="qa-h" id="h-status">status bar</h2>
+<div class="status-bar">Idle — base status bar</div>
+<div class="status-bar status-bar--error" style="position:static; margin-top:.5rem">Error variant</div>
+<div class="status-bar status-bar--success" style="position:static; margin-top:.5rem">Success variant</div>
+<div class="status-bar status-bar--info" style="position:static; margin-top:.5rem">Info variant</div>
+
+<h2 class="qa-h" id="h-toast">toasts</h2>
+<div class="toast">Base toast</div>
+<div class="toast toast--error">Error toast</div>
+<div class="toast toast--success">Success toast</div>
+<div class="toast toast--info">Info toast</div>
+
+<h2 class="qa-h" id="h-sidepanel">side panel</h2>
+<p class="qa-sub">rendered fixed at viewport right (chrome pads the page around it)</p>
+
+<aside class="side-panel">
+  <div class="side-panel__title">Tools</div>
+  <div class="side-panel__item">Item one</div>
+  <div class="side-panel__item">Item two</div>
+</aside>
+
+<h2 class="qa-h" id="h-dialog">dialog</h2>
+<div class="sure-dialog-overlay">
+  <div class="sure-dialog">
+    <div class="sure-dialog__header"><div class="sure-dialog__title">Confirm</div><button class="sure-dialog__close" type="button">×</button></div>
+    <div class="sure-dialog__body">Delete this record?</div>
+    <div class="sure-dialog__resize sure-dialog__resize--se"></div>
+  </div>
+</div>
+
+</body>
+</html>
