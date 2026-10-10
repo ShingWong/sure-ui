@@ -1,0 +1,1615 @@
+{
+  "contrasts": [
+    {
+      "key": "nord/body-text",
+      "ratio": 10.84,
+      "verdict": "pass",
+      "baseline": 10.84
+    },
+    {
+      "key": "nord/label",
+      "ratio": 10.84,
+      "verdict": "pass",
+      "baseline": 10.84
+    },
+    {
+      "key": "nord/form-error",
+      "ratio": 3.55,
+      "verdict": "flagged (pre-existing 3.55)",
+      "baseline": 3.55
+    },
+    {
+      "key": "nord/form-help",
+      "ratio": 6.4,
+      "verdict": "pass",
+      "baseline": 6.4
+    },
+    {
+      "key": "nord/input-text",
+      "ratio": 12.49,
+      "verdict": "pass",
+      "baseline": 12.49
+    },
+    {
+      "key": "nord/search-input-text",
+      "ratio": 12.49,
+      "verdict": "pass",
+      "baseline": 21
+    },
+    {
+      "key": "nord/crud-label",
+      "ratio": 10.84,
+      "verdict": "pass",
+      "baseline": 10.84
+    },
+    {
+      "key": "nord/table-header",
+      "ratio": 10.26,
+      "verdict": "pass",
+      "baseline": 10.26
+    },
+    {
+      "key": "nord/table-cell",
+      "ratio": 10.84,
+      "verdict": "pass",
+      "baseline": 10.84
+    },
+    {
+      "key": "nord/primary-btn",
+      "ratio": 4.64,
+      "verdict": "pass",
+      "baseline": 4.64
+    },
+    {
+      "key": "nord/secondary-btn",
+      "ratio": 10.84,
+      "verdict": "pass",
+      "baseline": 12.49
+    },
+    {
+      "key": "nord/toast-error",
+      "ratio": 4.09,
+      "verdict": "flagged (known 4.09)",
+      "baseline": 3.55
+    },
+    {
+      "key": "nord/toast-success",
+      "ratio": 6.13,
+      "verdict": "pass",
+      "baseline": 1.77
+    },
+    {
+      "key": "nord/toast-info",
+      "ratio": 6.35,
+      "verdict": "pass",
+      "baseline": 10.84
+    },
+    {
+      "key": "nord/status-base",
+      "ratio": 10.84,
+      "verdict": "pass",
+      "baseline": 10.84
+    },
+    {
+      "key": "nord/status-error",
+      "ratio": 4.09,
+      "verdict": "flagged (pre-existing 3.55)",
+      "baseline": 3.55
+    },
+    {
+      "key": "nord/status-success",
+      "ratio": 6.13,
+      "verdict": "pass",
+      "baseline": 1.77
+    },
+    {
+      "key": "nord/status-info",
+      "ratio": 6.35,
+      "verdict": "pass",
+      "baseline": 10.84
+    },
+    {
+      "key": "nord/sidepanel-title",
+      "ratio": 12.49,
+      "verdict": "pass",
+      "baseline": 12.49
+    },
+    {
+      "key": "nord/sidepanel-item",
+      "ratio": 4.09,
+      "verdict": "flagged (known 4.09)",
+      "baseline": 4.09
+    },
+    {
+      "key": "nord/auth-btn",
+      "ratio": 6.35,
+      "verdict": "pass",
+      "baseline": 6.35
+    },
+    {
+      "key": "nord/auth-alert-error",
+      "ratio": 5.55,
+      "verdict": "pass",
+      "baseline": 5.55
+    },
+    {
+      "key": "nord/menu-active",
+      "ratio": 5.51,
+      "verdict": "pass",
+      "baseline": 5.51
+    },
+    {
+      "key": "nord/session-active",
+      "ratio": 6.35,
+      "verdict": "pass",
+      "baseline": 6.35
+    },
+    {
+      "key": "nord/session-title",
+      "ratio": 6.35,
+      "verdict": "pass",
+      "baseline": 6.35
+    },
+    {
+      "key": "nord/markdown-code",
+      "ratio": 10.26,
+      "verdict": "pass",
+      "baseline": 10.26
+    },
+    {
+      "key": "nord/link",
+      "ratio": 8.15,
+      "verdict": "pass",
+      "baseline": 8.15
+    },
+    {
+      "key": "forest/body-text",
+      "ratio": 12.68,
+      "verdict": "pass",
+      "baseline": 12.68
+    },
+    {
+      "key": "forest/label",
+      "ratio": 12.68,
+      "verdict": "pass",
+      "baseline": 12.68
+    },
+    {
+      "key": "forest/form-error",
+      "ratio": 4.97,
+      "verdict": "pass",
+      "baseline": 4.97
+    },
+    {
+      "key": "forest/form-help",
+      "ratio": 5.83,
+      "verdict": "pass",
+      "baseline": 5.83
+    },
+    {
+      "key": "forest/input-text",
+      "ratio": 14.3,
+      "verdict": "pass",
+      "baseline": 14.3
+    },
+    {
+      "key": "forest/search-input-text",
+      "ratio": 14.3,
+      "verdict": "pass",
+      "baseline": 21
+    },
+    {
+      "key": "forest/crud-label",
+      "ratio": 12.68,
+      "verdict": "pass",
+      "baseline": 12.68
+    },
+    {
+      "key": "forest/table-header",
+      "ratio": 11.18,
+      "verdict": "pass",
+      "baseline": 11.18
+    },
+    {
+      "key": "forest/table-cell",
+      "ratio": 12.68,
+      "verdict": "pass",
+      "baseline": 12.68
+    },
+    {
+      "key": "forest/primary-btn",
+      "ratio": 6.24,
+      "verdict": "pass",
+      "baseline": 6.24
+    },
+    {
+      "key": "forest/secondary-btn",
+      "ratio": 12.68,
+      "verdict": "pass",
+      "baseline": 14.3
+    },
+    {
+      "key": "forest/toast-error",
+      "ratio": 5.6,
+      "verdict": "pass",
+      "baseline": 4.97
+    },
+    {
+      "key": "forest/toast-success",
+      "ratio": 3.93,
+      "verdict": "flagged (known 3.93)",
+      "baseline": 3.48
+    },
+    {
+      "key": "forest/toast-info",
+      "ratio": 6.24,
+      "verdict": "pass",
+      "baseline": 12.68
+    },
+    {
+      "key": "forest/status-base",
+      "ratio": 12.68,
+      "verdict": "pass",
+      "baseline": 12.68
+    },
+    {
+      "key": "forest/status-error",
+      "ratio": 5.6,
+      "verdict": "pass",
+      "baseline": 4.97
+    },
+    {
+      "key": "forest/status-success",
+      "ratio": 3.93,
+      "verdict": "flagged (pre-existing 3.48)",
+      "baseline": 3.48
+    },
+    {
+      "key": "forest/status-info",
+      "ratio": 6.24,
+      "verdict": "pass",
+      "baseline": 12.68
+    },
+    {
+      "key": "forest/sidepanel-title",
+      "ratio": 14.3,
+      "verdict": "pass",
+      "baseline": 14.3
+    },
+    {
+      "key": "forest/sidepanel-item",
+      "ratio": 5.6,
+      "verdict": "pass",
+      "baseline": 5.6
+    },
+    {
+      "key": "forest/auth-btn",
+      "ratio": 6.24,
+      "verdict": "pass",
+      "baseline": 6.24
+    },
+    {
+      "key": "forest/auth-alert-error",
+      "ratio": 7.04,
+      "verdict": "pass",
+      "baseline": 7.04
+    },
+    {
+      "key": "forest/menu-active",
+      "ratio": 5.53,
+      "verdict": "pass",
+      "baseline": 5.53
+    },
+    {
+      "key": "forest/session-active",
+      "ratio": 6.24,
+      "verdict": "pass",
+      "baseline": 6.24
+    },
+    {
+      "key": "forest/session-title",
+      "ratio": 6.24,
+      "verdict": "pass",
+      "baseline": 6.24
+    },
+    {
+      "key": "forest/markdown-code",
+      "ratio": 11.18,
+      "verdict": "pass",
+      "baseline": 11.18
+    },
+    {
+      "key": "forest/link",
+      "ratio": 8.33,
+      "verdict": "pass",
+      "baseline": 8.33
+    },
+    {
+      "key": "dracula/body-text",
+      "ratio": 13.36,
+      "verdict": "pass",
+      "baseline": 13.36
+    },
+    {
+      "key": "dracula/label",
+      "ratio": 13.36,
+      "verdict": "pass",
+      "baseline": 13.36
+    },
+    {
+      "key": "dracula/form-error",
+      "ratio": 4.53,
+      "verdict": "pass",
+      "baseline": 4.53
+    },
+    {
+      "key": "dracula/form-help",
+      "ratio": 5.5,
+      "verdict": "pass",
+      "baseline": 5.5
+    },
+    {
+      "key": "dracula/input-text",
+      "ratio": 8.59,
+      "verdict": "pass",
+      "baseline": 8.59
+    },
+    {
+      "key": "dracula/search-input-text",
+      "ratio": 8.59,
+      "verdict": "pass",
+      "baseline": 8.59
+    },
+    {
+      "key": "dracula/crud-label",
+      "ratio": 13.36,
+      "verdict": "pass",
+      "baseline": 13.36
+    },
+    {
+      "key": "dracula/table-header",
+      "ratio": 8.59,
+      "verdict": "pass",
+      "baseline": 8.59
+    },
+    {
+      "key": "dracula/table-cell",
+      "ratio": 13.36,
+      "verdict": "pass",
+      "baseline": 13.36
+    },
+    {
+      "key": "dracula/primary-btn",
+      "ratio": 5.9,
+      "verdict": "pass",
+      "baseline": 5.9
+    },
+    {
+      "key": "dracula/secondary-btn",
+      "ratio": 13.36,
+      "verdict": "pass",
+      "baseline": 13.36
+    },
+    {
+      "key": "dracula/toast-error",
+      "ratio": 4.53,
+      "verdict": "pass",
+      "baseline": 8.59
+    },
+    {
+      "key": "dracula/toast-success",
+      "ratio": 10.38,
+      "verdict": "pass",
+      "baseline": 8.59
+    },
+    {
+      "key": "dracula/toast-info",
+      "ratio": 5.9,
+      "verdict": "pass",
+      "baseline": 8.59
+    },
+    {
+      "key": "dracula/status-base",
+      "ratio": 8.59,
+      "verdict": "pass",
+      "baseline": 8.59
+    },
+    {
+      "key": "dracula/status-error",
+      "ratio": 4.53,
+      "verdict": "pass",
+      "baseline": 8.59
+    },
+    {
+      "key": "dracula/status-success",
+      "ratio": 10.38,
+      "verdict": "pass",
+      "baseline": 8.59
+    },
+    {
+      "key": "dracula/status-info",
+      "ratio": 5.9,
+      "verdict": "pass",
+      "baseline": 8.59
+    },
+    {
+      "key": "dracula/sidepanel-title",
+      "ratio": 13.36,
+      "verdict": "pass",
+      "baseline": 13.36
+    },
+    {
+      "key": "dracula/sidepanel-item",
+      "ratio": 4.53,
+      "verdict": "pass",
+      "baseline": 4.53
+    },
+    {
+      "key": "dracula/auth-btn",
+      "ratio": 5.9,
+      "verdict": "pass",
+      "baseline": 2.41
+    },
+    {
+      "key": "dracula/auth-alert-error",
+      "ratio": 5.51,
+      "verdict": "pass",
+      "baseline": 5.51
+    },
+    {
+      "key": "dracula/menu-active",
+      "ratio": 5.9,
+      "verdict": "pass",
+      "baseline": 5.9
+    },
+    {
+      "key": "dracula/session-active",
+      "ratio": 2.41,
+      "verdict": "flagged (pre-existing 2.41)",
+      "baseline": 2.41
+    },
+    {
+      "key": "dracula/session-title",
+      "ratio": 2.41,
+      "verdict": "flagged (pre-existing 2.41)",
+      "baseline": 2.41
+    },
+    {
+      "key": "dracula/markdown-code",
+      "ratio": 8.59,
+      "verdict": "pass",
+      "baseline": 8.59
+    },
+    {
+      "key": "dracula/link",
+      "ratio": 1.52,
+      "verdict": "flagged (pre-existing 1.52)",
+      "baseline": 1.52
+    },
+    {
+      "key": "dark/body-text",
+      "ratio": 13.92,
+      "verdict": "pass",
+      "baseline": 13.92
+    },
+    {
+      "key": "dark/label",
+      "ratio": 13.92,
+      "verdict": "pass",
+      "baseline": 13.92
+    },
+    {
+      "key": "dark/form-error",
+      "ratio": 6.15,
+      "verdict": "pass",
+      "baseline": 6.15
+    },
+    {
+      "key": "dark/form-help",
+      "ratio": 5.51,
+      "verdict": "pass",
+      "baseline": 5.51
+    },
+    {
+      "key": "dark/input-text",
+      "ratio": 13.92,
+      "verdict": "pass",
+      "baseline": 13.92
+    },
+    {
+      "key": "dark/search-input-text",
+      "ratio": 13.92,
+      "verdict": "pass",
+      "baseline": 13.92
+    },
+    {
+      "key": "dark/crud-label",
+      "ratio": 13.92,
+      "verdict": "pass",
+      "baseline": 13.92
+    },
+    {
+      "key": "dark/table-header",
+      "ratio": 17.06,
+      "verdict": "pass",
+      "baseline": 5.51
+    },
+    {
+      "key": "dark/table-cell",
+      "ratio": 13.92,
+      "verdict": "pass",
+      "baseline": 13.92
+    },
+    {
+      "key": "dark/primary-btn",
+      "ratio": 13.69,
+      "verdict": "pass",
+      "baseline": 13.69
+    },
+    {
+      "key": "dark/secondary-btn",
+      "ratio": 13.92,
+      "verdict": "pass",
+      "baseline": 13.92
+    },
+    {
+      "key": "dark/toast-error",
+      "ratio": 6.15,
+      "verdict": "pass",
+      "baseline": 2.78
+    },
+    {
+      "key": "dark/toast-success",
+      "ratio": 8.5,
+      "verdict": "pass",
+      "baseline": 2.01
+    },
+    {
+      "key": "dark/toast-info",
+      "ratio": 13.69,
+      "verdict": "pass",
+      "baseline": 13.69
+    },
+    {
+      "key": "dark/status-base",
+      "ratio": 12.97,
+      "verdict": "pass",
+      "baseline": 13.92
+    },
+    {
+      "key": "dark/status-error",
+      "ratio": 6.15,
+      "verdict": "pass",
+      "baseline": 2.78
+    },
+    {
+      "key": "dark/status-success",
+      "ratio": 8.5,
+      "verdict": "pass",
+      "baseline": 2.01
+    },
+    {
+      "key": "dark/status-info",
+      "ratio": 13.69,
+      "verdict": "pass",
+      "baseline": 13.69
+    },
+    {
+      "key": "dark/sidepanel-title",
+      "ratio": 12.97,
+      "verdict": "pass",
+      "baseline": 12.97
+    },
+    {
+      "key": "dark/sidepanel-item",
+      "ratio": 5.73,
+      "verdict": "pass",
+      "baseline": 12.97
+    },
+    {
+      "key": "dark/auth-btn",
+      "ratio": 13.69,
+      "verdict": "pass",
+      "baseline": 13.69
+    },
+    {
+      "key": "dark/auth-alert-error",
+      "ratio": 5.37,
+      "verdict": "pass",
+      "baseline": 5.37
+    },
+    {
+      "key": "dark/menu-active",
+      "ratio": 13.69,
+      "verdict": "pass",
+      "baseline": 13.69
+    },
+    {
+      "key": "dark/session-active",
+      "ratio": 1.25,
+      "verdict": "flagged (pre-existing 1.25)",
+      "baseline": 1.25
+    },
+    {
+      "key": "dark/session-title",
+      "ratio": 1.25,
+      "verdict": "flagged (pre-existing 1.25)",
+      "baseline": 1.25
+    },
+    {
+      "key": "dark/markdown-code",
+      "ratio": 11.08,
+      "verdict": "pass",
+      "baseline": 11.08
+    },
+    {
+      "key": "dark/link",
+      "ratio": 1.82,
+      "verdict": "flagged (pre-existing 1.82)",
+      "baseline": 1.82
+    },
+    {
+      "key": "positronic/body-text",
+      "ratio": 15.94,
+      "verdict": "pass",
+      "baseline": 15.94
+    },
+    {
+      "key": "positronic/label",
+      "ratio": 15.94,
+      "verdict": "pass",
+      "baseline": 15.94
+    },
+    {
+      "key": "positronic/form-error",
+      "ratio": 6.91,
+      "verdict": "pass",
+      "baseline": 6.91
+    },
+    {
+      "key": "positronic/form-help",
+      "ratio": 7.56,
+      "verdict": "pass",
+      "baseline": 7.56
+    },
+    {
+      "key": "positronic/input-text",
+      "ratio": 15.94,
+      "verdict": "pass",
+      "baseline": 15.94
+    },
+    {
+      "key": "positronic/search-input-text",
+      "ratio": 15.94,
+      "verdict": "pass",
+      "baseline": 15.94
+    },
+    {
+      "key": "positronic/crud-label",
+      "ratio": 15.94,
+      "verdict": "pass",
+      "baseline": 15.94
+    },
+    {
+      "key": "positronic/table-header",
+      "ratio": 19.17,
+      "verdict": "pass",
+      "baseline": 7.56
+    },
+    {
+      "key": "positronic/table-cell",
+      "ratio": 15.94,
+      "verdict": "pass",
+      "baseline": 15.94
+    },
+    {
+      "key": "positronic/primary-btn",
+      "ratio": 7.35,
+      "verdict": "pass",
+      "baseline": 7.35
+    },
+    {
+      "key": "positronic/secondary-btn",
+      "ratio": 15.94,
+      "verdict": "pass",
+      "baseline": 15.94
+    },
+    {
+      "key": "positronic/toast-error",
+      "ratio": 6.91,
+      "verdict": "pass",
+      "baseline": 2.78
+    },
+    {
+      "key": "positronic/toast-success",
+      "ratio": 9.55,
+      "verdict": "pass",
+      "baseline": 2.01
+    },
+    {
+      "key": "positronic/toast-info",
+      "ratio": 7.35,
+      "verdict": "pass",
+      "baseline": 7.35
+    },
+    {
+      "key": "positronic/status-base",
+      "ratio": 14.9,
+      "verdict": "pass",
+      "baseline": 15.94
+    },
+    {
+      "key": "positronic/status-error",
+      "ratio": 6.91,
+      "verdict": "pass",
+      "baseline": 2.78
+    },
+    {
+      "key": "positronic/status-success",
+      "ratio": 9.55,
+      "verdict": "pass",
+      "baseline": 2.01
+    },
+    {
+      "key": "positronic/status-info",
+      "ratio": 7.35,
+      "verdict": "pass",
+      "baseline": 7.35
+    },
+    {
+      "key": "positronic/sidepanel-title",
+      "ratio": 14.9,
+      "verdict": "pass",
+      "baseline": 14.9
+    },
+    {
+      "key": "positronic/sidepanel-item",
+      "ratio": 6.46,
+      "verdict": "pass",
+      "baseline": 14.9
+    },
+    {
+      "key": "positronic/auth-btn",
+      "ratio": 7.35,
+      "verdict": "pass",
+      "baseline": 7.35
+    },
+    {
+      "key": "positronic/auth-alert-error",
+      "ratio": 6.16,
+      "verdict": "pass",
+      "baseline": 6.16
+    },
+    {
+      "key": "positronic/menu-active",
+      "ratio": 7.35,
+      "verdict": "pass",
+      "baseline": 7.35
+    },
+    {
+      "key": "positronic/session-active",
+      "ratio": 2.61,
+      "verdict": "flagged (pre-existing 2.61)",
+      "baseline": 2.61
+    },
+    {
+      "key": "positronic/session-title",
+      "ratio": 2.61,
+      "verdict": "flagged (pre-existing 2.61)",
+      "baseline": 2.61
+    },
+    {
+      "key": "positronic/markdown-code",
+      "ratio": 13.31,
+      "verdict": "pass",
+      "baseline": 13.31
+    },
+    {
+      "key": "positronic/link",
+      "ratio": 7.35,
+      "verdict": "pass",
+      "baseline": 7.35
+    },
+    {
+      "key": "vision-system/body-text",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-system/label",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-system/form-error",
+      "ratio": 6.54,
+      "verdict": "pass",
+      "baseline": 6.54
+    },
+    {
+      "key": "vision-system/form-help",
+      "ratio": 9.54,
+      "verdict": "pass",
+      "baseline": 9.54
+    },
+    {
+      "key": "vision-system/input-text",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-system/search-input-text",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 21
+    },
+    {
+      "key": "vision-system/crud-label",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-system/table-header",
+      "ratio": 15.45,
+      "verdict": "pass",
+      "baseline": 15.45
+    },
+    {
+      "key": "vision-system/table-cell",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-system/primary-btn",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 7.63
+    },
+    {
+      "key": "vision-system/secondary-btn",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-system/toast-error",
+      "ratio": 6.54,
+      "verdict": "pass",
+      "baseline": 6.54
+    },
+    {
+      "key": "vision-system/toast-success",
+      "ratio": 7.02,
+      "verdict": "pass",
+      "baseline": 7.02
+    },
+    {
+      "key": "vision-system/toast-info",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-system/status-base",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-system/status-error",
+      "ratio": 6.54,
+      "verdict": "pass",
+      "baseline": 6.54
+    },
+    {
+      "key": "vision-system/status-success",
+      "ratio": 7.02,
+      "verdict": "pass",
+      "baseline": 7.02
+    },
+    {
+      "key": "vision-system/status-info",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-system/sidepanel-title",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-system/sidepanel-item",
+      "ratio": 6.54,
+      "verdict": "pass",
+      "baseline": 6.54
+    },
+    {
+      "key": "vision-system/auth-btn",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 7.63
+    },
+    {
+      "key": "vision-system/auth-alert-error",
+      "ratio": 9.14,
+      "verdict": "pass",
+      "baseline": 9.14
+    },
+    {
+      "key": "vision-system/menu-active",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 7.63
+    },
+    {
+      "key": "vision-system/session-active",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 7.63
+    },
+    {
+      "key": "vision-system/session-title",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 7.63
+    },
+    {
+      "key": "vision-system/markdown-code",
+      "ratio": 15.45,
+      "verdict": "pass",
+      "baseline": 15.45
+    },
+    {
+      "key": "vision-system/link",
+      "ratio": 9.4,
+      "verdict": "pass",
+      "baseline": 9.4
+    },
+    {
+      "key": "vision-atkinson/body-text",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-atkinson/label",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-atkinson/form-error",
+      "ratio": 6.54,
+      "verdict": "pass",
+      "baseline": 6.54
+    },
+    {
+      "key": "vision-atkinson/form-help",
+      "ratio": 9.54,
+      "verdict": "pass",
+      "baseline": 9.54
+    },
+    {
+      "key": "vision-atkinson/input-text",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-atkinson/search-input-text",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 21
+    },
+    {
+      "key": "vision-atkinson/crud-label",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-atkinson/table-header",
+      "ratio": 15.45,
+      "verdict": "pass",
+      "baseline": 15.45
+    },
+    {
+      "key": "vision-atkinson/table-cell",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-atkinson/primary-btn",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 7.63
+    },
+    {
+      "key": "vision-atkinson/secondary-btn",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-atkinson/toast-error",
+      "ratio": 6.54,
+      "verdict": "pass",
+      "baseline": 6.54
+    },
+    {
+      "key": "vision-atkinson/toast-success",
+      "ratio": 7.02,
+      "verdict": "pass",
+      "baseline": 7.02
+    },
+    {
+      "key": "vision-atkinson/toast-info",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-atkinson/status-base",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-atkinson/status-error",
+      "ratio": 6.54,
+      "verdict": "pass",
+      "baseline": 6.54
+    },
+    {
+      "key": "vision-atkinson/status-success",
+      "ratio": 7.02,
+      "verdict": "pass",
+      "baseline": 7.02
+    },
+    {
+      "key": "vision-atkinson/status-info",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-atkinson/sidepanel-title",
+      "ratio": 18.5,
+      "verdict": "pass",
+      "baseline": 18.5
+    },
+    {
+      "key": "vision-atkinson/sidepanel-item",
+      "ratio": 6.54,
+      "verdict": "pass",
+      "baseline": 6.54
+    },
+    {
+      "key": "vision-atkinson/auth-btn",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 7.63
+    },
+    {
+      "key": "vision-atkinson/auth-alert-error",
+      "ratio": 9.14,
+      "verdict": "pass",
+      "baseline": 9.14
+    },
+    {
+      "key": "vision-atkinson/menu-active",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 7.63
+    },
+    {
+      "key": "vision-atkinson/session-active",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 7.63
+    },
+    {
+      "key": "vision-atkinson/session-title",
+      "ratio": 7.63,
+      "verdict": "pass",
+      "baseline": 7.63
+    },
+    {
+      "key": "vision-atkinson/markdown-code",
+      "ratio": 15.45,
+      "verdict": "pass",
+      "baseline": 15.45
+    },
+    {
+      "key": "vision-atkinson/link",
+      "ratio": 9.4,
+      "verdict": "pass",
+      "baseline": 9.4
+    }
+  ],
+  "structural": {
+    "failures": [],
+    "per_theme": {
+      "nord": {
+        "statusFixed": "fixed",
+        "toastFixed": "fixed",
+        "toastAnim": "slideIn",
+        "toastAnimDur": "0s",
+        "sidepanelWidth": "360px",
+        "sidepanelZ": "1000",
+        "searchRadius": "20px",
+        "searchMax": "360px",
+        "crudInputWidth": "720px",
+        "crudFills": true,
+        "crudInputBg": "rgb(255, 255, 255)",
+        "formMax": "480px",
+        "tableHeaderBg": "rgb(229, 233, 240)",
+        "mobileLayer": true,
+        "ppBtn": true,
+        "infoVariant": true,
+        "focusShadow": "color(srgb 0.505882 0.631373 0.756863 / 0.2) 0px 0px 0px 3px",
+        "focusBorder": "rgb(129, 161, 193)",
+        "cssBytes": 21870,
+        "tokenGaps": [],
+        "fallbackGaps": []
+      },
+      "forest": {
+        "statusFixed": "fixed",
+        "toastFixed": "fixed",
+        "toastAnim": "slideIn",
+        "toastAnimDur": "0s",
+        "sidepanelWidth": "360px",
+        "sidepanelZ": "1000",
+        "searchRadius": "20px",
+        "searchMax": "360px",
+        "crudInputWidth": "720px",
+        "crudFills": true,
+        "crudInputBg": "rgb(255, 255, 255)",
+        "formMax": "480px",
+        "tableHeaderBg": "rgb(232, 227, 216)",
+        "mobileLayer": true,
+        "ppBtn": true,
+        "infoVariant": true,
+        "focusShadow": "color(srgb 0.356863 0.54902 0.352941 / 0.2) 0px 0px 0px 3px",
+        "focusBorder": "rgb(91, 140, 90)",
+        "cssBytes": 22031,
+        "tokenGaps": [],
+        "fallbackGaps": []
+      },
+      "dracula": {
+        "statusFixed": "fixed",
+        "toastFixed": "fixed",
+        "toastAnim": "slideIn",
+        "toastAnimDur": "0s",
+        "sidepanelWidth": "360px",
+        "sidepanelZ": "1000",
+        "searchRadius": "20px",
+        "searchMax": "360px",
+        "crudInputWidth": "720px",
+        "crudFills": true,
+        "crudInputBg": "rgb(68, 71, 90)",
+        "formMax": "480px",
+        "tableHeaderBg": "rgb(68, 71, 90)",
+        "mobileLayer": true,
+        "ppBtn": true,
+        "infoVariant": true,
+        "focusShadow": "color(srgb 0.741176 0.576471 0.976471 / 0.2) 0px 0px 0px 3px",
+        "focusBorder": "rgb(189, 147, 249)",
+        "cssBytes": 22338,
+        "tokenGaps": [],
+        "fallbackGaps": []
+      },
+      "dark": {
+        "statusFixed": "fixed",
+        "toastFixed": "fixed",
+        "toastAnim": "slideIn",
+        "toastAnimDur": "0s",
+        "sidepanelWidth": "360px",
+        "sidepanelZ": "1000",
+        "searchRadius": "20px",
+        "searchMax": "360px",
+        "crudInputWidth": "720px",
+        "crudFills": true,
+        "crudInputBg": "rgb(26, 26, 46)",
+        "formMax": "480px",
+        "tableHeaderBg": "rgba(0, 0, 0, 0)",
+        "mobileLayer": true,
+        "ppBtn": true,
+        "infoVariant": true,
+        "focusShadow": "color(srgb 0.392157 1 0.854902 / 0.2) 0px 0px 0px 3px",
+        "focusBorder": "rgb(100, 255, 218)",
+        "cssBytes": 21967,
+        "tokenGaps": [],
+        "fallbackGaps": []
+      },
+      "positronic": {
+        "statusFixed": "fixed",
+        "toastFixed": "fixed",
+        "toastAnim": "slideIn",
+        "toastAnimDur": "0s",
+        "sidepanelWidth": "360px",
+        "sidepanelZ": "1000",
+        "searchRadius": "20px",
+        "searchMax": "360px",
+        "crudInputWidth": "720px",
+        "crudFills": true,
+        "crudInputBg": "rgb(13, 15, 20)",
+        "formMax": "480px",
+        "tableHeaderBg": "rgba(0, 0, 0, 0)",
+        "mobileLayer": true,
+        "ppBtn": true,
+        "infoVariant": true,
+        "focusShadow": "color(srgb 0.486275 0.611765 1 / 0.2) 0px 0px 0px 3px",
+        "focusBorder": "rgb(124, 156, 255)",
+        "cssBytes": 23180,
+        "tokenGaps": [],
+        "fallbackGaps": []
+      },
+      "vision-system": {
+        "statusFixed": "fixed",
+        "toastFixed": "fixed",
+        "toastAnim": "slideIn",
+        "toastAnimDur": "0s",
+        "sidepanelWidth": "360px",
+        "sidepanelZ": "1000",
+        "searchRadius": "20px",
+        "searchMax": "360px",
+        "crudInputWidth": "720px",
+        "crudFills": true,
+        "crudInputBg": "rgb(255, 255, 255)",
+        "formMax": "480px",
+        "tableHeaderBg": "rgb(231, 235, 240)",
+        "mobileLayer": true,
+        "ppBtn": true,
+        "infoVariant": true,
+        "focusShadow": "color(srgb 0.0509804 0.278431 0.784314 / 0.2) 0px 0px 0px 3px",
+        "focusBorder": "rgb(13, 71, 200)",
+        "cssBytes": 21814,
+        "tokenGaps": [],
+        "fallbackGaps": []
+      },
+      "vision-atkinson": {
+        "statusFixed": "fixed",
+        "toastFixed": "fixed",
+        "toastAnim": "slideIn",
+        "toastAnimDur": "0s",
+        "sidepanelWidth": "360px",
+        "sidepanelZ": "1000",
+        "searchRadius": "20px",
+        "searchMax": "360px",
+        "crudInputWidth": "720px",
+        "crudFills": true,
+        "crudInputBg": "rgb(255, 255, 255)",
+        "formMax": "480px",
+        "tableHeaderBg": "rgb(231, 235, 240)",
+        "mobileLayer": true,
+        "ppBtn": true,
+        "infoVariant": true,
+        "focusShadow": "color(srgb 0.0509804 0.278431 0.784314 / 0.2) 0px 0px 0px 3px",
+        "focusBorder": "rgb(13, 71, 200)",
+        "cssBytes": 22194,
+        "tokenGaps": [],
+        "fallbackGaps": []
+      }
+    }
+  },
+  "subsets": [
+    {
+      "want": [
+        "form"
+      ],
+      "got": {
+        "bytes": 5157,
+        "hasForm": true,
+        "hasTable": false,
+        "hasToast": false,
+        "hasMobile": true,
+        "formBg": "rgb(255, 255, 255)",
+        "crudFullWidth": false,
+        "crudInputFillsContainer": false
+      }
+    },
+    {
+      "want": [
+        "buttons",
+        "form"
+      ],
+      "got": {
+        "bytes": 6364,
+        "hasForm": true,
+        "hasTable": false,
+        "hasToast": false,
+        "hasMobile": true,
+        "formBg": "rgb(255, 255, 255)",
+        "crudFullWidth": false,
+        "crudInputFillsContainer": false
+      }
+    },
+    {
+      "want": [
+        "table",
+        "status"
+      ],
+      "got": {
+        "bytes": 5199,
+        "hasForm": false,
+        "hasTable": true,
+        "hasToast": false,
+        "hasMobile": true,
+        "formBg": "rgb(255, 255, 255)",
+        "crudFullWidth": false,
+        "crudInputFillsContainer": false
+      }
+    },
+    {
+      "want": [
+        "form",
+        "table",
+        "toast"
+      ],
+      "got": {
+        "bytes": 6563,
+        "hasForm": true,
+        "hasTable": true,
+        "hasToast": true,
+        "hasMobile": true,
+        "formBg": "rgb(255, 255, 255)",
+        "crudFullWidth": false,
+        "crudInputFillsContainer": false
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "theme": "nord",
+      "check": "btn-primary:hover",
+      "before": "rgb(129, 161, 193)",
+      "after": "rgb(136, 192, 208)",
+      "want": "rgb(136, 192, 208)",
+      "ok": true
+    },
+    {
+      "theme": "nord",
+      "check": "table row:hover",
+      "before": "rgba(0, 0, 0, 0)",
+      "after": "rgb(236, 239, 244)",
+      "want": "rgb(236, 239, 244)",
+      "ok": true
+    },
+    {
+      "theme": "nord",
+      "check": "input:focus ring",
+      "shadow": "color(srgb 0.505882 0.631373 0.756863 / 0.2) 0px 0px 0px 3px",
+      "ok": true
+    },
+    {
+      "theme": "forest",
+      "check": "btn-primary:hover",
+      "before": "rgb(61, 107, 60)",
+      "after": "rgb(45, 82, 44)",
+      "want": "rgb(45, 82, 44)",
+      "ok": true
+    },
+    {
+      "theme": "forest",
+      "check": "table row:hover",
+      "before": "rgba(0, 0, 0, 0)",
+      "after": "rgb(232, 227, 216)",
+      "want": "rgb(232, 227, 216)",
+      "ok": true
+    },
+    {
+      "theme": "forest",
+      "check": "input:focus ring",
+      "shadow": "color(srgb 0.356863 0.54902 0.352941 / 0.2) 0px 0px 0px 3px",
+      "ok": true
+    },
+    {
+      "theme": "dracula",
+      "check": "btn-primary:hover",
+      "before": "rgb(189, 147, 249)",
+      "after": "rgb(203, 166, 247)",
+      "want": "rgb(203, 166, 247)",
+      "ok": true
+    },
+    {
+      "theme": "dracula",
+      "check": "table row:hover",
+      "before": "rgba(0, 0, 0, 0)",
+      "after": "rgb(68, 71, 90)",
+      "want": "rgb(68, 71, 90)",
+      "ok": true
+    },
+    {
+      "theme": "dracula",
+      "check": "input:focus ring",
+      "shadow": "color(srgb 0.741176 0.576471 0.976471 / 0.2) 0px 0px 0px 3px",
+      "ok": true
+    },
+    {
+      "theme": "dark",
+      "check": "btn-primary:hover",
+      "before": "rgb(100, 255, 218)",
+      "after": "rgb(69, 224, 190)",
+      "want": "rgb(69, 224, 190)",
+      "ok": true
+    },
+    {
+      "theme": "dark",
+      "check": "table row:hover",
+      "before": "rgba(0, 0, 0, 0)",
+      "after": "rgb(22, 33, 62)",
+      "want": "rgb(22, 33, 62)",
+      "ok": true
+    },
+    {
+      "theme": "dark",
+      "check": "input:focus ring",
+      "shadow": "color(srgb 0.392157 1 0.854902 / 0.2) 0px 0px 0px 3px",
+      "ok": true
+    },
+    {
+      "theme": "positronic",
+      "check": "btn-primary:hover",
+      "before": "rgb(124, 156, 255)",
+      "after": "rgb(154, 179, 255)",
+      "want": "rgb(154, 179, 255)",
+      "ok": true
+    },
+    {
+      "theme": "positronic",
+      "check": "table row:hover",
+      "before": "rgba(0, 0, 0, 0)",
+      "after": "rgb(20, 23, 31)",
+      "want": "rgb(20, 23, 31)",
+      "ok": true
+    },
+    {
+      "theme": "positronic",
+      "check": "input:focus ring",
+      "shadow": "color(srgb 0.486275 0.611765 1 / 0.2) 0px 0px 0px 3px",
+      "ok": true
+    },
+    {
+      "theme": "vision-system",
+      "check": "btn-primary:hover",
+      "before": "rgb(13, 71, 200)",
+      "after": "rgb(26, 85, 216)",
+      "want": "rgb(26, 85, 216)",
+      "ok": true
+    },
+    {
+      "theme": "vision-system",
+      "check": "table row:hover",
+      "before": "rgba(0, 0, 0, 0)",
+      "after": "rgb(255, 255, 255)",
+      "want": "rgb(255, 255, 255)",
+      "ok": true
+    },
+    {
+      "theme": "vision-system",
+      "check": "input:focus ring",
+      "shadow": "color(srgb 0.0509804 0.278431 0.784314 / 0.2) 0px 0px 0px 3px",
+      "ok": true
+    },
+    {
+      "theme": "vision-atkinson",
+      "check": "btn-primary:hover",
+      "before": "rgb(13, 71, 200)",
+      "after": "rgb(26, 85, 216)",
+      "want": "rgb(26, 85, 216)",
+      "ok": true
+    },
+    {
+      "theme": "vision-atkinson",
+      "check": "table row:hover",
+      "before": "rgba(0, 0, 0, 0)",
+      "after": "rgb(255, 255, 255)",
+      "want": "rgb(255, 255, 255)",
+      "ok": true
+    },
+    {
+      "theme": "vision-atkinson",
+      "check": "input:focus ring",
+      "shadow": "color(srgb 0.0509804 0.278431 0.784314 / 0.2) 0px 0px 0px 3px",
+      "ok": true
+    }
+  ],
+  "mobile": [
+    {
+      "theme": "nord",
+      "vw": 375,
+      "formWidth": 0,
+      "formMax": "100%",
+      "authWidth": 40,
+      "dialogW": 174.296875,
+      "toastMax": "343px",
+      "sidepanelW": 320,
+      "ok": true
+    },
+    {
+      "theme": "forest",
+      "vw": 375,
+      "formWidth": 0,
+      "formMax": "100%",
+      "authWidth": 40,
+      "dialogW": 174.296875,
+      "toastMax": "343px",
+      "sidepanelW": 320,
+      "ok": true
+    },
+    {
+      "theme": "dracula",
+      "vw": 375,
+      "formWidth": 0,
+      "formMax": "100%",
+      "authWidth": 40,
+      "dialogW": 174.296875,
+      "toastMax": "343px",
+      "sidepanelW": 320,
+      "ok": true
+    },
+    {
+      "theme": "dark",
+      "vw": 375,
+      "formWidth": 0,
+      "formMax": "100%",
+      "authWidth": 40,
+      "dialogW": 174.296875,
+      "toastMax": "343px",
+      "sidepanelW": 320,
+      "ok": true
+    },
+    {
+      "theme": "positronic",
+      "vw": 375,
+      "formWidth": 0,
+      "formMax": "100%",
+      "authWidth": 40,
+      "dialogW": 174.296875,
+      "toastMax": "343px",
+      "sidepanelW": 320,
+      "ok": true
+    },
+    {
+      "theme": "vision-system",
+      "vw": 375,
+      "formWidth": 0,
+      "formMax": "100%",
+      "authWidth": 50,
+      "dialogW": 217.875,
+      "toastMax": "335px",
+      "sidepanelW": 320,
+      "ok": true
+    },
+    {
+      "theme": "vision-atkinson",
+      "vw": 375,
+      "formWidth": 0,
+      "formMax": "100%",
+      "authWidth": 50,
+      "dialogW": 217.875,
+      "toastMax": "335px",
+      "sidepanelW": 320,
+      "ok": true
+    }
+  ],
+  "baseline_present": 7,
+  "screenshots": [
+    "screenshots/harness-nord.png",
+    "screenshots/harness-dark.png",
+    "screenshots/harness-vision-atkinson.png",
+    "screenshots/viewport-forest.png",
+    "screenshots/viewport-dracula.png",
+    "screenshots/viewport-positronic.png",
+    "screenshots/viewport-vision-system.png"
+  ]
+}

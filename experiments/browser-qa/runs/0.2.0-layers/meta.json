@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "suite": "sure-ui-browser-qa",
+  "label": "0.2.0-layers",
+  "host": "web2",
+  "started": "2026-10-10T05:36:15Z",
+  "sha": "2d5adde",
+  "dirty": true,
+  "knobs": {
+    "themes": 7,
+    "contrast_pairs": 189,
+    "min_ratio": 4.5,
+    "browser": "playwright-chromium",
+    "snapshots": "6,393 element-records across desktop/375/touch, 0 diffs (snapshots.json)"
+  },
+  "headline": "175/189 AA, 14 flags (11 pre-existing), 21 interactions, 0 mobile fails, 0 failures",
+  "verdict": "pass",
+  "notes": "console errors: none; @layer before/after proof in snapshots.json"
+}

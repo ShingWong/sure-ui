@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { VERSION, nord, forest, dracula, dark, themes, showNotification, clearNotifications } from './index.js'
+import { VERSION, nord, forest, dracula, dark, themes, compose, stripLayers, COMPONENTS, showNotification, clearNotifications } from './index.js'
 
 describe('sure-ui', () => {
   it('exports VERSION matching package.json', () => {
@@ -189,8 +189,10 @@ describe('themes: button contrast', () => {
     const [top = 0, bottom = 0] = [hi, lo].sort((x, y) => y - x)
     return (top + 0.05) / (bottom + 0.05)
   }
-  /** Resolve `var(--x)` against the theme's own :root declarations. */
-  const resolve = (css: string, value: string): string => {
+  /** Resolve `var(--x)` against the theme's own :root declarations,
+      following alias chains (--primary -> --nord9 -> #hex), which the
+      0.2.0b tokens rely on; depth-capped like the AA describe's resolver. */
+  const resolve = (css: string, value: string, depth = 0): string => {
     // A literal hex (including the 3-digit shorthand) needs no lookup.
     if (/^#[0-9a-fA-F]{3,8}$/.test(value.trim())) {
       const hex = value.trim()
@@ -198,11 +200,10 @@ describe('themes: button contrast', () => {
     }
     const ref = /var\((--[a-z0-9-]+)\)/i.exec(value)?.[1]
     if (!ref) return value.trim()
-    const hex = new RegExp(`${ref}:\\s*(#[0-9a-fA-F]{3,8})`).exec(css)?.[1]
-    if (!hex) throw new Error(`cannot resolve ${ref}`)
-    return hex.length === 4
-      ? `#${[...hex.slice(1)].map((c) => c + c).join("")}`
-      : hex
+    if (depth > 6) throw new Error(`cannot resolve ${value}`)
+    const decl = new RegExp(`${ref}:\\s*([^;]+);`).exec(css)?.[1]
+    if (!decl) throw new Error(`cannot resolve ${ref}`)
+    return resolve(css, decl, depth + 1)
   }
 
   for (const [name, css] of Object.entries(themes)) {
@@ -214,6 +215,16 @@ describe('themes: button contrast', () => {
       expect(fg, `${name} has no .btn-primary colour`).toBeTruthy()
       const ratio = contrast(resolve(css, resolve(css, bg!)), resolve(css, resolve(css, fg!)))
       expect(ratio, `${name} .btn-primary is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5)
+    })
+
+    /* --on-accent is the ink on EVERY solid accent surface: auth button,
+       toast--info, status-bar--info. One bad value fails three components,
+       and it did — dracula shipped #fff on #bd93f9 (2.41:1) until the
+       browser harness caught it (experiments/browser-qa, 2026-10-10);
+       the unit suite had no gate for it. */
+    it(`${name} --on-accent reads on --accent (>= 4.5:1)`, () => {
+      const ratio = contrast(resolve(css, 'var(--accent)'), resolve(css, 'var(--on-accent)'))
+      expect(ratio, `${name} --on-accent on --accent is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5)
     })
   }
 })
@@ -419,6 +430,116 @@ describe('themes: mobile and touch layer', () => {
     const layer = css.slice(css.indexOf(MARK))
     expect(layer).toContain('.message .msg-actions { display: flex; }')
     expect(layer).toContain('.sure-session-item .sure-session-actions { display: flex; }')
+  })
+})
+
+/**
+ * compose() (0.2.0a): the exported theme strings ARE compose output —
+ * tokens + component runs + mobile layer. Two properties are load-bearing
+ * and measured here, not assumed: (1) `components: 'all'` is byte-identical
+ * to the frozen 0.1.9 strings, so nothing moved for existing consumers;
+ * (2) a subset really drops the unselected blocks (this is the whole
+ * point of compile-time inclusion).
+ */
+describe('compose: compile-time assembly', () => {
+  const fixture = JSON.parse(
+    readFileSync(join(process.cwd(), 'src/__fixtures__/themes-0.1.9.json'), 'utf8'),
+  ) as Record<string, string>
+
+  for (const name of Object.keys(themes)) {
+    it(`${name}: compose(all) strips to the byte-identical 0.1.9 string`, () => {
+      // 0.2.0 emits @layer scaffolding; stripLayers removes EXACTLY that
+      // (proved positional in compose.ts), so the inner bytes must equal the
+      // frozen string — the wrapper may never smuggle a byte of change
+      expect(stripLayers(compose({ theme: name })), `${name} drifted from fixture`).toBe(fixture[name])
+    })
+
+    it(`${name}: output is three ordered layers, statement first`, () => {
+      const css = compose({ theme: name })
+      expect(css.startsWith('@layer sure.tokens, sure.components, sure.mobile;')).toBe(true)
+      const order = ['sure.tokens', 'sure.components', 'sure.mobile']
+      const positions = order.map((l) => css.indexOf(`@layer ${l} {`))
+      expect(positions.every((p) => p > 0)).toBe(true)
+      expect([...positions].sort((a, b) => a - b)).toEqual(positions)
+      // statement must precede every block (order declarations bind on use)
+      expect(Math.min(...positions)).toBeGreaterThan(css.indexOf('@layer sure.tokens,'))
+    })
+  }
+
+  it('mobile:false emits only tokens and components layers', () => {
+    const css = compose({ theme: 'nord', mobile: false })
+    expect(css).toContain('@layer sure.components {')
+    expect(css).not.toContain('@layer sure.mobile {')
+    // stripping the two-block output must equal stripping the full output
+    // minus the mobile content — i.e. the mobile block is exactly the diff
+    const full = stripLayers(compose({ theme: 'nord' }))
+    const two = stripLayers(css)
+    expect(full.startsWith(two)).toBe(true)
+    expect(full.length).toBeGreaterThan(two.length)
+  })
+
+  it('extra lands INSIDE the components layer, before the mobile block', () => {
+    // Appending extra after the layers would make it unlayered, and unlayered
+    // CSS beats every layered rule regardless of specificity — it would
+    // silently override the theme (the sure-factor e2e caught a 4px example).
+    const css = compose({ theme: 'nord', components: ['form'], extra: '.field-input { color: red; }' })
+    const open = css.indexOf('@layer sure.components {')
+    const rule = css.indexOf('.field-input { color: red; }')
+    const mobile = css.indexOf('@layer sure.mobile {')
+    expect(rule).toBeGreaterThan(open)
+    expect(rule).toBeLessThan(mobile)
+    expect(css.startsWith('@layer sure.tokens,')).toBe(true)
+    // and without the option the output is untouched
+    expect(compose({ theme: 'nord', components: ['form'] })).not.toContain('.field-input')
+  })
+
+  it('a subset drops unselected blocks and keeps tokens, base and mobile', () => {
+    const css = compose({ theme: 'nord', components: ['form', 'table'] })
+    expect(css).toContain(':root {')
+    expect(css).toContain('.sure-form__title')
+    expect(css).toContain('.sure-table {')
+    expect(css).toContain('body {')
+    expect(css).toContain('44px')
+    // block-unique markers (the mobile layer names component classes too)
+    expect(css).not.toContain('.sure-auth__divider')
+    expect(css).not.toContain('.sure-dialog__header:active')
+    expect(css).not.toContain('.sure-markdown blockquote')
+    expect(css.length).toBeLessThan(themes.nord.length)
+  })
+
+  it('an empty component list keeps only tokens, base and mobile', () => {
+    const css = compose({ theme: 'nord', components: [] })
+    expect(css).toContain(':root {')
+    expect(css).toContain('body {')
+    expect(css).toContain('44px')
+    expect(css).not.toContain('.sure-form__title')
+    expect(css).not.toContain('.btn-primary:hover')
+  })
+
+  it('mobile can be excluded', () => {
+    expect(compose({ theme: 'nord', components: [], mobile: false })).not.toContain('Mobile & touch')
+  })
+
+  it('names its failures (agent-friendly errors)', () => {
+    expect(() => compose({ theme: 'nope' })).toThrow(/unknown theme "nope" — valid themes: nord/)
+    expect(() => compose({ theme: 'nord', components: ['nope' as never] })).toThrow(/unknown component "nope" — valid components: auth/)
+  })
+
+  it('shared blocks a theme never carried are selectable (page on nord)', () => {
+    const css = compose({ theme: 'nord', components: ['page'] })
+    expect(css).toContain('.pp-card')
+    expect(css).toContain('.pp-badge--beta')
+    // ...but not in the full theme — byte-identity means positronic keeps
+    // its page block and everyone else does not gain it implicitly
+    expect(themes.nord).not.toContain('.pp-card')
+    expect(themes.positronic).toContain('.pp-card')
+  })
+
+  it('COMPONENTS names every family the generated data carries (minus base)', async () => {
+    const { runs } = await import('./generated/themes.js')
+    const fams = new Set<string>()
+    for (const themeRuns of Object.values(runs)) for (const [f] of themeRuns) if (f !== 'base') fams.add(f)
+    expect([...fams].sort()).toEqual([...COMPONENTS].sort())
   })
 })
 
