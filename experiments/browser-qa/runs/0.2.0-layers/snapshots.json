@@ -1,0 +1,13 @@
+{
+  "proof": "computed-style snapshots before/after @layer (commit b0438a3) — every element's load-bearing computed properties, diffed with intersected keys",
+  "instruments": ["experiments/browser-qa/harness-snapshot.py", "experiments/browser-qa/landing-snapshot.py"],
+  "total_records": 6393,
+  "total_diffs": 0,
+  "viewports": {
+    "desktop-1280-landing": { "pages": 4, "records": 900, "diffs": 0 },
+    "desktop-1440-harness": { "themes": 7, "records": 1365, "diffs": 0 },
+    "mobile-375-fine-pointer": { "landing_pages": 4, "harness_themes": 7, "records": 2265, "diffs": 0 },
+    "touch-390-coarse-nohover": { "emulation": "hasTouch+isMobile, matchMedia(pointer:coarse)=true, (hover:none)=true", "harness_themes": 7, "landing_pages": 2, "records": 1863, "diffs": 0 }
+  },
+  "verdict": "@layer wrapping altered no computed style anywhere measured"
+}

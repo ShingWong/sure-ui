@@ -10,9 +10,10 @@
     "themes": 7,
     "contrast_pairs": 189,
     "min_ratio": 4.5,
-    "browser": "playwright-chromium"
+    "browser": "playwright-chromium",
+    "snapshots": "6,393 element-records across desktop/375/touch, 0 diffs (snapshots.json)"
   },
   "headline": "175/189 AA, 14 flags (11 pre-existing), 21 interactions, 0 mobile fails, 0 failures",
   "verdict": "pass",
-  "notes": "console errors: none"
+  "notes": "console errors: none; @layer before/after proof in snapshots.json"
 }
