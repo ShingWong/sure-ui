@@ -473,6 +473,16 @@ describe('compose: compile-time assembly', () => {
     expect(() => compose({ theme: 'nord', components: ['nope' as never] })).toThrow(/unknown component "nope" — valid components: auth/)
   })
 
+  it('shared blocks a theme never carried are selectable (page on nord)', () => {
+    const css = compose({ theme: 'nord', components: ['page'] })
+    expect(css).toContain('.pp-card')
+    expect(css).toContain('.pp-badge--beta')
+    // ...but not in the full theme — byte-identity means positronic keeps
+    // its page block and everyone else does not gain it implicitly
+    expect(themes.nord).not.toContain('.pp-card')
+    expect(themes.positronic).toContain('.pp-card')
+  })
+
   it('COMPONENTS names every family the generated data carries (minus base)', async () => {
     const { runs } = await import('./generated/themes.js')
     const fams = new Set<string>()

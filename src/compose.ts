@@ -6,6 +6,7 @@
 // existing `themes` export is compose output, not a separate source.
 import { mobileLayer } from './styles/mobile.js'
 import { tokens, runs } from './generated/themes.js'
+import { shared } from './components/shared.js'
 
 export const COMPONENTS = [
   'auth', 'buttons', 'composites', 'crud', 'dialog', 'form', 'markdown',
@@ -38,8 +39,25 @@ export function compose({ theme, components = 'all', mobile = true }: ComposeOpt
     }
   }
   let out = tokensOf
+  const seen: Record<string, number> = {}
   for (const [fam, css] of runs[theme] ?? []) {
-    if (fam === 'base' || want === null || want.has(fam)) out += css
+    if (fam === 'base') { out += css; continue }
+    if (want !== null && !want.has(fam)) continue
+    if (shared[fam] !== undefined) {
+      // position-matched: a family can occur in several non-contiguous runs
+      const j = (seen[fam] = (seen[fam] ?? 0) + 1)
+      out += shared[fam][j - 1] ?? css
+    } else {
+      out += css
+    }
+  }
+  // a wanted shared family this theme never carried (e.g. page on nord)
+  // appends at the end — tail families by construction (page sits last in
+  // positronic), so the position is honest
+  if (want !== null) {
+    for (const [fam, slices] of Object.entries(shared)) {
+      if (want.has(fam) && (seen[fam] ?? 0) === 0) out += slices.join('')
+    }
   }
   return mobile ? out + mobileLayer : out
 }
