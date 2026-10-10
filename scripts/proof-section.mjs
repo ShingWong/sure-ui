@@ -1,0 +1,40 @@
+// Section-removal proof: after a family unification, the new fixture must
+// equal the old fixture everywhere except the unified run(s) and the added
+// tokens. Usage: node scripts/proof-section.mjs <old-fixture.json> <old-generated-git-ref>
+import { execSync } from 'node:child_process'
+import { readFileSync } from 'node:fs'
+
+const [oldPath, ref, family] = process.argv.slice(2)
+const oldGen = execSync(`git show ${ref}:src/generated/themes.ts`, { encoding: 'utf8', maxBuffer: 20e6 })
+const oldFix = JSON.parse(readFileSync(oldPath, 'utf8'))
+const newFix = JSON.parse(readFileSync('src/__fixtures__/themes-0.1.9.json', 'utf8'))
+const { shared } = await import('../dist/components/shared.js')
+const canonical = (shared[family] ?? []).join('')
+
+let ok = true
+for (const name of Object.keys(newFix)) {
+  const runsRe = new RegExp(`'${name}': \\[[\\s\\S]*?\\n  \\],`)
+  const themeRuns = runsRe.exec(oldGen)?.[0] ?? ''
+  const runRe = new RegExp(`\\['${family}', \`([\\s\\S]*?)\`\\]`, 'g')
+  let o = oldFix[name]
+  let m, removed = 0
+  while ((m = runRe.exec(themeRuns)) !== null) { o = o.replace(m[1], ''); removed++ }
+  const n = newFix[name].replaceAll(canonical, '')
+  // tokens added by the unification (any --X the old fixture lacked)
+  const oldTokens = new Set((oldFix[name].match(/--[a-z0-9-]+(?=:)/g) ?? []))
+  const added = [...new Set(n.match(/--[a-z0-9-]+(?=:)/g) ?? [])].filter((t) => !oldTokens.has(t))
+  let o2 = o, n2 = n
+  for (const t of added) {
+    o2 = o2.replace(new RegExp(`\\n  ${t}: [^;]+;`, 'g'), '')
+    n2 = n2.replace(new RegExp(`\\n  ${t}: [^;]+;`, 'g'), '')
+  }
+  const same = o2 === n2
+  console.log(`${name.padEnd(16)} runs removed: ${removed} | added tokens: ${added.join(',') || 'none'} | identical outside: ${same}`)
+  if (!same) {
+    ok = false
+    let i = 0; while (o2[i] === n2[i]) i++
+    console.log('  diff at', i, JSON.stringify(o2.slice(i - 30, i + 60)), 'vs', JSON.stringify(n2.slice(i - 30, i + 60)))
+  }
+}
+console.log(ok ? `SECTION PROOF (${family}): clean` : 'PROOF FAILED')
+process.exit(ok ? 0 : 1)

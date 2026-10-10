@@ -189,8 +189,10 @@ describe('themes: button contrast', () => {
     const [top = 0, bottom = 0] = [hi, lo].sort((x, y) => y - x)
     return (top + 0.05) / (bottom + 0.05)
   }
-  /** Resolve `var(--x)` against the theme's own :root declarations. */
-  const resolve = (css: string, value: string): string => {
+  /** Resolve `var(--x)` against the theme's own :root declarations,
+      following alias chains (--primary -> --nord9 -> #hex), which the
+      0.2.0b tokens rely on; depth-capped like the AA describe's resolver. */
+  const resolve = (css: string, value: string, depth = 0): string => {
     // A literal hex (including the 3-digit shorthand) needs no lookup.
     if (/^#[0-9a-fA-F]{3,8}$/.test(value.trim())) {
       const hex = value.trim()
@@ -198,11 +200,10 @@ describe('themes: button contrast', () => {
     }
     const ref = /var\((--[a-z0-9-]+)\)/i.exec(value)?.[1]
     if (!ref) return value.trim()
-    const hex = new RegExp(`${ref}:\\s*(#[0-9a-fA-F]{3,8})`).exec(css)?.[1]
-    if (!hex) throw new Error(`cannot resolve ${ref}`)
-    return hex.length === 4
-      ? `#${[...hex.slice(1)].map((c) => c + c).join("")}`
-      : hex
+    if (depth > 6) throw new Error(`cannot resolve ${value}`)
+    const decl = new RegExp(`${ref}:\\s*([^;]+);`).exec(css)?.[1]
+    if (!decl) throw new Error(`cannot resolve ${ref}`)
+    return resolve(css, decl, depth + 1)
   }
 
   for (const [name, css] of Object.entries(themes)) {

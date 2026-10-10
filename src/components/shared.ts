@@ -6,6 +6,44 @@
 // compose() — are the correct shape, not a single string.
 // Edit these directly from 0.2.0b on; regenerate only to re-prove.
 export const shared: Record<string, string[]> = {
+  'buttons': [`
+  .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .btn-icon:hover { background: var(--highlight); }
+  .btn-icon:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 1.25rem; border: none; border-radius: 6px;
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  color: var(--primary-ink); background: var(--primary);
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 1.25rem; border: 1px solid var(--border); border-radius: 6px;
+  font-size: 0.9rem; font-weight: 500; cursor: pointer;
+  color: var(--text); background: transparent;
+  transition: background 0.15s;
+}
+.btn-secondary:hover { background: var(--highlight); }`],
   'auth': [`
 
 /* ── Auth ── */
