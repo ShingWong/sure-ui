@@ -6,6 +6,26 @@
 // compose() — are the correct shape, not a single string.
 // Edit these directly from 0.2.0b on; regenerate only to re-prove.
 export const shared: Record<string, string[]> = {
+  'toast': [`
+
+/* ── Notifications ── */
+.toast {
+  position: fixed; top: 1rem; right: 1rem; z-index: 1000;
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem 1rem; border-radius: 8px;
+  background: var(--toast-bg); color: var(--toast-ink);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  font-size: 0.9rem; max-width: 360px;
+  animation: slideIn 0.2s ease-out;
+}
+.toast--error { background: var(--error); color: var(--on-error); }
+.toast--success { background: var(--success); color: var(--on-success); }
+.toast--info { background: var(--accent); color: var(--on-accent); }
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}`],
   'buttons': [`
   .btn-icon {
     display: inline-flex;
