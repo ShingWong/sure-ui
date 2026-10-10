@@ -4,23 +4,25 @@
 import { execSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 
-const [oldPath, ref, family] = process.argv.slice(2)
+const [oldPath, ref, ...families] = process.argv.slice(2)
 const oldGen = execSync(`git show ${ref}:src/generated/themes.ts`, { encoding: 'utf8', maxBuffer: 20e6 })
 const oldFix = JSON.parse(readFileSync(oldPath, 'utf8'))
 const newFix = JSON.parse(readFileSync('src/__fixtures__/themes-0.1.9.json', 'utf8'))
 const { shared } = await import('../dist/components/shared.js')
-const canonical = (shared[family] ?? []).join('')
 
 let ok = true
 for (const name of Object.keys(newFix)) {
   const runsRe = new RegExp(`'${name}': \\[[\\s\\S]*?\\n  \\],`)
   const themeRuns = runsRe.exec(oldGen)?.[0] ?? ''
-  const runRe = new RegExp(`\\['${family}', \`([\\s\\S]*?)\`\\]`, 'g')
   let o = oldFix[name]
-  let m, removed = 0
-  while ((m = runRe.exec(themeRuns)) !== null) { o = o.replace(m[1], ''); removed++ }
+  let removed = 0
+  for (const family of families) {
+    const runRe = new RegExp(`\\['${family}', \`([\\s\\S]*?)\`\\]`, 'g')
+    let m
+    while ((m = runRe.exec(themeRuns)) !== null) { o = o.replace(m[1], ''); removed++ }
+  }
   let n = newFix[name]
-  for (const s of shared[family] ?? []) n = n.replaceAll(s, '')
+  for (const family of families) for (const s of shared[family] ?? []) n = n.replaceAll(s, '')
   // tokens added by the unification (any --X the old fixture lacked)
   const oldTokens = new Set((oldFix[name].match(/--[a-z0-9-]+(?=:)/g) ?? []))
   const added = [...new Set(n.match(/--[a-z0-9-]+(?=:)/g) ?? [])].filter((t) => !oldTokens.has(t))
@@ -37,5 +39,5 @@ for (const name of Object.keys(newFix)) {
     console.log('  diff at', i, JSON.stringify(o2.slice(i - 30, i + 60)), 'vs', JSON.stringify(n2.slice(i - 30, i + 60)))
   }
 }
-console.log(ok ? `SECTION PROOF (${family}): clean` : 'PROOF FAILED')
+console.log(ok ? `SECTION PROOF (${families.join('+')}): clean` : 'PROOF FAILED')
 process.exit(ok ? 0 : 1)
