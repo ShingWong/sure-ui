@@ -107,10 +107,14 @@ some themes. The differences are three classes:
   byte-identical families (composites, dialog, regions, page) shared with
   the fixture unmoved, and the three whitespace-only families (markdown,
   menu, sessions) normalized — collapse-asserted, +4B to dark/positronic,
-  zero bytes elsewhere. Remaining: auth (needs the Class-1 alias-gap
-  rewrite of its dark/positronic rules first), then the real drift
-  families per the decision table below, contrast tests re-measuring
-  every theme each step.
+  zero bytes elsewhere. Then: buttons (phase 4, --primary trio), toast (phase 5, fixed+--info
+  everywhere, --on-error/--on-success picked per theme), table (phase 6,
+  --table-header trio), form+modal (phase 7, --field/--focus, semantic
+  proofs), and the final four search/crud/sidepanel/status (phase 8,
+  toast-model proofs; nord's sidepanel item flagged at its palette-limited
+  4.09:1). **0.2.0b DONE: 17 of 18 families shared** (base stays
+  per-theme — it IS the typography contract). Only `base` remains
+  per-theme by design.
 - **sure-factor integration** — depends on `@shing.wong/sure-ui@^0.2.0`;
   catalog yamls declare `sure_ui: [blocks]` (registry test guards drift);
   `generateStyles()` becomes `compose()` over the page's union of blocks;

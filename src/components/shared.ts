@@ -6,6 +6,58 @@
 // compose() — are the correct shape, not a single string.
 // Edit these directly from 0.2.0b on; regenerate only to re-prove.
 export const shared: Record<string, string[]> = {
+  'status': [`
+
+.status-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: var(--status-bg); color: var(--status-ink);
+  font-size: 0.85rem;
+}
+.status-bar--error { background: var(--error); color: var(--on-error); }
+.status-bar--success { background: var(--success); color: var(--on-success); }
+.status-bar--info { background: var(--accent); color: var(--on-accent); }`],
+  'sidepanel': [`
+
+.side-panel {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 1000;
+  width: 360px; padding: 1.5rem;
+  background: var(--sidepanel-bg); box-shadow: -4px 0 12px rgba(0,0,0,0.1);
+  overflow-y: auto;
+}
+.side-panel__title { font-weight: 600; margin-bottom: 1rem; color: var(--sidepanel-ink); }
+.side-panel__item {
+  padding: 0.5rem 0; border-bottom: 1px solid var(--highlight);
+  font-size: 0.85rem; color: var(--error);
+  cursor: pointer;
+}
+.side-panel__item:hover { color: var(--sidepanel-ink); }`],
+  'crud': [`
+
+/* ── CRUD ── */
+.sure-crud { max-width: 720px; }
+.sure-crud__field { margin-bottom: 1rem; }
+.sure-crud__label { display: block; margin-bottom: 0.25rem; font-weight: 600; color: var(--text); font-size: 0.875rem; }
+.sure-crud input, .sure-crud select, .sure-crud textarea {
+  width: 100%; padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-size: 1rem; color: var(--text); background: var(--field);
+}
+.sure-crud input:focus, .sure-crud select:focus, .sure-crud textarea:focus {
+  outline: none; border-color: var(--focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 20%, transparent);
+}
+.sure-crud__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--error); }
+.sure-crud__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--muted); }`],
+  'search': [`
+
+/* ── Search ── */
+.sure-search { max-width: 360px; }
+.sure-search__input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: 20px; font-size: 0.9rem; color: var(--text); background: var(--field); }
+.sure-search__input:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 20%, transparent); }
+.sure-search__error { font-size: 0.8rem; color: var(--error); }
+.sure-search__help { font-size: 0.8rem; color: var(--muted); }
+.sure-search__label { display: none; }`],
   'modal': [`
 
 /* ── Modal ── */
