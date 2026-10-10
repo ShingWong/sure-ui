@@ -478,6 +478,21 @@ describe('compose: compile-time assembly', () => {
     expect(full.length).toBeGreaterThan(two.length)
   })
 
+  it('extra lands INSIDE the components layer, before the mobile block', () => {
+    // Appending extra after the layers would make it unlayered, and unlayered
+    // CSS beats every layered rule regardless of specificity — it would
+    // silently override the theme (the sure-factor e2e caught a 4px example).
+    const css = compose({ theme: 'nord', components: ['form'], extra: '.field-input { color: red; }' })
+    const open = css.indexOf('@layer sure.components {')
+    const rule = css.indexOf('.field-input { color: red; }')
+    const mobile = css.indexOf('@layer sure.mobile {')
+    expect(rule).toBeGreaterThan(open)
+    expect(rule).toBeLessThan(mobile)
+    expect(css.startsWith('@layer sure.tokens,')).toBe(true)
+    // and without the option the output is untouched
+    expect(compose({ theme: 'nord', components: ['form'] })).not.toContain('.field-input')
+  })
+
   it('a subset drops unselected blocks and keeps tokens, base and mobile', () => {
     const css = compose({ theme: 'nord', components: ['form', 'table'] })
     expect(css).toContain(':root {')
