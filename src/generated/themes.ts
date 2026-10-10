@@ -56,6 +56,9 @@ export const tokens: Record<string, string> = {
   --toast-ink: var(--nord6);
   --on-error: #fff;
   --on-success: var(--text);
+  --table-header: var(--nord5);
+  --table-header-ink: var(--nord0);
+  --table-hover: var(--nord6);
 }`,
   'forest': `:root {
   /* Typography contract (all sure-ui themes declare these). */
@@ -105,6 +108,9 @@ export const tokens: Record<string, string> = {
   --toast-ink: var(--frst-bg);
   --on-error: #fff;
   --on-success: #fff;
+  --table-header: var(--frst-highlight);
+  --table-header-ink: var(--frst-text);
+  --table-hover: var(--frst-highlight);
 }`,
   'dracula': `:root {
   /* Typography contract (all sure-ui themes declare these). */
@@ -154,6 +160,9 @@ export const tokens: Record<string, string> = {
   --toast-ink: var(--drac-text);
   --on-error: var(--bg);
   --on-success: var(--bg);
+  --table-header: var(--drac-surface);
+  --table-header-ink: var(--drac-text);
+  --table-hover: var(--drac-surface);
 }`,
   'dark': `
 :root {
@@ -203,6 +212,9 @@ export const tokens: Record<string, string> = {
   --toast-ink: var(--dark-text);
   --on-error: var(--bg);
   --on-success: var(--bg);
+  --table-header: transparent;
+  --table-header-ink: #fff;
+  --table-hover: var(--surface);
 }`,
   'positronic': `
 :root {
@@ -263,6 +275,9 @@ export const tokens: Record<string, string> = {
   --toast-ink: var(--dark-text);
   --on-error: var(--bg);
   --on-success: var(--bg);
+  --table-header: transparent;
+  --table-header-ink: #fff;
+  --table-hover: var(--surface);
 }`,
   'vision-system': `:root {
   /* Typography contract (all sure-ui themes declare these). */
@@ -316,6 +331,9 @@ export const tokens: Record<string, string> = {
   --toast-ink: var(--vsys6);
   --on-error: #fff;
   --on-success: #fff;
+  --table-header: var(--vsys5);
+  --table-header-ink: var(--vsys0);
+  --table-hover: var(--vsys6);
 }`,
   'vision-atkinson': `@font-face {
   font-family: 'Atkinson Hyperlegible';
@@ -384,6 +402,9 @@ export const tokens: Record<string, string> = {
   --toast-ink: var(--vatk6);
   --on-error: #fff;
   --on-success: #fff;
+  --table-header: var(--vatk5);
+  --table-header-ink: var(--vatk0);
+  --table-hover: var(--vatk6);
 }`,
 }
 
@@ -444,20 +465,7 @@ export const runs: Record<string, Array<[string, string]>> = {
 }
 .sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--nord11); }
 .sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--nord3); }`],
-    ['table', `
-
-/* ── Table ── */
-.sure-table { width: 100%; border-collapse: collapse; }
-.sure-table__header {
-  text-align: left; padding: 0.75rem 1rem;
-  background: var(--nord5); color: var(--nord0);
-  font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
-  border-bottom: 2px solid var(--nord4);
-}
-.sure-table__cell { padding: 0.75rem 1rem; border-bottom: 1px solid var(--nord5); }
-.sure-table tr:hover .sure-table__cell { background: var(--nord6); }
-.sure-table__error { color: var(--nord11); font-size: 0.8rem; }
-.sure-table__help { color: var(--nord3); font-size: 0.8rem; }`],
+    ['table', ``],
     ['crud', `
 
 /* ── CRUD ── */
@@ -520,11 +528,7 @@ export const runs: Record<string, Array<[string, string]>> = {
     ['auth', ``],
     ['regions', ``],
     ['composites', ``],
-    ['table', `
-
-  /* ── State hooks & utilities ── */
-
-  .sure-table tr.is-selected { background: var(--border); }`],
+    ['table', ``],
     ['composites', ``],
     ['base', `
   
@@ -584,14 +588,7 @@ code, pre { font-family: var(--font-mono); }`],
 }
 .sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--frst-error); }
 .sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--frst-muted); }`],
-    ['table', `
-
-.sure-table { width: 100%; border-collapse: collapse; }
-.sure-table__header { text-align: left; padding: 0.75rem 1rem; background: var(--frst-highlight); color: var(--frst-text); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid var(--frst-border); }
-.sure-table__cell { padding: 0.75rem 1rem; border-bottom: 1px solid var(--frst-highlight); }
-.sure-table tr:hover .sure-table__cell { background: var(--frst-highlight); }
-.sure-table__error { color: var(--frst-error); font-size: 0.8rem; }
-.sure-table__help { color: var(--frst-muted); font-size: 0.8rem; }`],
+    ['table', ``],
     ['crud', `
 
 .sure-crud { max-width: 720px; }
@@ -631,11 +628,7 @@ code, pre { font-family: var(--font-mono); }`],
     ['auth', ``],
     ['regions', ``],
     ['composites', ``],
-    ['table', `
-
-  /* ── State hooks & utilities ── */
-
-  .sure-table tr.is-selected { background: var(--border); }`],
+    ['table', ``],
     ['composites', ``],
     ['base', `
   
@@ -689,14 +682,7 @@ code, pre { font-family: var(--font-mono); }`],
 .sure-modal__form input:focus, .sure-modal__form select:focus, .sure-modal__form textarea:focus { outline: none; border-color: var(--drac-focus); box-shadow: 0 0 0 3px rgba(189,147,249,0.25); }
 .sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--drac-error); }
 .sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--drac-muted); }`],
-    ['table', `
-
-.sure-table { width: 100%; border-collapse: collapse; }
-.sure-table__header { text-align: left; padding: 0.75rem 1rem; background: var(--drac-surface); color: var(--drac-text); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid var(--drac-border); }
-.sure-table__cell { padding: 0.75rem 1rem; border-bottom: 1px solid var(--drac-surface); color: var(--drac-text); }
-.sure-table tr:hover .sure-table__cell { background: var(--drac-surface); }
-.sure-table__error { color: var(--drac-error); font-size: 0.8rem; }
-.sure-table__help { color: var(--drac-muted); font-size: 0.8rem; }`],
+    ['table', ``],
     ['crud', `
 
 .sure-crud { max-width: 720px; }
@@ -736,11 +722,7 @@ code, pre { font-family: var(--font-mono); }`],
     ['auth', ``],
     ['regions', ``],
     ['composites', ``],
-    ['table', `
-
-  /* ── State hooks & utilities ── */
-
-  .sure-table tr.is-selected { background: var(--border); }`],
+    ['table', ``],
     ['composites', ``],
     ['base', `
   
@@ -812,13 +794,7 @@ code, pre { font-family: var(--font-mono); }`],
 }
 .sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--dark-error); }
 .sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--dark-muted); }`],
-    ['table', `
-
-.sure-table { width: 100%; border-collapse: collapse; }
-.sure-table__header { padding: 0.75rem; text-align: left; font-weight: 600; font-size: 0.8125rem; color: var(--dark-muted); border-bottom: 2px solid var(--dark-border); text-transform: uppercase; letter-spacing: 0.03em; }
-.sure-table__cell { padding: 0.75rem; border-bottom: 1px solid var(--dark-border); font-size: 0.875rem; }
-.sure-table__error { display: block; font-size: 0.8rem; color: var(--dark-error); }
-.sure-table__help { display: block; font-size: 0.8rem; color: var(--dark-muted); }`],
+    ['table', ``],
     ['crud', `
 
 .sure-crud { }
@@ -855,11 +831,7 @@ code, pre { font-family: var(--font-mono); }`],
     ['menu', ``],
     ['regions', ``],
     ['composites', ``],
-    ['table', `
-
-  /* ── State hooks & utilities ── */
-
-  .sure-table tr.is-selected { background: var(--border); }`],
+    ['table', ``],
     ['composites', ``],
     ['base', `
   
@@ -932,13 +904,7 @@ code, pre { font-family: var(--font-mono); }
 }
 .sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--dark-error); }
 .sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--dark-muted); }`],
-    ['table', `
-
-.sure-table { width: 100%; border-collapse: collapse; }
-.sure-table__header { padding: 0.75rem; text-align: left; font-weight: 600; font-size: 0.8125rem; color: var(--dark-muted); border-bottom: 2px solid var(--dark-border); text-transform: uppercase; letter-spacing: 0.03em; }
-.sure-table__cell { padding: 0.75rem; border-bottom: 1px solid var(--dark-border); font-size: 0.875rem; }
-.sure-table__error { display: block; font-size: 0.8rem; color: var(--dark-error); }
-.sure-table__help { display: block; font-size: 0.8rem; color: var(--dark-muted); }`],
+    ['table', ``],
     ['crud', `
 
 .sure-crud { }
@@ -975,11 +941,7 @@ code, pre { font-family: var(--font-mono); }
     ['menu', ``],
     ['regions', ``],
     ['composites', ``],
-    ['table', `
-
-  /* ── State hooks & utilities ── */
-
-  .sure-table tr.is-selected { background: var(--border); }`],
+    ['table', ``],
     ['composites', ``],
     ['base', `
   
@@ -1053,20 +1015,7 @@ code, pre { font-family: var(--font-mono); }`],
 }
 .sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--vsys11); }
 .sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--vsys3); }`],
-    ['table', `
-
-/* ── Table ── */
-.sure-table { width: 100%; border-collapse: collapse; }
-.sure-table__header {
-  text-align: left; padding: 0.75rem 1rem;
-  background: var(--vsys5); color: var(--vsys0);
-  font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
-  border-bottom: 2px solid var(--vsys4);
-}
-.sure-table__cell { padding: 0.75rem 1rem; border-bottom: 1px solid var(--vsys5); }
-.sure-table tr:hover .sure-table__cell { background: var(--vsys6); }
-.sure-table__error { color: var(--vsys11); font-size: 0.8rem; }
-.sure-table__help { color: var(--vsys3); font-size: 0.8rem; }`],
+    ['table', ``],
     ['crud', `
 
 /* ── CRUD ── */
@@ -1129,11 +1078,7 @@ code, pre { font-family: var(--font-mono); }`],
     ['auth', ``],
     ['regions', ``],
     ['composites', ``],
-    ['table', `
-
-  /* ── State hooks & utilities ── */
-
-  .sure-table tr.is-selected { background: var(--border); }`],
+    ['table', ``],
     ['composites', ``],
     ['base', `
 
@@ -1206,20 +1151,7 @@ code, pre { font-family: var(--font-mono); }`],
 }
 .sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--vatk11); }
 .sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--vatk3); }`],
-    ['table', `
-
-/* ── Table ── */
-.sure-table { width: 100%; border-collapse: collapse; }
-.sure-table__header {
-  text-align: left; padding: 0.75rem 1rem;
-  background: var(--vatk5); color: var(--vatk0);
-  font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
-  border-bottom: 2px solid var(--vatk4);
-}
-.sure-table__cell { padding: 0.75rem 1rem; border-bottom: 1px solid var(--vatk5); }
-.sure-table tr:hover .sure-table__cell { background: var(--vatk6); }
-.sure-table__error { color: var(--vatk11); font-size: 0.8rem; }
-.sure-table__help { color: var(--vatk3); font-size: 0.8rem; }`],
+    ['table', ``],
     ['crud', `
 
 /* ── CRUD ── */
@@ -1282,11 +1214,7 @@ code, pre { font-family: var(--font-mono); }`],
     ['auth', ``],
     ['regions', ``],
     ['composites', ``],
-    ['table', `
-
-  /* ── State hooks & utilities ── */
-
-  .sure-table tr.is-selected { background: var(--border); }`],
+    ['table', ``],
     ['composites', ``],
     ['base', `
 

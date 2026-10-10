@@ -6,6 +6,24 @@
 // compose() — are the correct shape, not a single string.
 // Edit these directly from 0.2.0b on; regenerate only to re-prove.
 export const shared: Record<string, string[]> = {
+  'table': [`
+
+/* ── Table ── */
+.sure-table { width: 100%; border-collapse: collapse; }
+.sure-table__header {
+  text-align: left; padding: 0.75rem 1rem;
+  background: var(--table-header); color: var(--table-header-ink);
+  font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
+  border-bottom: 2px solid var(--border);
+}
+.sure-table__cell { padding: 0.75rem 1rem; border-bottom: 1px solid var(--highlight); }
+.sure-table tr:hover .sure-table__cell { background: var(--table-hover); }
+.sure-table__error { color: var(--error); font-size: 0.8rem; }
+.sure-table__help { color: var(--muted); font-size: 0.8rem; }`, `
+
+  /* ── State hooks & utilities ── */
+
+  .sure-table tr.is-selected { background: var(--border); }`],
   'toast': [`
 
 /* ── Notifications ── */

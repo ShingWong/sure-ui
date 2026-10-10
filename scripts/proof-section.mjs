@@ -19,7 +19,8 @@ for (const name of Object.keys(newFix)) {
   let o = oldFix[name]
   let m, removed = 0
   while ((m = runRe.exec(themeRuns)) !== null) { o = o.replace(m[1], ''); removed++ }
-  const n = newFix[name].replaceAll(canonical, '')
+  let n = newFix[name]
+  for (const s of shared[family] ?? []) n = n.replaceAll(s, '')
   // tokens added by the unification (any --X the old fixture lacked)
   const oldTokens = new Set((oldFix[name].match(/--[a-z0-9-]+(?=:)/g) ?? []))
   const added = [...new Set(n.match(/--[a-z0-9-]+(?=:)/g) ?? [])].filter((t) => !oldTokens.has(t))
