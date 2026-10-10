@@ -1,7 +1,8 @@
 # Components at compile time — 0.2.0 design
 
-Status: **agreed, spike started** (2026-10-09). Decisions locked by the
-operator: unify toast to one fixed-position block; `@layer` in the
+Status: **implemented on `feat/components-at-compile-time` — 0.2.0a + 0.2.0b
+complete, browser-QA verified (2026-10-10), awaiting operator review/PR.**
+Decisions locked by the operator: unify toast to one fixed-position block; `@layer` in the
 agent-first direction; `pp-*` promoted to a first-class component for
 everyone; catalog `cssClasses` role-rename **dropped** — generated markup
 always uses sure-ui class conventions. Version target: 0.2.0.
@@ -103,7 +104,7 @@ some themes. The differences are three classes:
   the fixture. Subpaths: `./compose`, `./themes` (`./components/*` lands
   with the shared blocks in 0.2.0b). Measured: a form-only nord compose is
   4,430 bytes vs 20,625 full (-79%).
-- **0.2.0b (unification) — in progress on this branch.** Landed: the four
+- **0.2.0b (unification) — DONE (verified in browser).** Landed: the four
   byte-identical families (composites, dialog, regions, page) shared with
   the fixture unmoved, and the three whitespace-only families (markdown,
   menu, sessions) normalized — collapse-asserted, +4B to dark/positronic,
@@ -115,6 +116,17 @@ some themes. The differences are three classes:
   4.09:1). **0.2.0b DONE: 17 of 18 families shared** (base stays
   per-theme — it IS the typography contract). Only `base` remains
   per-theme by design.
+- **Browser QA (2026-10-10) — DONE, verdict pass.** `experiments/browser-qa/`
+  drives real Chromium over all 7 themes: 175/189 pairs >= 4.5:1 (14 flags,
+  11 proven pre-existing by an A/B against master's original 0.1.9 strings),
+  21/21 hover/focus interactions, 7/7 mobile at 375px, 4/4 compile-time
+  subset proofs (form-only = 5,028B, zero leakage), 0 console errors. The
+  pass **caught one real regression** — dracula `--on-accent` (white on
+  `#bd93f9` = 2.41:1) hit the new solid `--info` surfaces that had no 0.1.9
+  counterpart; fixed by deriving `var(--drac-bg)` (5.90:1, the same
+  derivation phase 4 gave `--primary-ink`), operator decision 2026-10-10,
+  with a new unit gate so `npm test` owns it from now on. Finding:
+  `docs/findings/2026-10-10-browser-qa-catches-on-accent-regression.md`.
 - **sure-factor integration** — depends on `@shing.wong/sure-ui@^0.2.0`;
   catalog yamls declare `sure_ui: [blocks]` (registry test guards drift);
   `generateStyles()` becomes `compose()` over the page's union of blocks;
