@@ -164,7 +164,11 @@ export const tokens: Record<string, string> = {
   --success-ink: var(--success);
   --accent-ink: var(--accent);
   --warn-ink: var(--warn);
-  --on-accent: #fff;
+  /* Ink that reads on --accent (#bd93f9 light purple): white lands at 2.41:1,
+     so the theme's own bg — same derivation phase 4 gave --primary-ink for
+     this identical background — reaches 5.90:1. Browser-measured 2026-10-10
+     (experiments/browser-qa). */
+  --on-accent: var(--drac-bg);
   --primary: var(--drac-primary);
   --primary-hover: var(--drac-primary-hover);
   --primary-ink: var(--drac-bg);

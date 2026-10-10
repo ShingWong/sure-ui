@@ -31,8 +31,25 @@ for (const name of Object.keys(newFix)) {
     o2 = o2.replace(new RegExp(`\\n  ${t}: [^;]+;`, 'g'), '')
     n2 = n2.replace(new RegExp(`\\n  ${t}: [^;]+;`, 'g'), '')
   }
+  // tokens whose VALUE changed (present in both, declaration differs) —
+  // stripped from both sides and reported explicitly, never silently. The
+  // change's own adjacent comment (/* ... */ immediately above) is part of
+  // the same change and goes with it; nothing else in the token block moves.
+  const decl = (s, t) => new RegExp(`\\n  ${t}: ([^;]+);`).exec(s)?.[1]
+  const stripDecl = (s, t) => s.replace(
+    new RegExp(`(?:\\n\\s*\\/\\*(?:(?!\\*\\/)[\\s\\S])*\\*\\/)?\\n\\s*${t}: [^;]+;`, 'g'), '')
+  const changed = []
+  for (const t of [...oldTokens]) {
+    const ov = decl(o2, t), nv = decl(n2, t)
+    if (ov !== undefined && nv !== undefined && ov !== nv) {
+      changed.push(`${t}: ${ov} -> ${nv}`)
+      o2 = stripDecl(o2, t)
+      n2 = stripDecl(n2, t)
+    }
+  }
   const same = o2 === n2
-  console.log(`${name.padEnd(16)} runs removed: ${removed} | added tokens: ${added.join(',') || 'none'} | identical outside: ${same}`)
+  console.log(`${name.padEnd(16)} runs removed: ${removed} | added: ${added.join(',') || 'none'} | changed: ${changed.join('; ') || 'none'} | identical outside: ${same}`)
+  if (changed.length) console.log(`  token change(s): ${changed.join(' | ')}`)
   if (!same) {
     ok = false
     let i = 0; while (o2[i] === n2[i]) i++

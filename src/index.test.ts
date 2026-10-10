@@ -216,6 +216,16 @@ describe('themes: button contrast', () => {
       const ratio = contrast(resolve(css, resolve(css, bg!)), resolve(css, resolve(css, fg!)))
       expect(ratio, `${name} .btn-primary is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5)
     })
+
+    /* --on-accent is the ink on EVERY solid accent surface: auth button,
+       toast--info, status-bar--info. One bad value fails three components,
+       and it did — dracula shipped #fff on #bd93f9 (2.41:1) until the
+       browser harness caught it (experiments/browser-qa, 2026-10-10);
+       the unit suite had no gate for it. */
+    it(`${name} --on-accent reads on --accent (>= 4.5:1)`, () => {
+      const ratio = contrast(resolve(css, 'var(--accent)'), resolve(css, 'var(--on-accent)'))
+      expect(ratio, `${name} --on-accent on --accent is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5)
+    })
   }
 })
 
