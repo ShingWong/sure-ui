@@ -66,9 +66,18 @@ export interface ComposeOptions {
   components?: readonly ComponentName[] | 'all'
   /** Append the shared mobile & touch layer (default true). */
   mobile?: boolean
+  /**
+   * Extra CSS appended at the END of the components layer — inside the
+   * layer, so specificity resolves normally against the block rules.
+   * Callers use it for class names sure-ui does not own (generator template
+   * defaults like `.field-input`). Placing it outside the layers would make
+   * it unlayered, and unlayered CSS beats every layered rule regardless of
+   * specificity — it would silently override the theme.
+   */
+  extra?: string
 }
 
-export function compose({ theme, components = 'all', mobile = true }: ComposeOptions): string {
+export function compose({ theme, components = 'all', mobile = true, extra }: ComposeOptions): string {
   const tokensOf = tokens[theme]
   if (tokensOf === undefined) {
     throw new Error(`unknown theme "${theme}" — valid themes: ${Object.keys(tokens).join(', ')}`)
@@ -107,6 +116,7 @@ export function compose({ theme, components = 'all', mobile = true }: ComposeOpt
   // components, then mobile), so every same-specificity tie resolves exactly
   // as it did unlayered; what changes is only vs CONSUMER css, which is
   // unlayered and now always wins
+  if (extra) comp += `\n${extra}`
   let out = `${LAYER_DECL}\n\n${wrap('sure.tokens', tokensOf)}\n\n${wrap('sure.components', comp)}`
   if (mobile) out += `\n\n${wrap('sure.mobile', mobileLayer)}`
   return out + '\n'
