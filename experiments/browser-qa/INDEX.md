@@ -6,4 +6,5 @@ date · suite · label · host · sha · headline · verdict
 
 | date | suite | label | host | sha | headline | verdict |
 |---|---|---|---|---|---|---|
+| 2026-10-10 | sure-ui-browser-qa | 0.2.0-layers | web2 | `2d5adde`-dirty | 175/189 AA, 14 flags (11 pre-existing), 21 interactions, 0 mobile fails, 0 failures | pass |
 | 2026-10-10 | sure-ui-browser-qa | 0.2.0b-unification | web2 | `ae02230`-dirty | 175/189 AA, 14 flags (11 pre-existing), 21 interactions, 0 mobile fails, 0 failures | pass |

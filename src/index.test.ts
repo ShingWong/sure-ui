@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { VERSION, nord, forest, dracula, dark, themes, compose, COMPONENTS, showNotification, clearNotifications } from './index.js'
+import { VERSION, nord, forest, dracula, dark, themes, compose, stripLayers, COMPONENTS, showNotification, clearNotifications } from './index.js'
 
 describe('sure-ui', () => {
   it('exports VERSION matching package.json', () => {
@@ -447,10 +447,36 @@ describe('compose: compile-time assembly', () => {
   ) as Record<string, string>
 
   for (const name of Object.keys(themes)) {
-    it(`${name}: compose(all) is byte-identical to the 0.1.9 string`, () => {
-      expect(compose({ theme: name }), `${name} drifted from fixture`).toBe(fixture[name])
+    it(`${name}: compose(all) strips to the byte-identical 0.1.9 string`, () => {
+      // 0.2.0 emits @layer scaffolding; stripLayers removes EXACTLY that
+      // (proved positional in compose.ts), so the inner bytes must equal the
+      // frozen string — the wrapper may never smuggle a byte of change
+      expect(stripLayers(compose({ theme: name })), `${name} drifted from fixture`).toBe(fixture[name])
+    })
+
+    it(`${name}: output is three ordered layers, statement first`, () => {
+      const css = compose({ theme: name })
+      expect(css.startsWith('@layer sure.tokens, sure.components, sure.mobile;')).toBe(true)
+      const order = ['sure.tokens', 'sure.components', 'sure.mobile']
+      const positions = order.map((l) => css.indexOf(`@layer ${l} {`))
+      expect(positions.every((p) => p > 0)).toBe(true)
+      expect([...positions].sort((a, b) => a - b)).toEqual(positions)
+      // statement must precede every block (order declarations bind on use)
+      expect(Math.min(...positions)).toBeGreaterThan(css.indexOf('@layer sure.tokens,'))
     })
   }
+
+  it('mobile:false emits only tokens and components layers', () => {
+    const css = compose({ theme: 'nord', mobile: false })
+    expect(css).toContain('@layer sure.components {')
+    expect(css).not.toContain('@layer sure.mobile {')
+    // stripping the two-block output must equal stripping the full output
+    // minus the mobile content — i.e. the mobile block is exactly the diff
+    const full = stripLayers(compose({ theme: 'nord' }))
+    const two = stripLayers(css)
+    expect(full.startsWith(two)).toBe(true)
+    expect(full.length).toBeGreaterThan(two.length)
+  })
 
   it('a subset drops unselected blocks and keeps tokens, base and mobile', () => {
     const css = compose({ theme: 'nord', components: ['form', 'table'] })

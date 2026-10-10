@@ -58,10 +58,23 @@ src/
 - `compose(theme, ALL)` must equal `themes[theme]` byte-for-byte at the
   first milestone; every later unification step changes exactly the
   selectors listed in the decision table below, nothing else.
-- Layers, in declared order:
-  `@layer sure.tokens, sure.components, sure.mobile;`
-  Consumer CSS is unlayered and therefore always wins. Mobile sits above
-  components so narrow-screen tuning never depends on source order.
+- Layers, in declared order: **DONE (2026-10-10)** —
+  `@layer sure.tokens, sure.components, sure.mobile;` emitted first by
+  `compose()`. Consumer CSS is unlayered and therefore always wins. Mobile sits
+  above components so narrow-screen tuning never depends on source order.
+  Proof, three ways: (1) `stripLayers(compose(all))` is byte-identical to the
+  frozen pre-layer fixture for all 7 themes (+129B scaffolding, zero content
+  change); (2) computed-style snapshots before/after — 6,393 element-records
+  across desktop/375px/touch, **0 diffs**; (3) browser QA run
+  `0.2.0-layers` reproduces `0.2.0b-unification` exactly (175/189 AA, same 14
+  flags, 0 failures). The fixture stays content-only (layers stripped on
+  regen via `scripts/regen-fixture.mjs`), so proof-section.mjs keeps
+  comparing content to content. Exported: `LAYER_DECL`, `stripLayers`.
+  Migration notes: management console (pins ^0.1.7) gets layered CSS when it
+  bumps — its own unlayered `:root` copies will then pin vars *over* the
+  theme (today they win by source order anyway; review on upgrade). Landing
+  `rootBlock()`/fontFace extraction is regex-based and layer-agnostic
+  (verified by the snapshot diffs above).
 - Toast unifies to the fixed-position block in every theme (operator
   decision 2026-10-09); dark's static toast is the delta.
 - `pp-*` becomes `components.page`, composed into positronic by default;
