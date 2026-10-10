@@ -114,7 +114,7 @@ for (const [name, full] of Object.entries(themes)) out[name] = sliceTheme(name, 
 // proves it, and the canonical pick keeps the variant that carries the
 // section comment (documentation agents read).
 const SHARE_EXACT = ['composites', 'dialog', 'page', 'regions']
-const SHARE_NORM = [] // enabled per family once normalized; auth needs alias-gap rewrites first
+const SHARE_NORM = ['markdown', 'menu', 'sessions'] // whitespace-only variants (collapse-asserted); auth waits for the alias-gap rewrites
 const SHARE = [...SHARE_EXACT, ...SHARE_NORM]
 const collapse = (s) => s.replace(/\s+/g, ' ').trim()
 const runText = (t, fam) => t.runs.filter(([f]) => f === fam).map(([, s]) => s).join('')
@@ -131,15 +131,14 @@ for (const fam of SHARE_EXACT) {
 }
 for (const fam of SHARE_NORM) {
   const perTheme = Object.values(out)
-    .map((t) => t.runs.filter(([f]) => f === fam).map(([, s]) => s.join('')))
+    .map((t) => t.runs.filter(([f]) => f === fam).map(([, s]) => s))
     .filter((a) => a.length)
   const byKey = {}
-  for (const runsOf of perTheme) (byKey[collapse(runsOf)] ??= []).push(runsOf)
+  for (const runsOf of perTheme) (byKey[collapse(runsOf.join(''))] ??= []).push(runsOf)
   const keys = Object.keys(byKey)
   if (keys.length !== 1) throw new Error(`${fam}: not whitespace-equivalent (${keys.length} variants) — real drift, use the alias-gap path`)
-  const variants = [...new Set(byKey[keys[0]])]
-  shared[fam] = variants.find((s) => s.includes('/*')) ?? variants[0]
-  shared[fam] = [shared[fam]]
+  const variants = [...new Set(byKey[keys[0]].map((a) => JSON.stringify(a)))]
+  shared[fam] = JSON.parse(variants.find((j) => j.includes('/*')) ?? variants[0])
 }
 
 // Global safety net: sharing (and any normalization) may change whitespace,

@@ -121,4 +121,54 @@ pre { background: var(--surface); border: 1px solid var(--border); border-radius
   }
   .sure-help__details { margin: 0.35rem 0 0; font-size: 0.82rem; opacity: 0.85; }
   .sure-help__example { margin: 0.3rem 0 0; font-size: 0.8rem; }`],
+  'markdown': [`
+
+
+/* ── Markdown ── */
+.sure-markdown code { background:var(--highlight); padding:0.125rem 0.375rem; border-radius:3px; font-size:0.8125rem; }
+.sure-markdown pre { background:var(--bg); padding:0.75rem; border-radius:6px; overflow-x:auto; margin:0.5rem 0; }
+.sure-markdown pre code { background:transparent; padding:0; }
+.sure-markdown table { border-collapse:collapse; width:100%; margin:0.5rem 0; font-size:0.8125rem; }
+.sure-markdown table td, .sure-markdown table th { border:1px solid var(--border); padding:0.375rem 0.5rem; text-align:left; }
+.sure-markdown table th { background:var(--highlight); font-weight:600; }
+.sure-markdown blockquote { border-left:3px solid var(--accent); margin:0.5rem 0; padding:0.25rem 0.75rem; color:var(--muted); font-style:italic; }
+.sure-markdown ul { margin:0.25rem 0; padding-left:1.25rem; }
+.sure-markdown ul li { list-style:disc; margin-bottom:0.125rem; }
+.sure-markdown h2, .sure-markdown h3, .sure-markdown h4 { margin:0.75rem 0 0.25rem; }
+.sure-markdown hr { border:none; border-top:1px solid var(--border); margin:0.75rem 0; }
+.sure-markdown p { margin:0 0 0.5rem; }
+.sure-markdown a { color:var(--accent); }
+.sure-markdown a:hover { text-decoration:underline; }
+.sure-markdown img { max-width:100%; border-radius:6px; }`],
+  'menu': [`
+
+
+/* ── Horizontal Menu ── */
+.sure-menu { display:flex; align-items:center; gap:0.25rem; }
+.sure-menu__item { padding:0.375rem; background:transparent; border:none; cursor:pointer; color:var(--muted); font-size:1.125rem; line-height:1; border-radius:4px; transition:background 0.15s, color 0.15s; }
+.sure-menu__item:hover { background:var(--highlight); color:var(--text); }
+.sure-menu__item.active { color:var(--accent); }
+.sure-menu__divider { width:1px; height:1.25rem; background:var(--border); margin:0 0.25rem; flex-shrink:0; }`],
+  'sessions': [`
+
+
+/* ── Sessions ── */
+.sure-session-list { flex:1; overflow-y:auto; padding:0.375rem; }
+.sure-session-item { display:flex; align-items:center; gap:0.25rem; padding:0.375rem 0.5rem; border-radius:6px; cursor:pointer; margin-bottom:1px; font-size:0.8125rem; overflow:hidden; transition:background 0.15s; }
+.sure-session-item:hover { background:var(--highlight); }
+.sure-session-item.active { background:var(--accent); color:#fff; }
+.sure-session-item.active .sure-session-actions button { color:#fff; }
+.sure-session-title { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sure-session-actions { display:none; flex-shrink:0; gap:0.125rem; }
+.sure-session-item:hover .sure-session-actions { display:flex; }
+.sure-session-actions button { background:none; border:none; cursor:pointer; font-size:0.625rem; padding:0.125rem; opacity:0.6; }
+.sure-session-actions button:hover { opacity:1; }
+
+
+/* ── Message Actions ── */
+.msg-actions { display:none; gap:0.25rem; margin-top:0.375rem; }
+.message:hover .msg-actions { display:flex; }
+.msg-actions button { background:none; border:none; cursor:pointer; font-size:0.75rem; padding:0.125rem 0.25rem; border-radius:3px; color:var(--muted); line-height:1; }
+.msg-actions button:hover { background:var(--highlight); color:var(--text); }
+.msg-body { line-height:1.5; }`],
 }

@@ -103,9 +103,14 @@ some themes. The differences are three classes:
   the fixture. Subpaths: `./compose`, `./themes` (`./components/*` lands
   with the shared blocks in 0.2.0b). Measured: a form-only nord compose is
   4,430 bytes vs 20,625 full (-79%).
-- **0.2.0b (unification)** — shared blocks replace per-theme fragments,
-  selector-group by selector-group, each step an isolated diff from the
-  decision table, contrast tests re-measuring every theme each time.
+- **0.2.0b (unification) — in progress on this branch.** Landed: the four
+  byte-identical families (composites, dialog, regions, page) shared with
+  the fixture unmoved, and the three whitespace-only families (markdown,
+  menu, sessions) normalized — collapse-asserted, +4B to dark/positronic,
+  zero bytes elsewhere. Remaining: auth (needs the Class-1 alias-gap
+  rewrite of its dark/positronic rules first), then the real drift
+  families per the decision table below, contrast tests re-measuring
+  every theme each step.
 - **sure-factor integration** — depends on `@shing.wong/sure-ui@^0.2.0`;
   catalog yamls declare `sure_ui: [blocks]` (registry test guards drift);
   `generateStyles()` becomes `compose()` over the page's union of blocks;
