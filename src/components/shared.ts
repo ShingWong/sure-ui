@@ -6,6 +6,55 @@
 // compose() — are the correct shape, not a single string.
 // Edit these directly from 0.2.0b on; regenerate only to re-prove.
 export const shared: Record<string, string[]> = {
+  'modal': [`
+
+/* ── Modal ── */
+.sure-modal__form { max-width: 560px; }
+.sure-modal__field { margin-bottom: 1rem; }
+.sure-modal__label {
+  display: block; margin-bottom: 0.25rem;
+  font-weight: 600; color: var(--text); font-size: 0.875rem;
+}
+.sure-modal__form input, .sure-modal__form select, .sure-modal__form textarea {
+  width: 100%; padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-size: 1rem; color: var(--text); background: var(--field);}
+.sure-modal__form input:focus, .sure-modal__form select:focus, .sure-modal__form textarea:focus {
+  outline: none; border-color: var(--focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 20%, transparent);
+}
+.sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--error); }
+.sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--muted); }`],
+  'form': [`
+
+/* ── Form ── */
+.sure-form { max-width: 480px; }
+  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--text); }
+  .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+
+.sure-form__field { margin-bottom: 1rem; }
+.sure-form__label {
+  display: block; margin-bottom: 0.25rem;
+  font-weight: 600; color: var(--text);
+  font-size: 0.875rem;
+}
+.sure-form input, .sure-form select, .sure-form textarea {
+  width: 100%; padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-size: 1rem; color: var(--text);
+  background: var(--field); transition: border-color 0.15s;
+}
+.sure-form input:focus, .sure-form select:focus, .sure-form textarea:focus {
+  outline: none; border-color: var(--focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 20%, transparent);
+}
+.sure-form__error {
+  display: block; margin-top: 0.25rem;
+  font-size: 0.8rem; color: var(--error);
+}
+.sure-form__help {
+  display: block; margin-top: 0.25rem;
+  font-size: 0.8rem; color: var(--muted);
+}
+.sure-form input[aria-invalid="true"] { border-color: var(--error); }`],
   'table': [`
 
 /* ── Table ── */

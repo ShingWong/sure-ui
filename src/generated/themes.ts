@@ -59,6 +59,8 @@ export const tokens: Record<string, string> = {
   --table-header: var(--nord5);
   --table-header-ink: var(--nord0);
   --table-hover: var(--nord6);
+  --field: #fff;
+  --focus: var(--nord9);
 }`,
   'forest': `:root {
   /* Typography contract (all sure-ui themes declare these). */
@@ -111,6 +113,8 @@ export const tokens: Record<string, string> = {
   --table-header: var(--frst-highlight);
   --table-header-ink: var(--frst-text);
   --table-hover: var(--frst-highlight);
+  --field: var(--frst-surface);
+  --focus: var(--frst-focus);
 }`,
   'dracula': `:root {
   /* Typography contract (all sure-ui themes declare these). */
@@ -163,6 +167,8 @@ export const tokens: Record<string, string> = {
   --table-header: var(--drac-surface);
   --table-header-ink: var(--drac-text);
   --table-hover: var(--drac-surface);
+  --field: var(--drac-surface);
+  --focus: var(--drac-focus);
 }`,
   'dark': `
 :root {
@@ -215,6 +221,8 @@ export const tokens: Record<string, string> = {
   --table-header: transparent;
   --table-header-ink: #fff;
   --table-hover: var(--surface);
+  --field: var(--dark-bg);
+  --focus: var(--dark-focus);
 }`,
   'positronic': `
 :root {
@@ -278,6 +286,8 @@ export const tokens: Record<string, string> = {
   --table-header: transparent;
   --table-header-ink: #fff;
   --table-hover: var(--surface);
+  --field: var(--dark-bg);
+  --focus: var(--dark-focus);
 }`,
   'vision-system': `:root {
   /* Typography contract (all sure-ui themes declare these). */
@@ -334,6 +344,8 @@ export const tokens: Record<string, string> = {
   --table-header: var(--vsys5);
   --table-header-ink: var(--vsys0);
   --table-hover: var(--vsys6);
+  --field: #fff;
+  --focus: var(--vsys9);
 }`,
   'vision-atkinson': `@font-face {
   font-family: 'Atkinson Hyperlegible';
@@ -405,6 +417,8 @@ export const tokens: Record<string, string> = {
   --table-header: var(--vatk5);
   --table-header-ink: var(--vatk0);
   --table-hover: var(--vatk6);
+  --field: #fff;
+  --focus: var(--vatk9);
 }`,
 }
 
@@ -413,58 +427,10 @@ export const runs: Record<string, Array<[string, string]>> = {
     ['base', `
 
 *, *::before, *::after { box-sizing: border-box; }`],
-    ['form', `
-
-/* ── Form ── */
-.sure-form { max-width: 480px; }
-  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--nord0); }
-  .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }`],
+    ['form', ``],
     ['buttons', ``],
-    ['form', `
-
-.sure-form__field { margin-bottom: 1rem; }
-.sure-form__label {
-  display: block; margin-bottom: 0.25rem;
-  font-weight: 600; color: var(--nord0);
-  font-size: 0.875rem;
-}
-.sure-form input, .sure-form select, .sure-form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--nord4); border-radius: 6px;
-  font-size: 1rem; color: var(--nord0);
-  background: #fff; transition: border-color 0.15s;
-}
-.sure-form input:focus, .sure-form select:focus, .sure-form textarea:focus {
-  outline: none; border-color: var(--nord9); box-shadow: 0 0 0 3px rgba(129,161,193,0.2);
-}
-.sure-form__error {
-  display: block; margin-top: 0.25rem;
-  font-size: 0.8rem; color: var(--nord11);
-}
-.sure-form__help {
-  display: block; margin-top: 0.25rem;
-  font-size: 0.8rem; color: var(--nord3);
-}
-.sure-form input[aria-invalid="true"] { border-color: var(--nord11); }`],
-    ['modal', `
-
-/* ── Modal ── */
-.sure-modal__form { max-width: 560px; }
-.sure-modal__field { margin-bottom: 1rem; }
-.sure-modal__label {
-  display: block; margin-bottom: 0.25rem;
-  font-weight: 600; color: var(--nord0); font-size: 0.875rem;
-}
-.sure-modal__form input, .sure-modal__form select, .sure-modal__form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--nord4); border-radius: 6px;
-  font-size: 1rem; color: var(--nord0); background: #fff;
-}
-.sure-modal__form input:focus, .sure-modal__form select:focus, .sure-modal__form textarea:focus {
-  outline: none; border-color: var(--nord9); box-shadow: 0 0 0 3px rgba(129,161,193,0.2);
-}
-.sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--nord11); }
-.sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--nord3); }`],
+    ['form', ``],
+    ['modal', ``],
     ['table', ``],
     ['crud', `
 
@@ -550,44 +516,10 @@ code, pre { font-family: var(--font-mono); }`],
     ['base', `
 
 *, *::before, *::after { box-sizing: border-box; }`],
-    ['form', `
-
-.sure-form { max-width: 480px; }
-  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--frst-text); }
-  .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }`],
+    ['form', ``],
     ['buttons', ``],
-    ['form', `
-
-.sure-form__field { margin-bottom: 1rem; }
-.sure-form__label { display: block; margin-bottom: 0.25rem; font-weight: 600; color: var(--frst-text); font-size: 0.875rem; }
-.sure-form input, .sure-form select, .sure-form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--frst-border); border-radius: 4px;
-  font-size: 1rem; color: var(--frst-text);
-  background: var(--frst-surface);
-  transition: border-color 0.15s;
-}
-.sure-form input:focus, .sure-form select:focus, .sure-form textarea:focus {
-  outline: none; border-color: var(--frst-focus); box-shadow: 0 0 0 3px rgba(91,140,90,0.15);
-}
-.sure-form__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--frst-error); }
-.sure-form__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--frst-muted); }
-.sure-form input[aria-invalid="true"] { border-color: var(--frst-error); }`],
-    ['modal', `
-
-.sure-modal__form { max-width: 560px; }
-.sure-modal__field { margin-bottom: 1rem; }
-.sure-modal__label { display: block; margin-bottom: 0.25rem; font-weight: 600; color: var(--frst-text); font-size: 0.875rem; }
-.sure-modal__form input, .sure-modal__form select, .sure-modal__form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--frst-border); border-radius: 4px;
-  font-size: 1rem; color: var(--frst-text); background: var(--frst-surface);
-}
-.sure-modal__form input:focus, .sure-modal__form select:focus, .sure-modal__form textarea:focus {
-  outline: none; border-color: var(--frst-focus); box-shadow: 0 0 0 3px rgba(91,140,90,0.15);
-}
-.sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--frst-error); }
-.sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--frst-muted); }`],
+    ['form', ``],
+    ['modal', ``],
     ['table', ``],
     ['crud', `
 
@@ -650,38 +582,10 @@ code, pre { font-family: var(--font-mono); }`],
     ['base', `
 
 *, *::before, *::after { box-sizing: border-box; }`],
-    ['form', `
-
-.sure-form { max-width: 480px; }
-  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--drac-text); }
-  .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }`],
+    ['form', ``],
     ['buttons', ``],
-    ['form', `
-
-.sure-form__field { margin-bottom: 1rem; }
-.sure-form__label { display: block; margin-bottom: 0.25rem; font-weight: 600; color: var(--drac-text); font-size: 0.875rem; }
-.sure-form input, .sure-form select, .sure-form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--drac-border); border-radius: 6px;
-  font-size: 1rem; color: var(--drac-text);
-  background: var(--drac-surface);
-  transition: border-color 0.15s;
-}
-.sure-form input:focus, .sure-form select:focus, .sure-form textarea:focus {
-  outline: none; border-color: var(--drac-focus); box-shadow: 0 0 0 3px rgba(189,147,249,0.25);
-}
-.sure-form__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--drac-error); }
-.sure-form__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--drac-muted); }
-.sure-form input[aria-invalid="true"] { border-color: var(--drac-error); }`],
-    ['modal', `
-
-.sure-modal__form { max-width: 560px; }
-.sure-modal__field { margin-bottom: 1rem; }
-.sure-modal__label { display: block; margin-bottom: 0.25rem; font-weight: 600; color: var(--drac-text); font-size: 0.875rem; }
-.sure-modal__form input, .sure-modal__form select, .sure-modal__form textarea { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--drac-border); border-radius: 6px; font-size: 1rem; color: var(--drac-text); background: var(--drac-surface); }
-.sure-modal__form input:focus, .sure-modal__form select:focus, .sure-modal__form textarea:focus { outline: none; border-color: var(--drac-focus); box-shadow: 0 0 0 3px rgba(189,147,249,0.25); }
-.sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--drac-error); }
-.sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--drac-muted); }`],
+    ['form', ``],
+    ['modal', ``],
     ['table', ``],
     ['crud', `
 
@@ -744,56 +648,10 @@ code, pre { font-family: var(--font-mono); }`],
     ['base', `
 
 *, *::before, *::after { box-sizing: border-box; }`],
-    ['form', `
-
-.sure-form { max-width: 480px; }
-  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--dark-text); }
-  .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }`],
+    ['form', ``],
     ['buttons', ``],
-    ['form', `
-
-.sure-form__field { margin-bottom: 1rem; }
-.sure-form__label {
-  display: block; margin-bottom: 0.25rem;
-  font-weight: 600; color: var(--dark-text);
-  font-size: 0.875rem;
-}
-.sure-form input, .sure-form select, .sure-form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--dark-border); border-radius: 6px;
-  font-size: 1rem; color: var(--dark-text);
-  background: var(--dark-bg); transition: border-color 0.15s;
-}
-.sure-form input:focus, .sure-form select:focus, .sure-form textarea:focus {
-  outline: none; border-color: var(--dark-focus); box-shadow: 0 0 0 3px rgba(100,255,218,0.15);
-}
-.sure-form__error {
-  display: block; margin-top: 0.25rem;
-  font-size: 0.8rem; color: var(--dark-error);
-}
-.sure-form__help {
-  display: block; margin-top: 0.25rem;
-  font-size: 0.8rem; color: var(--dark-muted);
-}
-.sure-form input[aria-invalid="true"] { border-color: var(--dark-error); }`],
-    ['modal', `
-
-.sure-modal__form { max-width: 560px; }
-.sure-modal__field { margin-bottom: 1rem; }
-.sure-modal__label {
-  display: block; margin-bottom: 0.25rem;
-  font-weight: 600; color: var(--dark-text); font-size: 0.875rem;
-}
-.sure-modal__form input, .sure-modal__form select, .sure-modal__form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--dark-border); border-radius: 6px;
-  font-size: 1rem; color: var(--dark-text); background: var(--dark-bg);
-}
-.sure-modal__form input:focus, .sure-modal__form select:focus, .sure-modal__form textarea:focus {
-  outline: none; border-color: var(--dark-focus); box-shadow: 0 0 0 3px rgba(100,255,218,0.15);
-}
-.sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--dark-error); }
-.sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--dark-muted); }`],
+    ['form', ``],
+    ['modal', ``],
     ['table', ``],
     ['crud', `
 
@@ -854,56 +712,10 @@ code, pre { font-family: var(--font-mono); }
     ['base', `
 
 *, *::before, *::after { box-sizing: border-box; }`],
-    ['form', `
-
-.sure-form { max-width: 480px; }
-  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--dark-text); }
-  .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }`],
+    ['form', ``],
     ['buttons', ``],
-    ['form', `
-
-.sure-form__field { margin-bottom: 1rem; }
-.sure-form__label {
-  display: block; margin-bottom: 0.25rem;
-  font-weight: 600; color: var(--dark-text);
-  font-size: 0.875rem;
-}
-.sure-form input, .sure-form select, .sure-form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--dark-border); border-radius: 6px;
-  font-size: 1rem; color: var(--dark-text);
-  background: var(--dark-bg); transition: border-color 0.15s;
-}
-.sure-form input:focus, .sure-form select:focus, .sure-form textarea:focus {
-  outline: none; border-color: var(--dark-focus); box-shadow: 0 0 0 3px rgba(100,255,218,0.15);
-}
-.sure-form__error {
-  display: block; margin-top: 0.25rem;
-  font-size: 0.8rem; color: var(--dark-error);
-}
-.sure-form__help {
-  display: block; margin-top: 0.25rem;
-  font-size: 0.8rem; color: var(--dark-muted);
-}
-.sure-form input[aria-invalid="true"] { border-color: var(--dark-error); }`],
-    ['modal', `
-
-.sure-modal__form { max-width: 560px; }
-.sure-modal__field { margin-bottom: 1rem; }
-.sure-modal__label {
-  display: block; margin-bottom: 0.25rem;
-  font-weight: 600; color: var(--dark-text); font-size: 0.875rem;
-}
-.sure-modal__form input, .sure-modal__form select, .sure-modal__form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--dark-border); border-radius: 6px;
-  font-size: 1rem; color: var(--dark-text); background: var(--dark-bg);
-}
-.sure-modal__form input:focus, .sure-modal__form select:focus, .sure-modal__form textarea:focus {
-  outline: none; border-color: var(--dark-focus); box-shadow: 0 0 0 3px rgba(100,255,218,0.15);
-}
-.sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--dark-error); }
-.sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--dark-muted); }`],
+    ['form', ``],
+    ['modal', ``],
     ['table', ``],
     ['crud', `
 
@@ -963,58 +775,10 @@ code, pre { font-family: var(--font-mono); }`],
     ['base', `
 
 *, *::before, *::after { box-sizing: border-box; }`],
-    ['form', `
-
-/* ── Form ── */
-.sure-form { max-width: 480px; }
-  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--vsys0); }
-  .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }`],
+    ['form', ``],
     ['buttons', ``],
-    ['form', `
-
-.sure-form__field { margin-bottom: 1rem; }
-.sure-form__label {
-  display: block; margin-bottom: 0.25rem;
-  font-weight: 600; color: var(--vsys0);
-  font-size: 0.875rem;
-}
-.sure-form input, .sure-form select, .sure-form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--vsys4); border-radius: 6px;
-  font-size: 1rem; color: var(--vsys0);
-  background: #fff; transition: border-color 0.15s;
-}
-.sure-form input:focus, .sure-form select:focus, .sure-form textarea:focus {
-  outline: none; border-color: var(--vsys9); box-shadow: 0 0 0 3px rgba(129,161,193,0.2);
-}
-.sure-form__error {
-  display: block; margin-top: 0.25rem;
-  font-size: 0.8rem; color: var(--vsys11);
-}
-.sure-form__help {
-  display: block; margin-top: 0.25rem;
-  font-size: 0.8rem; color: var(--vsys3);
-}
-.sure-form input[aria-invalid="true"] { border-color: var(--vsys11); }`],
-    ['modal', `
-
-/* ── Modal ── */
-.sure-modal__form { max-width: 560px; }
-.sure-modal__field { margin-bottom: 1rem; }
-.sure-modal__label {
-  display: block; margin-bottom: 0.25rem;
-  font-weight: 600; color: var(--vsys0); font-size: 0.875rem;
-}
-.sure-modal__form input, .sure-modal__form select, .sure-modal__form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--vsys4); border-radius: 6px;
-  font-size: 1rem; color: var(--vsys0); background: #fff;
-}
-.sure-modal__form input:focus, .sure-modal__form select:focus, .sure-modal__form textarea:focus {
-  outline: none; border-color: var(--vsys9); box-shadow: 0 0 0 3px rgba(129,161,193,0.2);
-}
-.sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--vsys11); }
-.sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--vsys3); }`],
+    ['form', ``],
+    ['modal', ``],
     ['table', ``],
     ['crud', `
 
@@ -1099,58 +863,10 @@ code, pre { font-family: var(--font-mono); }`],
     ['base', `
 
 *, *::before, *::after { box-sizing: border-box; }`],
-    ['form', `
-
-/* ── Form ── */
-.sure-form { max-width: 480px; }
-  .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--vatk0); }
-  .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }`],
+    ['form', ``],
     ['buttons', ``],
-    ['form', `
-
-.sure-form__field { margin-bottom: 1rem; }
-.sure-form__label {
-  display: block; margin-bottom: 0.25rem;
-  font-weight: 600; color: var(--vatk0);
-  font-size: 0.875rem;
-}
-.sure-form input, .sure-form select, .sure-form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--vatk4); border-radius: 6px;
-  font-size: 1rem; color: var(--vatk0);
-  background: #fff; transition: border-color 0.15s;
-}
-.sure-form input:focus, .sure-form select:focus, .sure-form textarea:focus {
-  outline: none; border-color: var(--vatk9); box-shadow: 0 0 0 3px rgba(129,161,193,0.2);
-}
-.sure-form__error {
-  display: block; margin-top: 0.25rem;
-  font-size: 0.8rem; color: var(--vatk11);
-}
-.sure-form__help {
-  display: block; margin-top: 0.25rem;
-  font-size: 0.8rem; color: var(--vatk3);
-}
-.sure-form input[aria-invalid="true"] { border-color: var(--vatk11); }`],
-    ['modal', `
-
-/* ── Modal ── */
-.sure-modal__form { max-width: 560px; }
-.sure-modal__field { margin-bottom: 1rem; }
-.sure-modal__label {
-  display: block; margin-bottom: 0.25rem;
-  font-weight: 600; color: var(--vatk0); font-size: 0.875rem;
-}
-.sure-modal__form input, .sure-modal__form select, .sure-modal__form textarea {
-  width: 100%; padding: 0.5rem 0.75rem;
-  border: 1px solid var(--vatk4); border-radius: 6px;
-  font-size: 1rem; color: var(--vatk0); background: #fff;
-}
-.sure-modal__form input:focus, .sure-modal__form select:focus, .sure-modal__form textarea:focus {
-  outline: none; border-color: var(--vatk9); box-shadow: 0 0 0 3px rgba(129,161,193,0.2);
-}
-.sure-modal__error { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--vatk11); }
-.sure-modal__help { display: block; margin-top: 0.25rem; font-size: 0.8rem; color: var(--vatk3); }`],
+    ['form', ``],
+    ['modal', ``],
     ['table', ``],
     ['crud', `
 
