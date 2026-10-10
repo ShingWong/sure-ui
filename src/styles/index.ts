@@ -1,25 +1,20 @@
-import { nord as nordCss } from './nord.js'
-import { forest as forestCss } from './forest.js'
-import { dracula as draculaCss } from './dracula.js'
-import { dark as darkCss } from './dark.js'
-import { positronic as positronicCss } from './positronic.js'
-import { visionSystem as visionSystemCss } from './vision-system.js'
-import { visionAtkinson as visionAtkinsonCss } from './vision-atkinson.js'
-import { mobileLayer } from './mobile.js'
+// The public theme strings are compose() output — tokens + every component
+// run + the mobile layer, byte-identical to the 0.1.9 monolithic strings
+// (equivalence asserted in index.test.ts against the frozen fixture). The
+// per-theme source files were retired by scripts/split-themes.mjs; the
+// generated data under src/generated/ is now the source of truth until the
+// shared component blocks land (0.2.0b).
+import { compose } from '../compose.js'
 
-// Every theme ships the shared mobile & touch layer verbatim, appended
-// last so it wins ties against the component rules above it. One wrap
-// point instead of seven copies: the layer cannot drift between themes
-// (index.test.ts asserts they are byte-identical).
-const withMobile = (css: string): string => css + mobileLayer
+export { compose } from '../compose.js'
 
-export const nord = withMobile(nordCss)
-export const forest = withMobile(forestCss)
-export const dracula = withMobile(draculaCss)
-export const dark = withMobile(darkCss)
-export const positronic = withMobile(positronicCss)
-export const visionSystem = withMobile(visionSystemCss)
-export const visionAtkinson = withMobile(visionAtkinsonCss)
+export const nord = compose({ theme: 'nord' })
+export const forest = compose({ theme: 'forest' })
+export const dracula = compose({ theme: 'dracula' })
+export const dark = compose({ theme: 'dark' })
+export const positronic = compose({ theme: 'positronic' })
+export const visionSystem = compose({ theme: 'vision-system' })
+export const visionAtkinson = compose({ theme: 'vision-atkinson' })
 
 export { mobileLayer } from './mobile.js'
 

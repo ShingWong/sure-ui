@@ -1,0 +1,45 @@
+// compose() — compile-time theme assembly: tokens + selected component
+// runs + the shared mobile layer. Pure strings in, string out; consumers
+// run it in their build and ship one static CSS file. With
+// `components: 'all'` the output is byte-identical to the 0.1.9 theme
+// strings (proven against src/__fixtures__/themes-0.1.9.json), so the
+// existing `themes` export is compose output, not a separate source.
+import { mobileLayer } from './styles/mobile.js'
+import { tokens, runs } from './generated/themes.js'
+
+export const COMPONENTS = [
+  'auth', 'buttons', 'composites', 'crud', 'dialog', 'form', 'markdown',
+  'menu', 'modal', 'page', 'regions', 'search', 'sessions', 'sidepanel',
+  'status', 'table', 'toast',
+] as const
+export type ComponentName = (typeof COMPONENTS)[number]
+
+export interface ComposeOptions {
+  /** Theme name, e.g. 'nord' or 'vision-atkinson'. */
+  theme: string
+  /** Component blocks to include; 'all' (default) reproduces the full theme. */
+  components?: readonly ComponentName[] | 'all'
+  /** Append the shared mobile & touch layer (default true). */
+  mobile?: boolean
+}
+
+export function compose({ theme, components = 'all', mobile = true }: ComposeOptions): string {
+  const tokensOf = tokens[theme]
+  if (tokensOf === undefined) {
+    throw new Error(`unknown theme "${theme}" — valid themes: ${Object.keys(tokens).join(', ')}`)
+  }
+  let want: Set<string> | null = null
+  if (components !== 'all') {
+    want = new Set(components)
+    for (const c of want) {
+      if (!(COMPONENTS as readonly string[]).includes(c)) {
+        throw new Error(`unknown component "${c}" — valid components: ${COMPONENTS.join(', ')}`)
+      }
+    }
+  }
+  let out = tokensOf
+  for (const [fam, css] of runs[theme] ?? []) {
+    if (fam === 'base' || want === null || want.has(fam)) out += css
+  }
+  return mobile ? out + mobileLayer : out
+}

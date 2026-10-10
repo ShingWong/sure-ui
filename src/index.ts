@@ -5,6 +5,8 @@ export const VERSION: string = (await import('../package.json', { with: { type: 
 
 export { nord, forest, dracula, dark, themes, positronic, mobileLayer } from './styles/index.js'
 export type { ThemeName } from './styles/index.js'
+export { compose, COMPONENTS } from './compose.js'
+export type { ComponentName, ComposeOptions } from './compose.js'
 
 export { showNotification, clearNotifications } from './notifications.js'
 export type { NotificationMode, NotificationLevel, Notification } from './notifications.js'

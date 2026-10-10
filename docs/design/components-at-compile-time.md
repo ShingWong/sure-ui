@@ -94,10 +94,15 @@ some themes. The differences are three classes:
 ## Phases
 
 - **0.1.10** — `sideEffects: false` only. Pure win, zero API change.
-- **0.2.0a (byte-identical reorg)** — tokens/ + per-theme component
-  fragments + `compose()` + subpath exports (`./components/*`,
-  `./themes/*`) + equivalence tests. Selection works immediately; no
-  visual change.
+- **0.2.0a (byte-identical reorg) — DONE** (branch
+  `feat/components-at-compile-time`): `scripts/split-themes.mjs` slices the
+  seven 0.1.9 strings into `src/generated/` (tokens + ordered component
+  runs, self-asserting byte-identical reconstruction) plus the frozen
+  fixture; `compose()` assembles tokens + selected runs + mobile; the
+  exported `themes` strings are compose output, equivalence-tested against
+  the fixture. Subpaths: `./compose`, `./themes` (`./components/*` lands
+  with the shared blocks in 0.2.0b). Measured: a form-only nord compose is
+  4,430 bytes vs 20,625 full (-79%).
 - **0.2.0b (unification)** — shared blocks replace per-theme fragments,
   selector-group by selector-group, each step an isolated diff from the
   decision table, contrast tests re-measuring every theme each time.

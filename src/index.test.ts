@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { VERSION, nord, forest, dracula, dark, themes, showNotification, clearNotifications } from './index.js'
+import { VERSION, nord, forest, dracula, dark, themes, compose, COMPONENTS, showNotification, clearNotifications } from './index.js'
 
 describe('sure-ui', () => {
   it('exports VERSION matching package.json', () => {
@@ -419,6 +419,65 @@ describe('themes: mobile and touch layer', () => {
     const layer = css.slice(css.indexOf(MARK))
     expect(layer).toContain('.message .msg-actions { display: flex; }')
     expect(layer).toContain('.sure-session-item .sure-session-actions { display: flex; }')
+  })
+})
+
+/**
+ * compose() (0.2.0a): the exported theme strings ARE compose output —
+ * tokens + component runs + mobile layer. Two properties are load-bearing
+ * and measured here, not assumed: (1) `components: 'all'` is byte-identical
+ * to the frozen 0.1.9 strings, so nothing moved for existing consumers;
+ * (2) a subset really drops the unselected blocks (this is the whole
+ * point of compile-time inclusion).
+ */
+describe('compose: compile-time assembly', () => {
+  const fixture = JSON.parse(
+    readFileSync(join(process.cwd(), 'src/__fixtures__/themes-0.1.9.json'), 'utf8'),
+  ) as Record<string, string>
+
+  for (const name of Object.keys(themes)) {
+    it(`${name}: compose(all) is byte-identical to the 0.1.9 string`, () => {
+      expect(compose({ theme: name }), `${name} drifted from fixture`).toBe(fixture[name])
+    })
+  }
+
+  it('a subset drops unselected blocks and keeps tokens, base and mobile', () => {
+    const css = compose({ theme: 'nord', components: ['form', 'table'] })
+    expect(css).toContain(':root {')
+    expect(css).toContain('.sure-form__title')
+    expect(css).toContain('.sure-table {')
+    expect(css).toContain('body {')
+    expect(css).toContain('44px')
+    // block-unique markers (the mobile layer names component classes too)
+    expect(css).not.toContain('.sure-auth__divider')
+    expect(css).not.toContain('.sure-dialog__header:active')
+    expect(css).not.toContain('.sure-markdown blockquote')
+    expect(css.length).toBeLessThan(themes.nord.length)
+  })
+
+  it('an empty component list keeps only tokens, base and mobile', () => {
+    const css = compose({ theme: 'nord', components: [] })
+    expect(css).toContain(':root {')
+    expect(css).toContain('body {')
+    expect(css).toContain('44px')
+    expect(css).not.toContain('.sure-form__title')
+    expect(css).not.toContain('.btn-primary:hover')
+  })
+
+  it('mobile can be excluded', () => {
+    expect(compose({ theme: 'nord', components: [], mobile: false })).not.toContain('Mobile & touch')
+  })
+
+  it('names its failures (agent-friendly errors)', () => {
+    expect(() => compose({ theme: 'nope' })).toThrow(/unknown theme "nope" — valid themes: nord/)
+    expect(() => compose({ theme: 'nord', components: ['nope' as never] })).toThrow(/unknown component "nope" — valid components: auth/)
+  })
+
+  it('COMPONENTS names every family the generated data carries (minus base)', async () => {
+    const { runs } = await import('./generated/themes.js')
+    const fams = new Set<string>()
+    for (const themeRuns of Object.values(runs)) for (const [f] of themeRuns) if (f !== 'base') fams.add(f)
+    expect([...fams].sort()).toEqual([...COMPONENTS].sort())
   })
 })
 
