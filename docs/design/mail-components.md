@@ -241,3 +241,78 @@ selection, Thunderbird real tabs) to justify a family. Revisit at M5 if the
 remaining skins converge on it.
 
 Remaining skins: Mac Mail, then Thunderbird (D6), on the same recipe.
+
+## 5c. macOS Mail-fidelity reference composition — what the third skin proved
+
+`experiments/mail-macmail/` — same five-file shape as mail-gmail and
+mail-outlook: `index.html` (page chrome only; all mail markup on the §3
+contracts), `build.mjs` (same compose list → `mail-macmail.css`,
+git-ignored), `macmail-skin.css` (**unlayered `:root` token overrides
+only**), `serve.mjs`, `check-fidelity.mjs`, `screenshot.md`.
+
+**Status: done, measured (2026-10-16) — 43/43 fidelity checks pass**
+(`node experiments/mail-macmail/check-fidelity.mjs`; Gmail's 15/15 and
+Outlook's 31/31 still pass on the same `src/`): SF Pro/system-first stack at
+13px, `#0a84ff` system blue with `#ff9500` flags, 44px single-line rows,
+`#d6e7fb` selected rows *and* selected sidebar item, bold unread + round
+blue dot on un-tinted white, a Favorites/Mailboxes vibrancy sidebar with
+plain grey counts, hairline-divided flush panes, pill search at the right
+of the list header, a window toolbar with traffic-light dots, and a
+floating compose window. Screenshots: `docs/fidelity/macmail-list.png` +
+`docs/fidelity/macmail-thread.png`. Mobile needed nothing: the shared
+`mobileLayer` + `mailMobile` ship verbatim (`mobile: true` is compose's
+default), asserted by the checker reading both markers out of the built CSS.
+
+**The token strategy held — again without a component change.** What the
+third skin added to the argument:
+
+- **Hairlines beat cards, and it is a token job.** The whole "one
+  continuous surface" look is `--mail-radius: 0px`, a hairline
+  `--border: #e5e5ea` (rows a half-step lighter via
+  `--mail-list-row-border`), `--mail-pane-border: transparent`, and exactly
+  **one** structural reset (`.app-main .sure-mail-list { border: none }` —
+  the §5b recipe) so the list's own border doesn't double the pane hairline.
+  No shadow token was ever needed — the list never had a shadow — but the
+  checker now measures `box-shadow: none` + radius `0px` + border `0px` so
+  the flatness can't silently regress into a card.
+- **Density came from the row-height token alone.** 44px is
+  `calc(44px * var(--mail-density))` plus `--font-size: 81.25%` (a 13px
+  root tightens every rem knob at once — that *is* the macOS density). No
+  stacked modifier, no new token: the single-line default row carried
+  "sender → subject — preview … time right" at the middle density. The
+  three skins now bracket the knob's range from the outside: 40 (Gmail) /
+  44 (Mac) / 56 two-line (Outlook).
+- **Translucency is a page material; the skin supplies its colours.** No
+  component paints a sidebar, so vibrancy lives in the shell as a
+  two-token pair: `--mail-sidebar-fallback` (solid `#f2f2f7`) painted
+  outside `@supports`, `--mail-sidebar-bg` (translucent) + 
+  `backdrop-filter: saturate(180%) blur(20px)` inside it. The checker
+  doesn't trust headless rendering — it walks `cssRules` to prove the
+  fallback is genuinely wired where blur can't composite, and that the
+  upgrade sits behind `@supports`. Any future vibrancy consumer should copy
+  that pair.
+- **State → markup mappings, round three.** The window's traffic-light dots
+  reuse the status aliases (`--error/--warn/--success`) instead of inventing
+  a token namespace — same move as §5b's Focused/Other chips. The unread
+  dot sits absolutely positioned over the reserved `__check` slot so sender
+  columns never shift between read and unread rows. Flags hide at rest and
+  reveal on hover (the reserved slot again) — except `--flagged` rows keep
+  theirs visible, macOS behaviour that only page-level state CSS can
+  express. Sidebar section labels ("Favorites" / "Mailboxes") are plain
+  markup between two `mail-folder-tree` instances — the family needed no
+  section support.
+- **One token gap found: attachment chips go square at radius 0.**
+  `.sure-mail-thread__attachment` hardcodes `border-radius:
+  var(--mail-radius)`, so a flat skin rounds nothing — right for panes,
+  slightly off for chips (macOS rounds them ~5px). Same class of gap as
+  §5b's `--btn-*` radius: a `--mail-attachment-radius` token (defaulting to
+  `var(--mail-radius)`) is the candidate if a future skin needs round
+  chips; deliberately not added, because nothing here requires it. Two
+  smaller notes for the next skin: the shell still scopes `font-size` on
+  tree items (back to the 13px contract size — the family ships `0.9rem`)
+  and `padding` on the search input (room for its icon) — both are
+  consumer-scoped geometry where a future token could take over — and the
+  compose window's 10px corner + shadow are page-*window* chrome, not
+  component skinning.
+
+Remaining skin: Thunderbird (D6), on the same recipe.
