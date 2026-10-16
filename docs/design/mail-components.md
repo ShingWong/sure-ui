@@ -168,8 +168,21 @@ the skip is deliberate, not an oversight.
 
 `experiments/mail-gmail/` — `index.html` (shell CSS is page chrome, all
 component markup uses only the contracts above), `build.mjs` (composes the six
-families over a theme via `dist/compose.js` → `mail-gmail.css`, generated and
-git-ignored), `gmail-skin.css` (**unlayered token/`--var` overrides only** —
-Roboto-first stack, `#1a73e8` accent, `40px` rows, `999px` rail pills,
-`#f1f3f4` page / white card, `#f6fafe` unread rows, amber flag), `serve.mjs`,
-`screenshot.md`. Screenshot target: `docs/fidelity/gmail-list.png`.
+families + `buttons`/`page` over theme nord via `dist/compose.js` →
+`mail-gmail.css`, generated and git-ignored), `gmail-skin.css` (**unlayered
+token/`--var` overrides only** — Roboto-first stack, `#1a73e8` accent,
+`40px` rows, `999px` rail pills, `#f1f3f4` page / white card, `#f6fafe`
+unread rows, amber flag, `#c2e7ff` compose pill), `serve.mjs`,
+`check-fidelity.mjs`, `screenshot.md`.
+
+**Status: done, measured (2026-10-16) — 15/15 fidelity checks pass**
+(`node experiments/mail-gmail/check-fidelity.mjs`, playwright already in
+devDeps): Roboto-first stack, accent `rgb(26, 115, 232)`, rows `40px`,
+rail radius `999px`, white card on `rgb(241, 243, 244)`, unread `700` on
+`rgb(246, 250, 254)`, hover actions `none → flex` with the time swapping
+out, layer statement first, zero console errors. Screenshot:
+`docs/fidelity/gmail-list.png`. One catch worth remembering: the generated
+CSS comes from `dist/`, so `npm run build` must precede `build.mjs` after any
+`src/` edit (the first run shipped stale icon-sizing rules — recorded here so
+the runbook's first step stays load-bearing). Remaining skins: M5 in
+sure-mail, using these components untouched.
