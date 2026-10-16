@@ -20,6 +20,7 @@ export const mail: Record<string, string[]> = {
 /* ── Mail list ── */
 .sure-mail-list {
   display: flex; flex-direction: column;
+  margin: 0; padding: 0; list-style: none;
   background: var(--mail-list-bg);
   border: 1px solid var(--mail-list-border);
   border-radius: var(--mail-radius);
@@ -62,6 +63,11 @@ export const mail: Record<string, string[]> = {
 .sure-mail-row__flag:hover { color: var(--text); }
 .sure-mail-row--flagged .sure-mail-row__flag { color: var(--mail-flag-ink); }
 .sure-mail-row--has-attachment .sure-mail-row__attachments { color: var(--text); }
+.sure-mail-row__flag svg,
+.sure-mail-row__attachments svg {
+  width: var(--mail-icon-size); height: var(--mail-icon-size);
+  display: block;
+}
 .sure-mail-row__sender {
   flex: 0 0 var(--mail-list-sender-w);
   min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -72,6 +78,7 @@ export const mail: Record<string, string[]> = {
 }
 .sure-mail-row__subject { font-weight: inherit; }
 .sure-mail-row__preview { color: var(--muted); }
+.sure-mail-row__preview::before { content: "— "; }
 .sure-mail-row__attachments {
   flex-shrink: 0; display: inline-flex; align-items: center;
   color: var(--muted); font-size: 0.8rem;
@@ -156,12 +163,16 @@ export const mail: Record<string, string[]> = {
   color: var(--text); font-size: 0.8rem;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-.sure-mail-thread__attachment:hover { background: var(--mail-hover-bg); text-decoration: none; }`],
+.sure-mail-thread__attachment:hover { background: var(--mail-hover-bg); text-decoration: none; }
+.sure-mail-thread__attachment svg {
+  width: var(--mail-icon-size); height: var(--mail-icon-size);
+  flex-shrink: 0; display: block;
+}`],
 
   'mail-folder-tree': [`
 
 /* ── Mail folder tree ── */
-.sure-mail-tree { display: flex; flex-direction: column; gap: 2px; }
+.sure-mail-tree { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
 .sure-mail-tree__item {
   display: flex; align-items: center; gap: 0.5rem;
   min-height: calc(2rem * var(--mail-density));
@@ -296,6 +307,10 @@ export const mail: Record<string, string[]> = {
   font: inherit; font-size: 0.85rem; cursor: pointer;
 }
 .sure-mail-compose__tool:hover { background: var(--mail-hover-bg); }
+.sure-mail-compose__tool svg {
+  width: var(--mail-icon-size); height: var(--mail-icon-size);
+  display: block;
+}
 .sure-mail-compose__tool:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 25%, transparent);
