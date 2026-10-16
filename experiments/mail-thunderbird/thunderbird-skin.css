@@ -1,0 +1,107 @@
+/* Thunderbird 115+ "Supernova" skin — TOKEN OVERRIDES ONLY.
+ *
+ * No component selector appears in this file: every rule below is a :root
+ * variable, so it lands unlayered and wins over the three @layer layers of
+ * mail-thunderbird.css without touching component CSS. This is the fourth
+ * skin-fidelity proof for docs/design/mail-components.md (§5 Gmail, §5b
+ * Outlook, §5c Mac Mail, §5d Thunderbird).
+ *
+ * Every value is pinned from Thunderbird's own theme source — comm-central
+ * `mail/themes/shared/mail/` fetched via searchfox.org source pages and
+ * hg.mozilla.org raw-file (rev a430595f, 2026-10-15):
+ *
+ *   colors.css          Bolt palette (Thunderbird's official design system)
+ *   layout.css          --layout-background-0..4 / colour / border scales
+ *   variables.css       --tab-min-height, --button-border-radius, separators
+ *   tabmail.css         4px top-rounded tabs, 2px accent .tab-line
+ *   threadPane.css      --thread-pane-flag-fill/stroke, --thread-pane-unread-fill
+ *   threadCard.css      card rows: bold unread sender+subject, read-status dot
+ *   tree-listbox.css    3px cards; selection = accent 10%/15% tints
+ *   about3Pane.css      folder pane: grey count pills, active folder = accent
+ *   folderColors.css    per-folder icon accents (Drafts is the purple one)
+ *
+ * Fidelity targets (sure-mail Track B4): system UI stack at 14px, Bolt blue
+ * #1373d9 chrome accent, warm orange flags, GREEN unread dots (yes, green —
+ * --thread-pane-unread-fill: color-green-60, not the accent; see §5d), white
+ * 3px cards on #fafafa, #f4f4f5 folder pane + tab strip, rounded tabs above
+ * the panes at Thunderbird's own 33px height. Every hex here is asserted as
+ * a measured computed style in check-fidelity.mjs.
+ */
+:root {
+  /* Typography contract: system UI first, 14px root — Thunderbird inherits
+     the platform UI font and renders chrome/body text at ~14px. */
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-size: 87.5%;
+
+  /* ── Bolt chrome (colors.css + layout.css, light values) ── */
+  --bg: #fafafa;         /* layout-background-1: toolbars, list pane, status bar */
+  --surface: #ffffff;    /* layout-background-0: cards, reading pane */
+  --text: #18181b;       /* color-gray-90 / text-base-light */
+  --muted: #71717a;      /* color-gray-50 / text-muted-light */
+  --border: #d9d9de;     /* color-neutral-200 / surface-border-light */
+  --field: #f7f7f8;      /* surface-lower-light: the search field */
+  --highlight: #efeff1;  /* surface-subtle-light: quotes, compose chips */
+  --accent: #1373d9;     /* color-primary-default-light — == color-blue-60 */
+  --focus: #1373d9;      /* --focus-outline-color follows the selection accent */
+  --on-accent: #ffffff;  /* color-white on primary */
+  --primary: #1373d9;    /* --button-primary-background-color */
+  --primary-hover: #175fb6; /* color-primary-hover-light */
+  --primary-ink: #ffffff;
+
+  /* Mail accent: NOT overridden — --mail-accent-alias/--mail-accent-ink
+     already default to var(--accent)/var(--on-accent), and this skin points
+     --accent itself at Thunderbird's primary. The decoupling stays intact
+     for free (unlike Gmail/Mac, which re-pointed the aliases). */
+
+  /* Flagged = warm orange, the one deliberately non-blue state:
+     --thread-pane-flag-stroke: light-dark(color-orange-60, …). */
+  --mail-flag-ink: #ea580c;
+
+  /* ── The list is Thunderbird's card view (tree-listbox/threadCard):
+     white cards, hairline borders, 3px radius, on the grey tree view.
+     --mail-radius: 3px cascades everywhere it is referenced — rows, tree
+     items, search field, attachment chips, quote block (Thunderbird calls
+     the same 3px --button-border-radius and --listbox-border-radius). */
+  --mail-list-bg: #fafafa;          /* --tree-view-bg: light-dark(color-gray-05, …) */
+  --mail-list-row-border: #d9d9de;  /* --tree-card-border: layout-border-0 */
+  --mail-radius: 3px;               /* --listbox-border-radius */
+  /* Cards are airier than the 26px table floor but single-line (the B4
+     landmark: sender | subject — preview … time on one line). */
+  --mail-list-row-h: calc(46px * var(--mail-density));
+  --mail-hover-bg: #e7f1fb;         /* color-mix(selected 10%, white): --tree-card-background-current */
+  --mail-unread-bg: #ffffff;        /* cards do not tint unread rows — bold + dot only */
+  --mail-selected-bg: #dceaf9;      /* color-mix(selected 15%, white): --tree-card-background-selected */
+
+  /* ── Folder pane: the primary-sidebar grey; the open folder is solid
+     accent with white ink (about3Pane: --treeitem-background-active:
+     selected-item-color / text = selected-item-text-color); unread counts
+     are grey pills with white text (default --folderpane-unread-count-*).
+     The white ink needs a shell rule (the family sets no colour on
+     .is-selected) — see index.html's chrome block. */
+  --mail-tree-selected-bg: var(--accent);
+  --mail-tree-count-bg: #71717a;    /* color-gray-50 */
+  --mail-tree-count-ink: #ffffff;   /* color-white */
+
+  /* ── Toolbars: Thunderbird's 32px toolbar buttons (--button-min-height)
+     carrying 16px icons (--spaces-icon-size / .tab-icon-image). The 3px
+     action radius falls out of --mail-radius above, no override. */
+  --mail-action-size: 32px;
+  --mail-icon-size: 16px;
+
+  /* ── Reading pane: no inner frame — the shell's column hairline divides,
+     exactly the §5c move (transparent pane border, no hex). */
+  --mail-pane-border: transparent;
+
+  /* ── Shell-consumed tokens: colours live here, structure lives in
+     index.html's chrome block (the §5c --mail-sidebar-* pattern; several
+     keep Thunderbird's own variable names so provenance stays greppable). ── */
+  --mail-sidebar-bg: #f4f4f5;                    /* layout-background-2: primary sidebars + the tab strip */
+  --treeitem-background-hover: #e4e4e7;          /* about3Pane: light-dark(color-gray-20, …) */
+  --chrome-content-separator-color: #d4d4d8;     /* variables.css: light-dark(color-gray-30, …) */
+  --thread-pane-unread-fill: #16a34a;            /* threadPane.css: color-green-60 — unread dots are GREEN */
+  --folder-color-draft: #ae55f7;                 /* folderColors.css: color-accent-purple-light — Thunderbird's purple */
+  --folder-color-sent: #1d783b;                  /* folderColors.css: color-success-default-light */
+  --folder-color-spam: #b91c1c;                  /* folderColors.css: color-text-critical-light */
+  --folder-color-archive: #713f12;               /* folderColors.css: color-text-warning-light */
+  --folder-color-trash: #52525b;                 /* folderColors.css: color-text-secondary-light */
+}

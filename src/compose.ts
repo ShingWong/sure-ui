@@ -11,8 +11,11 @@
 // proves the wrapping is pure: stripLayers(compose(all)) is byte-identical
 // to the frozen pre-layer strings.
 import { mobileLayer } from './styles/mobile.js'
+import { mailMobile } from './styles/mail-mobile.js'
+import { mailTokens } from './styles/mail-tokens.js'
 import { tokens, runs } from './generated/themes.js'
 import { shared } from './components/shared.js'
+import { mail } from './components/mail.js'
 
 /** Layer order: tokens < components < mobile. Consumer CSS stays unlayered. */
 export const LAYER_DECL = '@layer sure.tokens, sure.components, sure.mobile;'
@@ -52,17 +55,36 @@ export function stripLayers(css: string): string {
   return out.join('')
 }
 
+/**
+ * Mail families (sure-mail Track B) are an OPT-IN namespace on top of the 17
+ * generated families: compose() emits their tokens, rules and touch behaviour
+ * only when one is explicitly listed in `components`. The default
+ * `components: 'all'` path must never include them — the frozen 0.1.9
+ * fixture pins that output byte-for-byte (index.test.ts), and existing
+ * consumers must not pay for mail CSS they did not ask for.
+ */
+export const MAIL_COMPONENTS = [
+  'mail-action-bar', 'mail-compose', 'mail-folder-tree',
+  'mail-list', 'mail-search', 'mail-thread',
+] as const
+
 export const COMPONENTS = [
   'auth', 'buttons', 'composites', 'crud', 'dialog', 'form', 'markdown',
   'menu', 'modal', 'page', 'regions', 'search', 'sessions', 'sidepanel',
   'status', 'table', 'toast',
+  ...MAIL_COMPONENTS,
 ] as const
 export type ComponentName = (typeof COMPONENTS)[number]
 
 export interface ComposeOptions {
   /** Theme name, e.g. 'nord' or 'vision-atkinson'. */
   theme: string
-  /** Component blocks to include; 'all' (default) reproduces the full theme. */
+  /**
+   * Component blocks to include; 'all' (default) reproduces the full theme
+   * byte-for-byte. The mail families (MAIL_COMPONENTS) are opt-in: they are
+   * emitted — with their `--mail-*` tokens and touch rules — only when
+   * listed explicitly here, never by 'all'.
+   */
   components?: readonly ComponentName[] | 'all'
   /** Append the shared mobile & touch layer (default true). */
   mobile?: boolean
@@ -91,6 +113,9 @@ export function compose({ theme, components = 'all', mobile = true, extra }: Com
       }
     }
   }
+  // Mail namespaces: selected explicitly, never implied by 'all' (see the
+  // MAIL_COMPONENTS doc — the frozen fixture pins the default output).
+  const mailWanted = want === null ? [] : MAIL_COMPONENTS.filter((f) => want!.has(f))
   let comp = ''
   const seen: Record<string, number> = {}
   for (const [fam, css] of runs[theme] ?? []) {
@@ -112,12 +137,25 @@ export function compose({ theme, components = 'all', mobile = true, extra }: Com
       if (want.has(fam) && (seen[fam] ?? 0) === 0) comp += slices.join('')
     }
   }
+  // mail families sit at the end of the components layer (after base +
+  // shared), so every same-specificity tie resolves above the generic blocks
+  for (const fam of mailWanted) comp += (mail[fam] ?? []).join('')
   // layer order mirrors the original source order (tokens, then base +
   // components, then mobile), so every same-specificity tie resolves exactly
   // as it did unlayered; what changes is only vs CONSUMER css, which is
   // unlayered and now always wins
   if (extra) comp += `\n${extra}`
-  let out = `${LAYER_DECL}\n\n${wrap('sure.tokens', tokensOf)}\n\n${wrap('sure.components', comp)}`
-  if (mobile) out += `\n\n${wrap('sure.mobile', mobileLayer)}`
+  // Mail tokens extend the tokens layer — same :root vocabulary rules, still
+  // below every components rule and below any unlayered skin override.
+  const tokenBlock = mailWanted.length > 0 ? `${tokensOf}\n${mailTokens}` : tokensOf
+  let out = `${LAYER_DECL}\n\n${wrap('sure.tokens', tokenBlock)}\n\n${wrap('sure.components', comp)}`
+  if (mobile) {
+    // Mail touch rules ride the SAME sure.mobile layer, appended after the
+    // shared block — the shared layer's bytes stay untouched (the
+    // byte-identical-across-themes assertion slices them from the marker to
+    // EOF inside each theme string, which never carries mail output).
+    const mobileBlock = mailWanted.length > 0 ? `${mobileLayer}${mailMobile}` : mobileLayer
+    out += `\n\n${wrap('sure.mobile', mobileBlock)}`
+  }
   return out + '\n'
 }

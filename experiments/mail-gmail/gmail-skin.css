@@ -1,0 +1,63 @@
+/* Gmail skin — TOKEN OVERRIDES ONLY.
+ *
+ * No component selector appears in this file: every rule below is a :root
+ * (or contract) variable, so it lands unlayered and wins over the three
+ * @layer layers of mail-gmail.css without touching component CSS. This is
+ * the fidelity proof for docs/design/mail-components.md §2 — the four future
+ * skins (Gmail/Outlook/MacMail/Thunderbird) are four files shaped like this.
+ *
+ * Fidelity targets (sure-mail Track B): Roboto-first stack, #1a73e8 accent,
+ * ~40px list rows, pill nav rail, white rounded list card on a grey page,
+ * hover actions on the right of a row, unread rows bolder on #f6fafe.
+ */
+:root {
+  /* Typography contract: Roboto-first stack, scale/leading untouched. */
+  --font-body: Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Gmail chrome (also repaints links + the compose pill via the aliases). */
+  --bg: #f1f3f4;
+  --accent: #1a73e8;
+  --focus: #1a73e8;
+  --on-accent: #fff;
+  --primary: #c2e7ff;
+  --primary-hover: #a8d3f7;
+  --primary-ink: #001d35;
+
+  /* Mail accent: #1a73e8, white ink on solid accent (chips, active filter). */
+  --mail-accent-alias: #1a73e8;
+  --mail-accent-ink: #fff;
+
+  /* List card: white, rounded, on the grey page; 40px rows (density knob
+     left at 1 — the row height token is the Gmail target). */
+  --mail-list-bg: #fff;
+  --mail-list-border: transparent;
+  --mail-list-row-bg: #fff;
+  --mail-list-row-border: #eceef1;
+  --mail-list-row-h: calc(40px * var(--mail-density));
+  --mail-list-sender-w: 15rem;
+  --mail-hover-bg: #f2f2f2;
+  --mail-unread-bg: #f6fafe;
+  --mail-unread-weight: 700;
+  --mail-selected-bg: #e8f0fe;
+  --mail-flag-ink: #f9ab00;
+
+  /* Pill nav rail with rounded labels. */
+  --mail-tree-item-radius: 999px;
+  --mail-tree-selected-bg: #d3e3fd;
+
+  /* Search: grey pill field. */
+  --mail-search-bg: #f1f3f4;
+  --mail-search-border: transparent;
+  --mail-search-radius: 999px;
+
+  /* Icon actions hover circular, like Gmail's toolbar. */
+  --mail-action-radius: 50%;
+
+  /* Compose chips: light blue pills. */
+  --mail-chip-bg: #e8f0fe;
+  --mail-chip-ink: #001d35;
+
+  /* Reading pane stays white. */
+  --mail-pane-bg: #fff;
+  --mail-pane-header-bg: #fff;
+}

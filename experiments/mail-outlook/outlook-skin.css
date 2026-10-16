@@ -1,0 +1,79 @@
+/* Outlook Online skin — TOKEN OVERRIDES ONLY.
+ *
+ * No component selector appears in this file: every rule below is a :root
+ * (or contract) variable, so it lands unlayered and wins over the three
+ * @layer layers of mail-outlook.css without touching component CSS. This is
+ * the second skin-fidelity proof for docs/design/mail-components.md (§5
+ * Gmail, §5b Outlook) — the four reference skins are four files shaped
+ * like this.
+ *
+ * Fidelity targets (sure-mail Track B): Segoe UI-first stack at 14px body,
+ * #0078d4 accent (#106ebe hover), Fluent radii (~4px buttons / ~8px cards),
+ * white panes on a light-grey page, two-line 56px list rows (the opt-in
+ * .sure-mail-list--stacked modifier, driven by --mail-list-lines), unread
+ * bold + blue unread dot, Focused/Other tabs, plain-text folder counts,
+ * horizontal icon toolbar above the message header card.
+ */
+:root {
+  /* Typography contract: Segoe UI first, 14px body (87.5% of the 16px
+     root — the rem-scaled knobs below follow automatically). */
+  --font-body: "Segoe UI", "Segoe UI Web (West European)", system-ui, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  --font-size: 87.5%;
+
+  /* Fluent chrome (also repaints links + the New mail button via the aliases). */
+  --bg: #f5f5f5;
+  --accent: #0078d4;
+  --focus: #0078d4;
+  --on-accent: #fff;
+  --primary: #0078d4;
+  --primary-hover: #106ebe;
+  --primary-ink: #fff;
+  --muted: #605e5c;
+
+  /* Mail accent: #0078d4, white ink on solid accent (tabs, focus rings). */
+  --mail-accent-alias: #0078d4;
+  --mail-accent-ink: #fff;
+  --mail-flag-ink: #d13438;
+
+  /* White panes, Fluent 8px card radius, hairline #e1dfdd borders. */
+  --mail-radius: 8px;
+  --mail-list-bg: #fff;
+  --mail-list-border: #e1dfdd;
+  --mail-list-row-bg: #fff;
+  --mail-list-row-border: #f3f2f1;
+  --mail-hover-bg: #f3f2f1;
+  /* Outlook marks unread with bold + a blue dot, not a row tint. */
+  --mail-unread-bg: #fff;
+  --mail-unread-weight: 700;
+  --mail-selected-bg: #eff6fc;
+
+  /* Two-line rows: line 1 (sender/flags/attachments/time) + line 2
+     (subject + preview) = 32 + 24 = 56px — the Outlook density, via the
+     stacked modifier's line tokens. */
+  --mail-list-row-h: calc(32px * var(--mail-density));
+  --mail-list-line-h: calc(24px * var(--mail-density));
+
+  /* Folder pane: Fluent 4px items, selected folder grey, counts are plain
+     numbers (not pill badges). */
+  --mail-tree-item-radius: 4px;
+  --mail-tree-selected-bg: #f3f2f1;
+  --mail-tree-count-bg: transparent;
+  --mail-tree-count-ink: #605e5c;
+
+  /* Search: centered grey pill on the white app bar. */
+  --mail-search-bg: #f0f0f0;
+  --mail-search-border: transparent;
+  --mail-search-radius: 999px;
+
+  /* Reading-pane icon toolbar: Fluent 4px buttons. */
+  --mail-action-radius: 4px;
+
+  /* Compose: Fluent grey recipient chips. */
+  --mail-chip-bg: #f3f2f1;
+  --mail-chip-ink: #201f1e;
+
+  /* Reading pane + compose stay white. */
+  --mail-pane-bg: #fff;
+  --mail-pane-border: #e1dfdd;
+  --mail-pane-header-bg: #fff;
+}
