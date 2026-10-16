@@ -31,6 +31,12 @@ export const mailTokens = `
   --mail-list-row-h: calc(2.5rem * var(--mail-density));
   --mail-list-pad-x: 0.75rem;
   --mail-list-sender-w: 10rem;
+  /* Two-line (stacked) rows — the Outlook Online arrangement: line 1 is the
+     sender + time, line 2 the subject + preview. 1 = the single-line default
+     (Gmail); the .sure-mail-list--stacked modifier sets 2, and every extra
+     line adds --mail-list-line-h to the row's min-height. */
+  --mail-list-lines: 1;
+  --mail-list-line-h: calc(1.25rem * var(--mail-density));
   --mail-list-row-bg: var(--surface);
   --mail-list-row-border: var(--highlight);
   /* Shared hover tint for rows, rail items, tools and chips — derived from

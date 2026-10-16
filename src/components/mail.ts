@@ -95,7 +95,25 @@ export const mail: Record<string, string[]> = {
 /* Swap time for actions on the same right-hand edge, so revealing the slot
    never shifts the row (and touch keeps its clock — see mail-mobile). */
 .sure-mail-row:hover .sure-mail-row__time,
-.sure-mail-row:focus-within .sure-mail-row__time { display: none; }`],
+.sure-mail-row:focus-within .sure-mail-row__time { display: none; }
+
+/* Two-line (stacked) rows — the Outlook Online arrangement: line 1 keeps the
+   sender with the time at the right edge, line 2 runs the subject + preview
+   full width. OPT-IN on the list modifier, so the single-line default rules
+   above never move a byte; geometry flows from --mail-list-lines (2 here) ×
+   --mail-list-line-h, so a skin/page can re-stack rows without new selectors. */
+.sure-mail-list--stacked { --mail-list-lines: 2; }
+.sure-mail-list--stacked .sure-mail-row {
+  flex-wrap: wrap;
+  align-content: center;
+  row-gap: 0.1rem;
+  min-height: calc(var(--mail-list-row-h) + (var(--mail-list-lines) - 1) * var(--mail-list-line-h));
+}
+.sure-mail-list--stacked .sure-mail-row__sender { flex: 1 1 auto; }
+.sure-mail-list--stacked .sure-mail-row__main {
+  flex: 1 0 100%;
+  order: 10;
+}`],
 
   'mail-thread': [`
 

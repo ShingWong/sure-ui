@@ -138,6 +138,7 @@ describe('mail: class contract', () => {
   const CONTRACT: Record<string, string[]> = {
     'mail-list': [
       '.sure-mail-list', '.sure-mail-list--comfortable', '.sure-mail-list--compact',
+      '.sure-mail-list--stacked',
       '.sure-mail-row', '.sure-mail-row--unread', '.sure-mail-row--flagged',
       '.sure-mail-row--has-attachment',
       '.sure-mail-row--selected', '.sure-mail-row__check', '.sure-mail-row__flag',
@@ -203,6 +204,77 @@ describe('mail: class contract', () => {
         for (const slice of slices) expect(css, `${theme} lost part of ${fam}`).toContain(slice)
       }
     }
+  })
+})
+
+describe('mail: stacked two-line rows (Outlook Online)', () => {
+  const listSlice = mail['mail-list']!.join('\n')
+  /** Selector/body pairs of the mail-list slice, comments stripped. */
+  const rules = [...listSlice.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    .map((m) => ({ sel: m[1]!.trim(), body: m[2]! }))
+
+  it('declares the line tokens once, in the tokens layer', () => {
+    const tokens = layerOf(mailCss, 'sure.tokens')
+    expect(tokens).toContain('--mail-list-lines: 1;')
+    expect(tokens).toContain('--mail-list-line-h: calc(1.25rem * var(--mail-density));')
+    // one vocabulary: mailTokens is that declaration, whole
+    expect(mailTokens).toContain('--mail-list-lines: 1;')
+    expect(mailTokens).toContain('--mail-list-line-h:')
+  })
+
+  it('ships the stacked modifier in the components layer', () => {
+    const components = layerOf(mailCss, 'sure.components')
+    expect(components).toContain('.sure-mail-list--stacked { --mail-list-lines: 2; }')
+    expect(components).toContain('.sure-mail-list--stacked .sure-mail-row__main')
+  })
+
+  it('stacking is opt-in: every wrap/reorder rule hangs off the modifier', () => {
+    // The default single-line contract survives because no rule outside a
+    // .sure-mail-list--stacked selector may wrap or reorder a row.
+    const stacking = rules.filter((r) => /flex-wrap: wrap|\border:/.test(r.body))
+    expect(stacking.length, 'no stacked rules found at all').toBeGreaterThan(0)
+    for (const r of stacking) {
+      expect(r.sel.startsWith('.sure-mail-list--stacked'), `unscoped stacking rule: ${r.sel}`).toBe(true)
+    }
+  })
+
+  it('the default single-line row rules stay byte-stable', () => {
+    // The shipped base blocks, exactly — the modifier adds rules, it never
+    // edits these (compose() output for existing consumers cannot drift).
+    expect(listSlice).toContain(`.sure-mail-row {
+  display: flex; align-items: center; gap: 0.5rem;
+  min-height: var(--mail-list-row-h);`)
+    expect(listSlice).toContain(`.sure-mail-row__main {
+  flex: 1 1 auto; min-width: 0;`)
+    const baseRow = rules.find((r) => r.sel === '.sure-mail-row')
+    expect(baseRow, 'base .sure-mail-row rule missing').toBeTruthy()
+    expect(baseRow!.body).toContain('min-height: var(--mail-list-row-h)')
+    expect(baseRow!.body).not.toContain('flex-wrap')
+    expect(baseRow!.body).not.toMatch(/\border:/)
+    const baseMain = rules.find((r) => r.sel === '.sure-mail-row__main')
+    expect(baseMain, 'base .sure-mail-row__main rule missing').toBeTruthy()
+    expect(baseMain!.body).toContain('flex: 1 1 auto;')
+    expect(baseMain!.body).not.toMatch(/\border:/)
+  })
+
+  it('stacked row height is driven by --mail-list-lines × --mail-list-line-h', () => {
+    expect(rules.some((r) =>
+      r.sel === '.sure-mail-list--stacked .sure-mail-row'
+      && /min-height: calc\(var\(--mail-list-row-h\) \+ \(var\(--mail-list-lines\) - 1\) \* var\(--mail-list-line-h\)\)/.test(r.body)
+    ), 'stacked rows do not read the line tokens').toBe(true)
+    // …and the modifier is what turns them on (2 lines → row-h + one line-h)
+    expect(rules.some((r) => r.sel === '.sure-mail-list--stacked' && r.body.includes('--mail-list-lines: 2'))).toBe(true)
+  })
+
+  it('stays colour- and typography-free like the rest of the family', () => {
+    // The family-wide scans above cover the whole block; this pins the
+    // stacked rules specifically (they are new CSS, they get their own gate).
+    const stacked = rules.filter((r) => r.sel.startsWith('.sure-mail-list--stacked')).map((r) => r.body).join('\n')
+    expect(stacked).not.toMatch(/#[0-9a-fA-F]{3,8}\b/)
+    expect(stacked).not.toMatch(/\b(rgb|hsl)a?\(/)
+    expect(stacked).not.toContain('font-family')
+    expect(stacked).toContain('var(--mail-list-lines)')
+    expect(stacked).toContain('var(--mail-list-line-h)')
   })
 })
 
