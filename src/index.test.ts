@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { VERSION, nord, forest, dracula, dark, themes, compose, stripLayers, COMPONENTS, showNotification, clearNotifications } from './index.js'
+import { VERSION, nord, forest, dracula, dark, themes, compose, stripLayers, COMPONENTS, MAIL_COMPONENTS, showNotification, clearNotifications } from './index.js'
 
 describe('sure-ui', () => {
   it('exports VERSION matching package.json', () => {
@@ -535,11 +535,20 @@ describe('compose: compile-time assembly', () => {
     expect(themes.positronic).toContain('.pp-card')
   })
 
-  it('COMPONENTS names every family the generated data carries (minus base)', async () => {
+  it('COMPONENTS names every family the generated data carries (minus base), and nothing the generated data lacks', async () => {
     const { runs } = await import('./generated/themes.js')
     const fams = new Set<string>()
     for (const themeRuns of Object.values(runs)) for (const [f] of themeRuns) if (f !== 'base') fams.add(f)
-    expect([...fams].sort()).toEqual([...COMPONENTS].sort())
+    // The mail namespace is opt-in by design (compose.ts): it must never
+    // appear in the frozen runs — that is what keeps compose(all)
+    // byte-identical to the fixture — and COMPONENTS must not grow beyond
+    // generated families + exactly that namespace.
+    const mailSet = new Set<string>(MAIL_COMPONENTS)
+    const generated = [...fams].filter((f) => !mailSet.has(f)).sort()
+    expect(generated).toEqual([...COMPONENTS].filter((c) => !mailSet.has(c)).sort())
+    expect([...fams].filter((f) => mailSet.has(f)), 'mail families leaked into the frozen runs').toEqual([])
+    expect(MAIL_COMPONENTS.length).toBe(6)
+    for (const m of MAIL_COMPONENTS) expect(COMPONENTS).toContain(m)
   })
 })
 
