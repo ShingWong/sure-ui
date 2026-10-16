@@ -94,6 +94,7 @@ families follow):
 |---|---|---|
 | `--mail-density` | `1` | One knob scales every row/target (rem multiplier). `--compact` list sets `0.72` |
 | `--mail-list-row-h` | `calc(2.5rem * var(--mail-density))` | Row height — 40px at default scale (Gmail's target) |
+| `--mail-list-lines` / `--mail-list-line-h` | `1` / `calc(1.25rem * var(--mail-density))` | Stacked-row maths (Outlook): `.sure-mail-list--stacked` sets lines `2`; each extra line adds `--mail-list-line-h` to the row's min-height |
 | `--mail-list-pad-x` / `--mail-list-sender-w` | `0.75rem` / `10rem` | Row padding; fixed sender column |
 | `--mail-unread-weight` | `700` | Unread rows' font weight |
 | `--mail-unread-bg` | `color-mix(4% accent, surface)` | Unread tint (Gmail: `#f6fafe`) |
@@ -127,7 +128,7 @@ the existing families.
 
 | Family | Classes |
 |---|---|
-| `mail-list` | `.sure-mail-list`, `--comfortable`, `--compact` · `.sure-mail-row`, `--unread`, `--flagged`, `--has-attachment`, `--selected`, `[aria-selected="true"]` · `__check`, `__flag`, `__sender`, `__main`, `__subject`, `__preview`, `__attachments`, `__time`, `__actions` (hover-action slot) |
+| `mail-list` | `.sure-mail-list`, `--comfortable`, `--compact`, `--stacked` (two-line rows, drives `--mail-list-lines: 2`) · `.sure-mail-row`, `--unread`, `--flagged`, `--has-attachment`, `--selected`, `[aria-selected="true"]` · `__check`, `__flag`, `__sender`, `__main`, `__subject`, `__preview`, `__attachments`, `__time`, `__actions` (hover-action slot) |
 | `mail-thread` | `.sure-mail-thread` · `__header`, `__title`, `__meta`, `__from`, `__date`, `__body`, `__quote-toggle`, `__quote` (+ `.is-collapsed`), `__attachments`, `__attachment` |
 | `mail-folder-tree` | `.sure-mail-tree` · `__item` (+ `.is-selected`, `.is-dragging`, `.is-drop-target`, `[aria-current]`), `__twisty`, `__icon`, `__label`, `__count`, `__drag` (affordance slot) · depth via `--mail-tree-depth` set per row |
 | `mail-compose` | `.sure-mail-compose` · `__address`, `__label`, `__chips` (focus-within ring), `__chip`, `__chip-remove`, `__input`, `__subject`, `__toolbar`, `__tool`, `__tool-divider`, `__body`, `__footer`, `__status`, `__actions` |
@@ -184,5 +185,59 @@ out, layer statement first, zero console errors. Screenshot:
 `docs/fidelity/gmail-list.png`. One catch worth remembering: the generated
 CSS comes from `dist/`, so `npm run build` must precede `build.mjs` after any
 `src/` edit (the first run shipped stale icon-sizing rules — recorded here so
-the runbook's first step stays load-bearing). Remaining skins: M5 in
-sure-mail, using these components untouched.
+the runbook's first step stays load-bearing).
+
+## 5b. Outlook Online-fidelity reference composition — what the second skin proved
+
+`experiments/mail-outlook/` — same five-file shape as mail-gmail:
+`index.html` (page chrome only; all mail markup on the §3 contracts),
+`build.mjs` (same compose list → `mail-outlook.css`, git-ignored),
+`outlook-skin.css` (**unlayered `:root` token overrides only**),
+`serve.mjs`, `check-fidelity.mjs`, `screenshot.md`.
+
+**Status: done, measured (2026-10-16) — 31/31 fidelity checks pass**
+(`node experiments/mail-outlook/check-fidelity.mjs`; Gmail's 15/15 still
+pass on the same `src/`): Segoe UI-first at 14px, `#0078d4` accent with the
+`#106ebe` hover, Fluent 4px buttons / 8px cards / 4px toolbar icons, white
+app bar with a centered `999px` `#f0f0f0` search pill, two-line 56px rows
+with the time on line 1's right edge, bold unread + round `#0078d4` dot,
+`#eff6fc` selected rows, `#f3f2f1` selected folder with plain-text counts,
+icon toolbar above the header card. Screenshots:
+`docs/fidelity/outlook-list.png` + `docs/fidelity/outlook-thread.png`.
+
+**The token strategy held — with two additions.** Every Gmail-proven knob
+(accent, selected/unread tints, hover, radii, search, tree counts, pane
+regions) absorbed the Fluent palette without a component rule changing.
+Two things did need work:
+
+- **What broke the one-line assumption: row height.** Gmail's
+  `--mail-list-row-h` models a *one-line* row; Outlook's rows are two lines
+  (sender · time / subject · preview). A scalar row-height token cannot
+  express "wrap the middle child to a second full-width line". The fix is
+  the opt-in list modifier **`.sure-mail-list--stacked`** + two tokens:
+  `--mail-list-lines` (the modifier sets `2`; geometry is
+  `row-h + (lines−1) × --mail-list-line-h`) and `--mail-list-line-h`.
+  Purely additive: no rule outside a `.sure-mail-list--stacked` selector
+  wraps or reorders anything, the default single-line rules ship byte-stable
+  (`mail.test.ts` proves both, plus layer placement and neutrality), and the
+  mobile block needed no edit — `mail-mobile`'s 44px coarse-pointer floor
+  already covers stacked rows. This is the family recipe from §1 working as
+  intended: the second skin found a missing *capability*, it added an
+  opt-in modifier + tokens, not a fork.
+- **What needed a consumer page, not a token (by design).** Three Outlook
+  affordances map to markup/state, not colour: the **Focused/Other pivot**
+  (composed from `mail-search` chips; chrome flips pill → underline —
+  a state→presentation mapping only the page can make), the **unread dot +
+  hover-checkbox** swap (consumer markup in the `__check` slot, coloured by
+  `--mail-accent-alias`), and the `btn-primary` 4px radius (the buttons
+  family's 6px is not tokenized — a `--btn-*` radius token is a candidate
+  if a future skin needs it). All three live in the demo's chrome block,
+  which is exactly what the layer model predicts: tokens for colour and
+  geometry, unlayered consumer CSS for structure.
+
+**No fourth "tabs" family was added** — the pivot is two chips restyled by
+the page; it is not yet reusable enough across skins (Mac Mail uses sidebar
+selection, Thunderbird real tabs) to justify a family. Revisit at M5 if the
+remaining skins converge on it.
+
+Remaining skins: Mac Mail, then Thunderbird (D6), on the same recipe.
