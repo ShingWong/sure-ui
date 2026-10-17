@@ -32,6 +32,12 @@ jobs:
       - name: Install
         run: npm ci
 
+      # A key/credential/PII leak must not reach master or the registry.
+      # Scans every tracked file (src, docs, experiments), not just the tarball,
+      # and runs again in prepublishOnly.
+      - name: Security scan
+        run: npm run security:check
+
       - name: Lint
         run: npm run lint
 

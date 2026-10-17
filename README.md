@@ -373,4 +373,33 @@ npm install
 npm run build
 npm test                       # 13 tests
 npm run lint                   # tsc --noEmit
+npm run security:check         # keys / credentials / PII / internal paths
 ```
+
+### Security gate
+
+`scripts/security-check.mjs` scans **every tracked file** (src, docs,
+experiments, workflows — not just what npm packs) and runs in CI and in
+`prepublishOnly`, so a leak cannot reach `master` or the registry unnoticed.
+It looks for private keys, cloud/provider tokens (AWS, GitHub, Slack, Google,
+OpenAI/Anthropic, Stripe), JWTs, credentials in URLs, hardcoded passwords,
+SSNs, Luhn-valid card numbers, non-example email addresses, private IPs,
+internal filesystem paths, and committed `.env`/key files.
+
+False positives are handled by an **allow-list**, never by loosening a pattern:
+
+```js
+// scripts/security-check.mjs
+const ALLOW = [
+  {
+    file: 'README.md',
+    label: 'Hardcoded password',
+    match: "password: 'StrongPass1!'",
+    reason: 'Documented placeholder in a usage snippet',
+  },
+]
+```
+
+Entries are keyed by file + label + exact matched text and must carry a reason;
+test/spec files are exempt from content patterns (they hold synthetic fixtures —
+`src/security-check.test.ts` proves each pattern fires).
