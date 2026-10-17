@@ -75,7 +75,9 @@ const ALLOW = [
   {
     file: 'README.md',
     label: 'Hardcoded password',
-    match: "password: 'StrongPass1!'",
+    // Only the value: storing `password: '…'` verbatim here would make the
+    // scanner flag its own allow-list once this file is tracked.
+    match: 'StrongPass1!',
     reason: 'Documented placeholder credential in a usage snippet, not a real secret',
   },
   {
