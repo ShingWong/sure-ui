@@ -43,8 +43,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "tsc --noEmit",
-    "prepublishOnly": "npm run build",
-    "prepare": "npm run build"
+    "prepublishOnly": "npm run security:check && npm run build",
+    "prepare": "npm run build",
+    "security:check": "node scripts/security-check.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.0",
