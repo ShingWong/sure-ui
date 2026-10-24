@@ -79,11 +79,66 @@ export const shared: Record<string, string[]> = {
   'form': [`
 
 /* ── Form ── */
-.sure-form { max-width: 480px; }
+/* Layout knobs, declared here so a theme is self-contained and a product only
+   ever overrides a value (never a class):
+     --sure-form-max-width   width cap; set to none for a wide grouped form
+     --sure-form-columns     columns per section (set on a section or the form)
+     --sure-form-field-span  columns one field occupies (set on a field) */
+.sure-form {
+  --sure-form-max-width: 480px;
+  --sure-form-columns: 1;
+  --sure-form-field-span: 1;
+  max-width: var(--sure-form-max-width);
+}
   .sure-form__title { margin: 0 0 1rem; font-size: 1.125rem; font-weight: 700; color: var(--text); }
-  .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+  .sure-form__actions { display: flex; gap: 0.5rem; margin-top: 1rem; align-items: center; }
 
 .sure-form__field { margin-bottom: 1rem; }
+
+/* ── Grouped forms ──
+   A section lays its fields out in columns; the column count comes from
+   --sure-form-columns (set per section, or once on the form). Fields line up
+   both ways:
+     vertical   label / control / message are the section's shared row tracks
+                (subgrid), so every label sits on one baseline and every control
+                on the next, whatever the label length;
+     horizontal each field spans --sure-form-field-span columns (default 1), so
+                one control can be widened without breaking the grid.
+   The message row is reserved even when empty, so an error appearing does not
+   push the next row down. */
+.sure-form__group {
+  display: grid;
+  grid-template-columns: repeat(var(--sure-form-columns), minmax(0, 1fr));
+  gap: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+}
+.sure-form__group > .sure-form__title { grid-column: 1 / -1; margin: 0 0 0.25rem; font-size: 0.95rem; }
+.sure-form__group > .sure-form__field {
+  margin-bottom: 0;
+  grid-column: span var(--sure-form-field-span);
+}
+@supports (grid-template-rows: subgrid) {
+  .sure-form__group > .sure-form__field {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 3;
+    align-content: start;
+  }
+  .sure-form__group > .sure-form__field > .sure-form__message { margin-top: 0.25rem; }
+}
+/* Narrow screens: one column, whatever --sure-form-columns says. The rule is
+   on the grid rather than the variable so it wins without !important. */
+@media (max-width: 48rem) {
+  .sure-form__group { grid-template-columns: minmax(0, 1fr); }
+  .sure-form__group > .sure-form__field { grid-column: 1 / -1; }
+}
+@supports not (grid-template-rows: subgrid) {
+  /* Fallback: bottom-align each grid row so controls still line up, even
+     though labels of different heights start at different points. */
+  .sure-form__group { align-items: end; }
+  .sure-form__group > .sure-form__field { margin-bottom: 0.75rem; }
+}
+.sure-form__message { display: block; min-height: 1.25rem; }
 .sure-form__label {
   display: block; margin-bottom: 0.25rem;
   font-weight: 600; color: var(--text);

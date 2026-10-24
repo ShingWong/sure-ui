@@ -127,6 +127,36 @@ Tokens: `--bg`, `--surface`, `--text`, `--muted`, `--border`, `--accent`, `--err
 | Framework | Agnostic (CSS strings) | Tailwind | React | Agnostic |
 | Peer dependencies | None | Tailwind | React | None |
 
+## Grouped forms and layout knobs
+
+The `form` block lays a field out as label / control / message. A form whose
+fields declare a group renders each group as a section, and the section can be
+a grid — the theme owns the mechanism, the product sets the numbers:
+
+| Custom property | Set on | Default | Meaning |
+|---|---|---|---|
+| `--sure-form-columns` | a section (or the form) | `1` | columns in the section |
+| `--sure-form-field-span` | a field | `1` | columns one field occupies |
+| `--sure-form-max-width` | the form | `480px` | width cap; `none` for a wide form |
+
+```css
+[data-group="coverage"] { --sure-form-columns: 3; }
+[data-field="notes"]    { --sure-form-field-span: 3; }
+.sure-form { --sure-form-max-width: none; }
+```
+
+Fields line up **vertically** because each one spans three subgrid rows —
+label, control, message — so labels of different heights share a baseline and
+controls share a line; and **horizontally** because they sit on the section's
+column tracks. The message row is always rendered and height-reserved, and an
+error replaces the help text rather than adding to it, so validation never
+reflows the rows below. Browsers without subgrid fall back to bottom-aligned
+rows; below `48rem` the section collapses to one column.
+
+The pushed class vocabulary is unchanged: `sure-form__group` is declared in the
+catalog's `form` component and no colour is set here, so themes keep owning the
+palette.
+
 ## Installation
 
 ```bash
