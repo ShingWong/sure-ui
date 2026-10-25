@@ -668,3 +668,36 @@ describe('vision themes: AAA contrast and large print', () => {
     expect(themes['vision-system']).not.toMatch(/@font-face/)
   })
 })
+
+describe('themes: native controls follow the palette', () => {
+  // A date picker's calendar button, a scrollbar and a checkbox are drawn by the
+  // browser, not by CSS colour: they obey `color-scheme`. Without it a dark theme
+  // renders an invisible calendar glyph on a white control.
+  const resolve = (css: string, name: string, depth = 0): string | null => {
+    const direct = css.match(new RegExp(`--${name}:\\s*([^;]+);`))
+    if (!direct) return null
+    const value = direct[1]!.trim()
+    const ref = value.match(/^var\(--([a-z0-9-]+)\)$/i)
+    return ref && depth < 3 ? resolve(css, ref[1]!, depth + 1) : value
+  }
+  const luminance = (hex: string): number => {
+    const parts = hex.replace('#', '')
+    if (parts.length !== 6) return NaN
+    const [r, g, b] = [0, 2, 4].map((i) => parseInt(parts.slice(i, i + 2), 16) / 255)
+    return 0.2126 * r! + 0.7152 * g! + 0.0722 * b!
+  }
+
+  for (const [name, css] of Object.entries(themes)) {
+    it(`${name} declares a color-scheme that matches its background`, () => {
+      const declared = css.match(/color-scheme:\s*(light|dark)/i)
+      expect(declared, `${name} declares no color-scheme`).not.toBeNull()
+
+      const background = resolve(css, 'bg')
+      expect(background, `${name} has no resolvable --bg`).not.toBeNull()
+      const isLight = luminance(background!) > 0.5
+      expect(declared![1]!.toLowerCase(), `${name}: --bg ${background} is ${isLight ? 'light' : 'dark'}`).toBe(
+        isLight ? 'light' : 'dark',
+      )
+    })
+  }
+})

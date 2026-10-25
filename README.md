@@ -157,6 +157,15 @@ The pushed class vocabulary is unchanged: `sure-form__group` is declared in the
 catalog's `form` component and no colour is set here, so themes keep owning the
 palette.
 
+## Native controls in dark themes
+
+Every theme declares `color-scheme` (`light` for nord, forest and the vision
+themes; `dark` for dracula, dark and positronic). Without it the browser draws
+its own widgets — the date picker's calendar button, scrollbars, checkboxes —
+from the *OS* palette, which is how a white-on-white calendar icon disappears in
+a dark theme. A test asserts each theme's `color-scheme` matches its `--bg`
+luminance, so a new dark theme cannot forget it.
+
 ## Theme switcher
 
 `mountThemeSwitcher` renders a `<select>` that swaps a theme in at runtime and

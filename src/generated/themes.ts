@@ -10,6 +10,8 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 100%;
   --line-height: 1.6;
+  /* Native controls (date pickers, scrollbars) follow the theme. */
+  color-scheme: light;
   --nord0: #2e3440;
   --nord1: #3b4252;
   --nord2: #434c5e;
@@ -72,6 +74,8 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 100%;
   --line-height: 1.6;
+  /* Native controls (date pickers, scrollbars) follow the theme. */
+  color-scheme: light;
   --frst-bg: #f4f1ea;
   --frst-surface: #fff;
   --frst-text: #2d2a24;
@@ -130,6 +134,8 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 100%;
   --line-height: 1.6;
+  /* Native controls (date pickers, scrollbars) follow the theme. */
+  color-scheme: dark;
   --drac-bg: #282a36;
   --drac-surface: #44475a;
   --drac-text: #f8f8f2;
@@ -193,6 +199,8 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 100%;
   --line-height: 1.6;
+  /* Native controls (date pickers, scrollbars) follow the theme. */
+  color-scheme: dark;
   --dark-bg: #1a1a2e;
   --dark-surface: #16213e;
   --dark-text: #e8e8e8;
@@ -251,6 +259,8 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 100%;
   --line-height: 1.6;
+  /* Native controls (date pickers, scrollbars) follow the theme. */
+  color-scheme: dark;
   --positronic-bg: #0d0f14;
   --positronic-surface: #14171f;
   --positronic-surface-2: #1b1f2a;
@@ -319,6 +329,8 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 125%;
   --line-height: 1.7;
+  /* Native controls (date pickers, scrollbars) follow the theme. */
+  color-scheme: light;
   --vsys0: #101418;
   --vsys1: #1d232a;
   --vsys2: #2b323a;
@@ -396,6 +408,8 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 125%;
   --line-height: 1.7;
+  /* Native controls (date pickers, scrollbars) follow the theme. */
+  color-scheme: light;
   --vatk0: #101418;
   --vatk1: #1d232a;
   --vatk2: #2b323a;
