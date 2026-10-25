@@ -127,6 +127,29 @@ Tokens: `--bg`, `--surface`, `--text`, `--muted`, `--border`, `--accent`, `--err
 | Framework | Agnostic (CSS strings) | Tailwind | React | Agnostic |
 | Peer dependencies | None | Tailwind | React | None |
 
+## Footer
+
+A page's last caption — who published it, what the rules are, what it was built
+with. One line on a desktop, wrapping on a phone, drawn entirely from theme
+tokens (`--border`, `--muted`, `--text`, `--accent`), and never printed:
+
+```html
+<footer class="sure-footer">
+  <div class="sure-footer__inner">
+    <p class="sure-footer__legal">© 2026 Example LLC. All rights reserved.</p>
+    <ul class="sure-footer__links">
+      <li><a class="sure-footer__link" href="/privacy.html">Privacy</a></li>
+    </ul>
+    <p class="sure-footer__credit">Powered by <a href="https://positronic-ai.us/sure/">sure-stack</a></p>
+  </div>
+</footer>
+```
+
+`sure-factor`'s `page-footer` component emits exactly this markup; the
+`@media print { .sure-footer { display: none } }` rule lives in the block
+because a printed agreement already has its own head and signature blocks and
+a URL line under one would be noise.
+
 ## Grouped forms and layout knobs
 
 The `form` block lays a field out as label / control / message. A form whose

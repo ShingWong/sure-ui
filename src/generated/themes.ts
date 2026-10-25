@@ -510,6 +510,7 @@ body {
   line-height: var(--line-height, 1.6);
 }
 code, pre { font-family: var(--font-mono); }`],
+    ['footer', ``],
   ],
   'forest': [
     ['base', `
@@ -552,6 +553,7 @@ body {
   line-height: var(--line-height, 1.6);
 }
 code, pre { font-family: var(--font-mono); }`],
+    ['footer', ``],
   ],
   'dracula': [
     ['base', `
@@ -594,6 +596,7 @@ body {
   line-height: var(--line-height, 1.6);
 }
 code, pre { font-family: var(--font-mono); }`],
+    ['footer', ``],
   ],
   'dark': [
     ['base', `
@@ -635,6 +638,7 @@ body {
 }
 code, pre { font-family: var(--font-mono); }
   `],
+    ['footer', ``],
   ],
   'positronic': [
     ['base', `
@@ -675,6 +679,7 @@ body {
 
 code, pre { font-family: var(--font-mono); }`],
     ['page', ``],
+    ['footer', ``],
   ],
   'vision-system': [
     ['base', `
@@ -716,6 +721,7 @@ body {
   line-height: var(--line-height, 1.6);
 }
 code, pre { font-family: var(--font-mono); }`],
+    ['footer', ``],
   ],
   'vision-atkinson': [
     ['base', `
@@ -757,5 +763,6 @@ body {
   line-height: var(--line-height, 1.6);
 }
 code, pre { font-family: var(--font-mono); }`],
+    ['footer', ``],
   ],
 }

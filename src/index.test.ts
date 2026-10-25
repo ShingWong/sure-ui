@@ -701,3 +701,44 @@ describe('themes: native controls follow the palette', () => {
     })
   }
 })
+
+describe('footer: a caption, not a second menu', () => {
+  const block = (css: string): string => {
+    const start = css.indexOf('.sure-footer {')
+    const end = css.indexOf('.sure-footer__credit a:focus-visible')
+    expect(start, 'footer block missing').toBeGreaterThan(-1)
+    expect(end, 'footer block truncated').toBeGreaterThan(start)
+    return css.slice(start, end)
+  }
+
+  for (const [name, css] of Object.entries(themes)) {
+    it(`${name} styles every footer class the catalog can emit`, () => {
+      for (const cls of [
+        '.sure-footer {',
+        '.sure-footer__inner',
+        '.sure-footer__legal',
+        '.sure-footer__links',
+        '.sure-footer__link',
+        '.sure-footer__credit',
+      ]) {
+        expect(block(css), `${name} is missing ${cls}`).toContain(cls)
+      }
+    })
+
+    it(`${name} hides the footer when printing`, () => {
+      // A printed agreement carries its own head and signature blocks; a
+      // copyright line under a contract is noise on paper.
+      expect(css).toContain('@media print { .sure-footer { display: none; } }')
+    })
+
+    it(`${name} draws the footer from theme tokens only`, () => {
+      // A hard-coded colour here would ignore the theme — the whole reason
+      // sure-ui exists.
+      const rules = block(css)
+      expect(rules).not.toMatch(/#[0-9a-f]{3,8}\b/i)
+      expect(rules).not.toMatch(/\brgba?\(/)
+      expect(rules).toContain('var(--border)')
+      expect(rules).toContain('var(--muted)')
+    })
+  }
+})

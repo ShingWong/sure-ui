@@ -69,7 +69,7 @@ export const MAIL_COMPONENTS = [
 ] as const
 
 export const COMPONENTS = [
-  'auth', 'buttons', 'composites', 'crud', 'dialog', 'form', 'markdown',
+  'auth', 'buttons', 'composites', 'crud', 'dialog', 'footer', 'form', 'markdown',
   'menu', 'modal', 'page', 'regions', 'search', 'sessions', 'sidepanel',
   'status', 'table', 'toast',
   ...MAIL_COMPONENTS,
