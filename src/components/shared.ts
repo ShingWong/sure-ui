@@ -332,6 +332,35 @@ pre { background: var(--surface); border: 1px solid var(--border); border-radius
 .pp-badge--warn { color: var(--warn); border-color: var(--warn); }
 .pp-badge--beta { color: var(--accent); border-color: var(--accent); }
   `],
+  'footer': [`
+
+  /* ── Footer ──
+     The end of a page: who published it, what the rules are, what it was
+     built with. Small, muted and structural — a caption, never a second
+     navigation bar. Print-hidden: a printed agreement carries its own head
+     and signature blocks, and a URL line under one would be noise. */
+  .sure-footer {
+    margin-top: 3rem; padding: 1.25rem 0 0;
+    border-top: 1px solid var(--border);
+    font-size: 0.8125rem; color: var(--muted);
+  }
+  .sure-footer__inner {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    justify-content: space-between; gap: 0.5rem 1.5rem;
+  }
+  .sure-footer__legal { margin: 0; }
+  .sure-footer__links {
+    display: flex; flex-wrap: wrap; gap: 0.25rem 0.9rem;
+    margin: 0; padding: 0; list-style: none;
+  }
+  .sure-footer__link { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; }
+  .sure-footer__link:hover,
+  .sure-footer__link:focus-visible { color: var(--text); border-bottom-color: var(--accent); }
+  .sure-footer__credit { margin: 0; }
+  .sure-footer__credit a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--border); }
+  .sure-footer__credit a:hover,
+  .sure-footer__credit a:focus-visible { color: var(--text); border-bottom-color: var(--accent); }
+  @media print { .sure-footer { display: none; } }`],
   'regions': [`
 
   /* ── Page regions ──
