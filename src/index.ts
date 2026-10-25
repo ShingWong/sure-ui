@@ -10,3 +10,6 @@ export type { ComponentName, ComposeOptions } from './compose.js'
 
 export { showNotification, clearNotifications } from './notifications.js'
 export type { NotificationMode, NotificationLevel, Notification } from './notifications.js'
+
+export { mountThemeSwitcher, applyTheme } from './theme-switcher.js'
+export type { ThemeSwitcher, ThemeSwitcherOptions } from './theme-switcher.js'
