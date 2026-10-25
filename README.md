@@ -157,6 +157,30 @@ The pushed class vocabulary is unchanged: `sure-form__group` is declared in the
 catalog's `form` component and no colour is set here, so themes keep owning the
 palette.
 
+## Theme switcher
+
+`mountThemeSwitcher` renders a `<select>` that swaps a theme in at runtime and
+remembers the choice — the control that goes with the theme strings.
+
+```ts
+import { mountThemeSwitcher } from '@shing.wong/sure-ui'
+
+const switcher = mountThemeSwitcher({
+  target: document.querySelector('#appbar'),  // omit for a fixed corner slot
+  label: 'Theme',                            // '' renders the select alone
+  defaultTheme: 'nord',
+  storageKey: 'sure-ui-theme',               // localStorage key; persist: false to skip
+  onChange: (theme) => console.log('now', theme),
+})
+```
+
+It injects the theme as `<style id="sure-ui-theme">` and **disables the bundled
+`theme.css` link while a non-default theme is active**, so two themes are never
+layered over each other. Pass `persist: false` for a session-only choice, or
+call `applyTheme('forest', 'nord')` to set one without a control. The switcher
+styles itself from `--text`, `--border` and `--field`, so it changes with the
+theme it is switching.
+
 ## Installation
 
 ```bash
