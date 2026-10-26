@@ -150,6 +150,23 @@ tokens (`--border`, `--muted`, `--text`, `--accent`), and never printed:
 because a printed agreement already has its own head and signature blocks and
 a URL line under one would be noise.
 
+## Menu badges
+
+A count on a menu item says "there is a queue here" without shouting. Markup:
+
+```html
+<button class="sure-menu__item sure-menu__item--badged" aria-label="Review inbox (3 new)">
+  <svg …></svg><span class="sure-menu__badge" aria-hidden="true">3</span>
+</button>
+```
+
+The badge is `--accent` on `--on-accent`, sized in `rem` with tabular figures so
+two- and three-digit counts do not shift the bar. The item steps up from
+`--muted` to `--text` while badged. Nothing animates on purpose: a blinking
+control reads as an alarm, and WCAG 2.2.2 requires anything that blinks for more
+than five seconds to be pausable. The count belongs in the accessible name (the
+badge itself is `aria-hidden`), so a screen reader hears "Review inbox, 3 new".
+
 ## Grouped forms and layout knobs
 
 The `form` block lays a field out as label / control / message. A form whose

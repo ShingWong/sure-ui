@@ -742,3 +742,21 @@ describe('footer: a caption, not a second menu', () => {
     })
   }
 })
+
+describe('menu badge: a queue you can see without a blink', () => {
+  for (const [name, css] of Object.entries(themes)) {
+    it(`${name} styles the badge from theme tokens`, () => {
+      const start = css.indexOf('.sure-menu__badge {')
+      expect(start, `${name} has no menu badge`).toBeGreaterThan(-1)
+      const block = css.slice(start, css.indexOf('.sure-menu__divider', start))
+      expect(block).toContain('background:var(--accent)')
+      expect(block).toContain('color:var(--on-accent)')
+      expect(block).not.toMatch(/#[0-9a-f]{3,8}\b/i)
+      expect(block).not.toMatch(/\brgba?\(/)
+      // The item steps up from muted to text, so the state reads even at a
+      // glance; nothing animates.
+      expect(css).toContain('.sure-menu__item--badged { color:var(--text); }')
+      expect(block).not.toMatch(/animation|@keyframes/)
+    })
+  }
+})
