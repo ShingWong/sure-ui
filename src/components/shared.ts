@@ -436,9 +436,25 @@ pre { background: var(--surface); border: 1px solid var(--border); border-radius
 
 /* ── Horizontal Menu ── */
 .sure-menu { display:flex; align-items:center; gap:0.25rem; }
-.sure-menu__item { padding:0.375rem; background:transparent; border:none; cursor:pointer; color:var(--muted); font-size:1.125rem; line-height:1; border-radius:4px; transition:background 0.15s, color 0.15s; }
+.sure-menu__item { position:relative; padding:0.375rem; background:transparent; border:none; cursor:pointer; color:var(--muted); font-size:1.125rem; line-height:1; border-radius:4px; transition:background 0.15s, color 0.15s; }
 .sure-menu__item:hover { background:var(--highlight); color:var(--text); }
 .sure-menu__item.active { color:var(--accent); }
+/* A count on an item — the queue behind an inbox, a number waiting for a
+   decision. The badge carries the number; the item itself steps up from muted
+   to text so the state is visible without a blink (a flashing control is an
+   alarm, and WCAG 2.2.2 asks that anything blinking for more than five seconds
+   can be paused). */
+.sure-menu__item--badged { color:var(--text); }
+.sure-menu__badge {
+  position:absolute; top:-0.15rem; inset-inline-end:-0.15rem;
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:1.1rem; height:1.1rem; padding:0 0.25rem;
+  border-radius:999px; background:var(--accent); color:var(--on-accent);
+  font-size:0.6875rem; font-weight:600; line-height:1;
+  font-variant-numeric:tabular-nums;
+  /* A ring in the page colour lifts the badge off the icon underneath it. */
+  box-shadow:0 0 0 2px var(--bg);
+}
 .sure-menu__divider { width:1px; height:1.25rem; background:var(--border); margin:0 0.25rem; flex-shrink:0; }`],
   'sessions': [`
 
