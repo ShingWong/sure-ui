@@ -361,6 +361,229 @@ pre { background: var(--surface); border: 1px solid var(--border); border-radius
   .sure-footer__credit a:hover,
   .sure-footer__credit a:focus-visible { color: var(--text); border-bottom-color: var(--accent); }
   @media print { .sure-footer { display: none; } }`],
+  'document': [`
+
+/* ── Document ──
+   Printable sheets for sure-document. The same markup is the screen preview
+   and the artefact: on screen a sheet is drawn as the declared paper (size,
+   margins as padding, a gap and a shadow at each break); in print those
+   pretences drop away and @page owns size and margins (design §11). Furniture
+   is sheet-level, so a fixed form and a flowing statement carry the same head,
+   foot, page number, date, signature, graphic and watermark.
+
+   Every colour comes from the generic aliases, so one block serves all seven
+   themes. Geometry is declared through these knobs (points unless noted), set
+   by the renderer on the sheet; the defaults describe portrait letter:
+     --sure-sheet-w / --sure-sheet-h  declared paper
+     --sure-sheet-scale               preview scale; never reaches the paper
+     --sure-sheet-margin              page margins, as screen padding
+     --sure-sheet-gap                 space between sheets on screen
+     --sure-watermark-angle/-opacity/-size
+     --sure-graphic-max-height */
+.sure-document {
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: var(--line-height, 1.6);
+}
+.sure-document__sheet {
+  --sure-sheet-w: 612pt;
+  --sure-sheet-h: 792pt;
+  --sure-sheet-scale: 1;
+  --sure-sheet-margin: 36pt;
+  --sure-sheet-gap: 2rem;
+  --sure-watermark-angle: -45deg;
+  --sure-watermark-opacity: 0.1;
+  --sure-watermark-size: 3rem;
+  --sure-graphic-max-height: 4rem;
+
+  position: relative;
+  box-sizing: border-box;
+  width: calc(var(--sure-sheet-w) * var(--sure-sheet-scale));
+  min-height: calc(var(--sure-sheet-h) * var(--sure-sheet-scale));
+  margin: 0 auto var(--sure-sheet-gap);
+  padding: var(--sure-sheet-margin);
+  overflow: hidden;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--text) 16%, var(--bg));
+  /* page-break helper: one sheet per printed page, except the last */
+  break-after: page;
+  page-break-after: always;
+}
+.sure-document__sheet:last-child {
+  margin-bottom: 0;
+  break-after: auto;
+  page-break-after: auto;
+}
+/* Three zones per running head/foot. Repetition is a renderer fact — one of
+   each per sheet — so CSS only keeps the furniture with its sheet. */
+.sure-document__header,
+.sure-document__footer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.sure-document__header { padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.sure-document__footer { padding-top: 0.5rem; border-top: 1px solid var(--border); }
+.sure-document__header--no-rule,
+.sure-document__footer--no-rule { border: 0; }
+.sure-document__zone { min-width: 0; }
+.sure-document__zone--center { text-align: center; }
+.sure-document__zone--right { text-align: right; }
+.sure-document__page,
+.sure-document__date {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+/* keep-together: a section that would cross a sheet is moved, never split */
+.sure-document__section {
+  margin: 0 0 1rem;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.sure-document__section--break-before {
+  break-before: page;
+  page-break-before: always;
+}
+.sure-document__signature {
+  margin-top: 1.5rem; padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.sure-document__graphic {
+  max-height: var(--sure-graphic-max-height);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.sure-document__graphic svg,
+.sure-document__graphic img {
+  display: block; max-width: 100%; max-height: 100%; height: auto;
+}
+/* monochrome logo: currentColor, not a baked palette */
+.sure-document__graphic--monochrome svg { color: var(--text); }
+.sure-document__graphic--monochrome svg * { fill: currentColor; stroke: currentColor; }
+/* watermark: behind the body, arbitrary angle, capped by the renderer's
+   opacity input — never above the text it might obscure */
+.sure-document__watermark {
+  position: absolute; inset: 0; z-index: 0;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  color: var(--muted);
+  opacity: var(--sure-watermark-opacity);
+  font-size: var(--sure-watermark-size);
+  font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.sure-document__watermark > * {
+  transform: rotate(var(--sure-watermark-angle));
+  white-space: nowrap;
+}
+.sure-document__sheet > .sure-document__header,
+.sure-document__sheet > .sure-document__footer,
+.sure-document__sheet > .sure-document__zone,
+.sure-document__sheet > .sure-document__section,
+.sure-document__sheet > .sure-document__signature,
+.sure-document__sheet > .sure-document__graphic { position: relative; z-index: 1; }
+.sure-document__watermark--print { display: none; }
+@media print {
+  /* @page owns size and margins; the host emits @page { size; margin } from
+     the sheet declaration. No paper geometry is hardcoded here. */
+  .sure-document__sheet {
+    width: auto; min-height: 0;
+    margin: 0; padding: 0;
+    border: 0; box-shadow: none;
+    overflow: visible;
+  }
+  .sure-document__watermark,
+  .sure-document__graphic {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .sure-document__watermark--print { display: flex; }
+  .sure-document__watermark--screen { display: none; }
+  /* Unlike the site footer, sheet furniture is part of the paper. */
+  .sure-document__header,
+  .sure-document__footer { display: grid; }
+  .sure-document__header--no-print,
+  .sure-document__footer--no-print { display: none; }
+}`],
+  'figure': [`
+
+/* ── Figure ──
+   Inline SVG built by sure-document from data → scale → path. No canvas, no
+   charting dependency, no animation. Series are token-coloured and carry a
+   dash/pattern fallback so the figure survives grayscale and a photocopier
+   (catalog §4 rule 2). The data-table fallback stays for screen readers; print
+   hides it so chart and table do not print back-to-back, and a layout may opt
+   back in with .sure-figure--show-data (catalog §4 rule 3). */
+.sure-figure {
+  margin: 1rem 0;
+  color: var(--text);
+  font-family: var(--font-body);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.sure-figure__plot {
+  display: block; width: 100%; height: auto; max-width: 100%;
+  overflow: visible;
+}
+.sure-figure__axis {
+  stroke: var(--border); stroke-width: 1;
+  color: var(--muted); font-size: 0.75rem;
+}
+.sure-figure__axis text { fill: var(--muted); stroke: none; }
+.sure-figure__bar {
+  fill: var(--accent); stroke: var(--text); stroke-width: 1;
+}
+.sure-figure__bar:nth-of-type(even),
+.sure-figure__bar--alt {
+  fill: var(--muted); stroke-dasharray: 3 2;
+}
+.sure-figure__line {
+  fill: none; stroke: var(--text); stroke-width: 2;
+}
+.sure-figure__line--alt { stroke: var(--muted); stroke-dasharray: 6 3; }
+.sure-figure__legend {
+  display: flex; flex-wrap: wrap; gap: 0.25rem 1rem;
+  margin: 0.5rem 0 0; padding: 0; list-style: none;
+  color: var(--muted); font-size: 0.8rem;
+}
+.sure-figure__legend li { display: inline-flex; align-items: center; gap: 0.35rem; }
+.sure-figure__legend li::before {
+  content: '';
+  width: 0.75rem; height: 0.75rem; flex-shrink: 0;
+  background: var(--accent); border: 1px solid var(--border);
+}
+.sure-figure__legend li:nth-child(even)::before {
+  background: var(--muted); border-style: dashed;
+}
+.sure-figure table {
+  width: 100%; margin-top: 0.5rem;
+  border-collapse: collapse; font-size: 0.8rem; color: var(--text);
+}
+.sure-figure table caption { color: var(--muted); text-align: left; }
+.sure-figure table th,
+.sure-figure table td {
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid var(--border); text-align: left;
+}
+@media print {
+  /* chart and data table must not print back-to-back */
+  .sure-figure table { display: none; }
+  .sure-figure--show-data table { display: table; }
+  .sure-figure__plot {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}`],
   'regions': [`
 
   /* ── Page regions ──

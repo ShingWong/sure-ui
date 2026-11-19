@@ -56,7 +56,7 @@ export function stripLayers(css: string): string {
 }
 
 /**
- * Mail families (sure-mail Track B) are an OPT-IN namespace on top of the 17
+ * Mail families (sure-mail Track B) are an OPT-IN namespace on top of the
  * generated families: compose() emits their tokens, rules and touch behaviour
  * only when one is explicitly listed in `components`. The default
  * `components: 'all'` path must never include them — the frozen 0.1.9
@@ -69,9 +69,9 @@ export const MAIL_COMPONENTS = [
 ] as const
 
 export const COMPONENTS = [
-  'auth', 'buttons', 'composites', 'crud', 'dialog', 'footer', 'form', 'markdown',
-  'menu', 'modal', 'page', 'regions', 'search', 'sessions', 'sidepanel',
-  'status', 'table', 'toast',
+  'auth', 'buttons', 'composites', 'crud', 'dialog', 'document', 'figure',
+  'footer', 'form', 'markdown', 'menu', 'modal', 'page', 'regions', 'search',
+  'sessions', 'sidepanel', 'status', 'table', 'toast',
   ...MAIL_COMPONENTS,
 ] as const
 export type ComponentName = (typeof COMPONENTS)[number]
