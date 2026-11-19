@@ -3,6 +3,9 @@
 // Reconstruction is proven byte-for-byte by tests (fixtures/themes-0.1.9.json).
 // Shared families keep their position here with an empty string; compose()
 // fills them from src/components/shared.ts (byte-identical, assert-proven).
+// document/figure were added after the 0.1.9 migration as empty position
+// markers for their shared blocks; the one-off split-themes.mjs classifier
+// predates them and is not re-runnable against today's themes.
 export const tokens: Record<string, string> = {
   'nord': `:root {
   /* Typography contract (all sure-ui themes declare these). */
@@ -511,6 +514,8 @@ body {
 }
 code, pre { font-family: var(--font-mono); }`],
     ['footer', ``],
+    ['document', ``],
+    ['figure', ``],
   ],
   'forest': [
     ['base', `
@@ -554,6 +559,8 @@ body {
 }
 code, pre { font-family: var(--font-mono); }`],
     ['footer', ``],
+    ['document', ``],
+    ['figure', ``],
   ],
   'dracula': [
     ['base', `
@@ -597,6 +604,8 @@ body {
 }
 code, pre { font-family: var(--font-mono); }`],
     ['footer', ``],
+    ['document', ``],
+    ['figure', ``],
   ],
   'dark': [
     ['base', `
@@ -639,6 +648,8 @@ body {
 code, pre { font-family: var(--font-mono); }
   `],
     ['footer', ``],
+    ['document', ``],
+    ['figure', ``],
   ],
   'positronic': [
     ['base', `
@@ -680,6 +691,8 @@ body {
 code, pre { font-family: var(--font-mono); }`],
     ['page', ``],
     ['footer', ``],
+    ['document', ``],
+    ['figure', ``],
   ],
   'vision-system': [
     ['base', `
@@ -722,6 +735,8 @@ body {
 }
 code, pre { font-family: var(--font-mono); }`],
     ['footer', ``],
+    ['document', ``],
+    ['figure', ``],
   ],
   'vision-atkinson': [
     ['base', `
@@ -764,5 +779,7 @@ body {
 }
 code, pre { font-family: var(--font-mono); }`],
     ['footer', ``],
+    ['document', ``],
+    ['figure', ``],
   ],
 }

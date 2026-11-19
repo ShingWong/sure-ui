@@ -150,6 +150,50 @@ tokens (`--border`, `--muted`, `--text`, `--accent`), and never printed:
 because a printed agreement already has its own head and signature blocks and
 a URL line under one would be noise.
 
+## Printable documents
+
+`document` and `figure` are the two blocks the document layer is built on. Both
+ship in every theme, and all their colour comes from theme tokens, so the same
+paper prints from a light or a dark theme.
+
+On screen a sheet is drawn as the declared paper — size, margins as padding, a
+gap and a shadow at each break. In print that pretence drops away and `@page`
+owns size and margins: a sheet breaks after itself, sections keep together, and
+the head and foot stay with each sheet (the renderer emits one of each —
+Chromium has no running elements). The watermark rotates by
+`--sure-watermark-angle`, sits behind the body, and prints.
+
+```html
+<div class="sure-document">
+  <section class="sure-document__sheet" style="--sure-sheet-w: 612pt; --sure-sheet-h: 792pt">
+    <header class="sure-document__header">
+      <span class="sure-document__zone">Ref</span>
+      <span class="sure-document__zone sure-document__zone--center">Statement</span>
+      <span class="sure-document__zone sure-document__zone--right">
+        Page <span class="sure-document__page">1</span> of 4
+      </span>
+    </header>
+    <div class="sure-document__watermark" aria-hidden="true"><span>Example Only</span></div>
+    <div class="sure-document__section">…</div>
+    <div class="sure-document__signature">…</div>
+    <footer class="sure-document__footer">
+      <span class="sure-document__zone">Issued <span class="sure-document__date">2031-04-15</span></span>
+    </footer>
+  </section>
+</div>
+```
+
+The renderer sets `--sure-sheet-w/-h`, `--sure-sheet-scale` (preview only),
+`--sure-sheet-margin`, `--sure-watermark-angle/-opacity/-size` and
+`--sure-graphic-max-height` on the sheet; defaults describe portrait letter.
+`--sure-sheet-scale` never reaches the paper.
+
+Figures are inline SVG built from data → scale → path: no canvas, no charting
+dependency and no animation. Bars and lines carry a dash/pattern fallback so
+they remain legible in grayscale. The data-table fallback stays for screen
+readers, but print hides it so chart and table do not print back-to-back; a
+layout opts back in with `sure-figure--show-data`.
+
 ## Menu badges
 
 A count on a menu item says "there is a queue here" without shouting. Markup:
@@ -280,6 +324,8 @@ Each theme provides CSS for these semantic class conventions (matching sure-fact
 | Modal | `.sure-modal__form` | `__field`, `__label`, `input/select/textarea`, `__error`, `__help` |
 | Table | `.sure-table` | `__header`, `__cell`, `__error`, `__help` |
 | CRUD | `.sure-crud` | `__field`, `__label`, `__error`, `__help` |
+| Document | `.sure-document` | `__sheet`, `__header`, `__footer`, `__zone`, `__page`, `__date`, `__section`, `__signature`, `__graphic`, `__watermark` |
+| Figure | `.sure-figure` | `__plot`, `__axis`, `__bar`, `__line`, `__legend` |
 | Search | `.sure-search` | `__input`, `__label`, `__error`, `__help` |
 | Buttons | `.btn-primary` | Accent background, hover, focus ring |
 | Buttons | `.btn-secondary` | Ghost style with border |
