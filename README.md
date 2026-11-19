@@ -37,7 +37,7 @@ document.head.appendChild(style)
 
 ### Typography contract
 
-Every theme declares four variables in its `:root` and ships the rules that
+Every theme declares these variables in its `:root` and ships the rules that
 apply them — a runtime swap can never drop the base typography:
 
 | Var | Meaning |
@@ -46,12 +46,34 @@ apply them — a runtime swap can never drop the base typography:
 | `--font-mono` | Monospace stack for `code`/`pre` |
 | `--font-size` | `html` font size as a percentage of the *browser default* (so user preferences still multiply through) |
 | `--line-height` | Body leading |
+| `--sure-font-h1`, `--sure-font-h2`, `--sure-font-body`, `--sure-font-caption`, `--sure-font-mono` | Document font stacks: each theme's own `--font-body` (or `--font-mono`) stack, for sure-document to point at |
 
 Consumption rules (`html { font-size: var(--font-size, 100%) }`,
 `body { font-family: var(--font-body); line-height: var(--line-height, 1.6) }`)
 are embedded in every theme. Consumers that extract only `:root` blocks —
 like the positronic landing page — still get every knob, which is why all
 theme settings must live in `:root` as variables.
+
+### Document typography (0.3.7)
+
+`SURE_TYPOGRAPHY` is the single source of truth for paper typography — sure-document imports it for the physical metrics and points its `css` value at the `--sure-font-*` variables above. No runtime dependency:
+
+```ts
+import { SURE_TYPOGRAPHY } from '@shing.wong/sure-ui'
+
+SURE_TYPOGRAPHY.heading1
+// { css: 'var(--sure-font-h1)', ptSize: 18, linePt: 22, weight: 700 }
+```
+
+| Style | `css` | ptSize | linePt | weight |
+|---|---|---:|---:|---:|
+| `heading1` | `var(--sure-font-h1)` | 18 | 22 | 700 |
+| `heading2` | `var(--sure-font-h2)` | 14 | 18 | 600 |
+| `body` | `var(--sure-font-body)` | 10 | 14 | 400 |
+| `caption` | `var(--sure-font-caption)` | 8 | 11 | 400 |
+| `mono` | `var(--sure-font-mono)` | 9 | 12 | 400 |
+
+Sizes and leading are in points; the weight is carried by the exported metric, not by a new CSS rule. `TypographyStyle` and `TypographyKind` are exported for callers that need the types.
 
 ### Mobile & touch
 
@@ -330,7 +352,7 @@ Each theme provides CSS for these semantic class conventions (matching sure-fact
 | Buttons | `.btn-primary` | Accent background, hover, focus ring |
 | Buttons | `.btn-secondary` | Ghost style with border |
 
-Plus form states: `input:focus`, `[aria-invalid="true"]`, `input:disabled`.
+Plus form states: `input:focus`, `[aria-invalid="true"]`, `input:disabled`. Document sheets and figures additionally consume the `--sure-font-*` stacks described under **Document typography** above; the matching print metrics are exported as `SURE_TYPOGRAPHY`.
 
 ## Notifications
 

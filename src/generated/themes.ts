@@ -13,6 +13,12 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 100%;
   --line-height: 1.6;
+  /* Document typography stacks — print metrics live in SURE_TYPOGRAPHY (TS). */
+  --sure-font-h1: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-h2: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-caption: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   /* Native controls (date pickers, scrollbars) follow the theme. */
   color-scheme: light;
   --nord0: #2e3440;
@@ -77,6 +83,12 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 100%;
   --line-height: 1.6;
+  /* Document typography stacks — print metrics live in SURE_TYPOGRAPHY (TS). */
+  --sure-font-h1: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-h2: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-caption: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   /* Native controls (date pickers, scrollbars) follow the theme. */
   color-scheme: light;
   --frst-bg: #f4f1ea;
@@ -137,6 +149,12 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 100%;
   --line-height: 1.6;
+  /* Document typography stacks — print metrics live in SURE_TYPOGRAPHY (TS). */
+  --sure-font-h1: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-h2: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-caption: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   /* Native controls (date pickers, scrollbars) follow the theme. */
   color-scheme: dark;
   --drac-bg: #282a36;
@@ -202,6 +220,12 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 100%;
   --line-height: 1.6;
+  /* Document typography stacks — print metrics live in SURE_TYPOGRAPHY (TS). */
+  --sure-font-h1: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-h2: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-caption: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   /* Native controls (date pickers, scrollbars) follow the theme. */
   color-scheme: dark;
   --dark-bg: #1a1a2e;
@@ -262,6 +286,12 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 100%;
   --line-height: 1.6;
+  /* Document typography stacks — print metrics live in SURE_TYPOGRAPHY (TS). */
+  --sure-font-h1: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-h2: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-caption: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sure-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   /* Native controls (date pickers, scrollbars) follow the theme. */
   color-scheme: dark;
   --positronic-bg: #0d0f14;
@@ -332,6 +362,12 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 125%;
   --line-height: 1.7;
+  /* Document typography stacks — print metrics live in SURE_TYPOGRAPHY (TS). */
+  --sure-font-h1: Verdana, Tahoma, "Segoe UI", -apple-system, sans-serif;
+  --sure-font-h2: Verdana, Tahoma, "Segoe UI", -apple-system, sans-serif;
+  --sure-font-body: Verdana, Tahoma, "Segoe UI", -apple-system, sans-serif;
+  --sure-font-caption: Verdana, Tahoma, "Segoe UI", -apple-system, sans-serif;
+  --sure-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   /* Native controls (date pickers, scrollbars) follow the theme. */
   color-scheme: light;
   --vsys0: #101418;
@@ -411,6 +447,12 @@ export const tokens: Record<string, string> = {
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size: 125%;
   --line-height: 1.7;
+  /* Document typography stacks — print metrics live in SURE_TYPOGRAPHY (TS). */
+  --sure-font-h1: 'Atkinson Hyperlegible', Verdana, Tahoma, sans-serif;
+  --sure-font-h2: 'Atkinson Hyperlegible', Verdana, Tahoma, sans-serif;
+  --sure-font-body: 'Atkinson Hyperlegible', Verdana, Tahoma, sans-serif;
+  --sure-font-caption: 'Atkinson Hyperlegible', Verdana, Tahoma, sans-serif;
+  --sure-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   /* Native controls (date pickers, scrollbars) follow the theme. */
   color-scheme: light;
   --vatk0: #101418;
