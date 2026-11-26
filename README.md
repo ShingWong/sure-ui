@@ -309,7 +309,7 @@ Zero peer dependencies. Works with any framework (React, Vue, Svelte, vanilla JS
 Seven preset themes matching sure-factor's BEM-style generated classes.
 
 ```ts
-import { nord, forest, dracula, themes } from '@shing.wong/sure-ui'
+import { nord, forest, dracula, themes, applyTheme } from '@shing.wong/sure-ui'
 import type { ThemeName } from '@shing.wong/sure-ui'
 
 // Inject a theme at runtime:
@@ -318,7 +318,6 @@ style.textContent = nord
 document.head.appendChild(style)
 
 // Or swap themes dynamically (also what mountThemeSwitcher uses):
-import { applyTheme } from '@shing.wong/sure-ui'
 applyTheme('forest', 'nord')  // (theme, defaultTheme) — disables the default stylesheet
 
 // Each theme is available individually or via the themes map:
@@ -333,10 +332,10 @@ console.log(Object.keys(themes))    // ['nord', 'forest', 'dracula', 'dark', 'po
 | **Nord** | Light cool (#eceff4) | Blue (#5e81ac) | Clean, professional | Dashboards, admin panels |
 | **Forest** | Warm cream (#f4f1ea) | Green (#3d6b3c) | Earthy, organic | Content sites, SaaS |
 | **Dracula** | Dark (#282a36) | Purple (#bd93f9) | Modern, dark mode | Developer tools, terminals |
-| **Dark** | Neutral dark | `--accent` aliases | Neutral dark with generic tokens | Apps that ship one dark palette |
+| **Dark** | Neutral dark (`--dark-bg`) | `--dark-primary` (aliased to `--accent`) | Neutral dark with generic tokens | Apps that ship one dark palette |
 | **Positronic** | Dark-first brand (#0d0f14) | Periwinkle (#7c9cff) | Brand palette + `pp-*` helpers | Positronic-branded surfaces |
-| **Vision-system** | WCAG-AAA light | High-contrast | 125% Verdana-first type | Low-vision readers |
-| **Vision-atkinson** | WCAG-AAA light | High-contrast | Atkinson Hyperlegible | Low-vision readers |
+| **Vision-system** | WCAG-AAA white | `--vsys9` | 125% Verdana-first type | Low-vision readers |
+| **Vision-atkinson** | WCAG-AAA white | `--vatk9` | Atkinson Hyperlegible at 125% | Low-vision readers |
 
 ### Styled Components
 
