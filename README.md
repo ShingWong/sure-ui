@@ -317,15 +317,13 @@ const style = document.createElement('style')
 style.textContent = nord
 document.head.appendChild(style)
 
-// Or swap themes dynamically:
-function setTheme(name: ThemeName) {
-  document.querySelector(':root')!.classList.remove('theme-nord', 'theme-forest', 'theme-dracula')
-  document.querySelector(':root')!.classList.add(`theme-${name}`)
-}
+// Or swap themes dynamically (also what mountThemeSwitcher uses):
+import { applyTheme } from '@shing.wong/sure-ui'
+applyTheme('forest', 'nord')  // (theme, defaultTheme) — disables the default stylesheet
 
 // Each theme is available individually or via the themes map:
 console.log(themes.nord === nord)   // true
-console.log(Object.keys(themes))    // ['nord', 'forest', 'dracula']
+console.log(Object.keys(themes))    // ['nord', 'forest', 'dracula', 'dark', 'positronic', 'vision-system', 'vision-atkinson']
 ```
 
 ### Theme Palettes
@@ -335,6 +333,10 @@ console.log(Object.keys(themes))    // ['nord', 'forest', 'dracula']
 | **Nord** | Light cool (#eceff4) | Blue (#5e81ac) | Clean, professional | Dashboards, admin panels |
 | **Forest** | Warm cream (#f4f1ea) | Green (#3d6b3c) | Earthy, organic | Content sites, SaaS |
 | **Dracula** | Dark (#282a36) | Purple (#bd93f9) | Modern, dark mode | Developer tools, terminals |
+| **Dark** | Neutral dark | `--accent` aliases | Neutral dark with generic tokens | Apps that ship one dark palette |
+| **Positronic** | Dark-first brand (#0d0f14) | Periwinkle (#7c9cff) | Brand palette + `pp-*` helpers | Positronic-branded surfaces |
+| **Vision-system** | WCAG-AAA light | High-contrast | 125% Verdana-first type | Low-vision readers |
+| **Vision-atkinson** | WCAG-AAA light | High-contrast | Atkinson Hyperlegible | Low-vision readers |
 
 ### Styled Components
 
@@ -428,7 +430,7 @@ clearNotifications(mode?)         // remove all, or filter by mode
 sure-ui is designed to pair with [sure-factor](https://github.com/ShingWong/sure-factor). The generated code uses class conventions that sure-ui themes style out of the box.
 
 ```ts
-import { generateForm } from 'sure-factor'
+import { introspectSchemaFromDdl, generateClientComponent } from '@shing.wong/sure-factor'
 import { nord } from '@shing.wong/sure-ui'
 import { showNotification } from '@shing.wong/sure-ui'
 
@@ -437,9 +439,16 @@ const style = document.createElement('style')
 style.textContent = nord
 document.head.appendChild(style)
 
-// Generate form HTML (from sure-factor)
-const html = generateForm({ /* field configs */ })
-document.body.innerHTML = html
+// Generate a framework-free form module (from sure-factor). It renders plain
+// DOM with the .sure-form__* classes styled by the theme above.
+const schema = introspectSchemaFromDdl(`CREATE TABLE patients (
+  email VARCHAR(255) NOT NULL, full_name VARCHAR(100)
+);`)
+const { module, fields, cssClasses } = generateClientComponent(schema, {
+  tier: 'production',
+  component: 'form',
+  exportName: 'PatientForm',
+})
 
 // Wire up notifications
 document.querySelector('form')?.addEventListener('submit', async (e) => {
@@ -500,7 +509,7 @@ Render LLM responses with `.sure-markdown` class. Supports tables, code blocks, 
 
 ### Auth Forms
 
-Login, register, and password-reset forms using `.sure-auth__*` CSS classes. Styled consistently across all three themes:
+Login, register, and password-reset forms using `.sure-auth__*` CSS classes. Styled consistently across all seven themes:
 
 ```html
 <form class="sure-auth__form">
@@ -549,13 +558,15 @@ npm run security:check         # keys / credentials / PII / internal paths
 
 ### Security gate
 
+The shared [`sure-ci-gate`](https://github.com/ShingWong/sure-ci-gate) runs in
+CI (`.github/workflows/ci-gate.yml`) with public structural rules plus a private
+term list fetched at runtime; see its README for setup. Locally,
 `scripts/security-check.mjs` scans **every tracked file** (src, docs,
-experiments, workflows — not just what npm packs) and runs in CI and in
-`prepublishOnly`, so a leak cannot reach `master` or the registry unnoticed.
-It looks for private keys, cloud/provider tokens (AWS, GitHub, Slack, Google,
-OpenAI/Anthropic, Stripe), JWTs, credentials in URLs, hardcoded passwords,
-SSNs, Luhn-valid card numbers, non-example email addresses, private IPs,
-internal filesystem paths, and committed `.env`/key files.
+experiments, workflows — not just what npm packs) in `prepublishOnly` and on
+demand. It looks for private keys, cloud/provider tokens (AWS, GitHub, Slack,
+Google, OpenAI/Anthropic, Stripe), JWTs, credentials in URLs, hardcoded
+passwords, SSNs, Luhn-valid card numbers, non-example email addresses, private
+IPs, internal filesystem paths, and committed `.env`/key files.
 
 False positives are handled by an **allow-list**, never by loosening a pattern:
 
