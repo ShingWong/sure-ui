@@ -9,7 +9,7 @@ Rebuild index: `graphify extract /path/to/project --code-only --out /tmp/graphif
 
 ## positronic theme (added 2026-10-08)
 
-- File: `src/styles/positronic.ts`, exported as `positronic` from `@shing.wong/sure-ui` (also in `themes` map and `ThemeName` union).
+- Source: `src/generated/themes.ts` (the per-theme `.ts` files were retired; the generated data is the source of truth), exported as `positronic` — a `compose({ theme: 'positronic' })` string — from `@shing.wong/sure-ui` (also in the `themes` map and `ThemeName` union).
 - Inject like any other theme: `style.textContent = positronic`.
 - Dark-first palette (`--positronic-bg: #0d0f14`, accent `#7c9cff`) with an automatic light variant under `prefers-color-scheme: light` — do not hardcode colors; use the `--bg/--surface/--text/--muted/--border/--accent` aliases.
 - Ships `pp-*` helper classes: `.pp-wrap`, `.pp-btn`, `.pp-btn--ghost`, `.pp-card`, `.pp-badge` (+`--ok/--warn/--beta`). Reuse these instead of inventing new layout styles in consuming projects.
