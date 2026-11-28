@@ -701,4 +701,23 @@ pre { background: var(--surface); border: 1px solid var(--border); border-radius
 .msg-actions button { background:none; border:none; cursor:pointer; font-size:0.75rem; padding:0.125rem 0.25rem; border-radius:3px; color:var(--muted); line-height:1; }
 .msg-actions button:hover { background:var(--highlight); color:var(--text); }
 .msg-body { line-height:1.5; }`],
+  'settings': [`
+  /* ── Settings ── */
+  .sure-settings { display:flex; flex-direction:column; gap:1rem; }
+  .sure-settings__nav { display:flex; flex-wrap:wrap; gap:0.35rem; }
+  .sure-settings__tab {
+    font:inherit; cursor:pointer; padding:0.4rem 0.75rem;
+    border:1px solid var(--border); border-radius:var(--radius, 6px);
+    background:var(--field); color:var(--muted);
+  }
+  .sure-settings__tab:hover { background:var(--highlight); color:var(--text); }
+  .sure-settings__tab[aria-selected="true"],
+  .sure-settings__tab.active { background:var(--accent); color:var(--on-accent); border-color:var(--accent); }
+  .sure-settings__body { display:flex; flex-direction:column; gap:1rem; min-height:12rem; }
+  .sure-settings__panel { display:flex; flex-direction:column; gap:0.75rem; }
+  .sure-settings__panel[hidden] { display:none; }
+  .sure-settings__list { display:flex; flex-direction:column; gap:0.35rem; }
+  .sure-settings__actions { display:flex; flex-wrap:wrap; gap:0.5rem; }
+  .sure-settings__status { font-size:0.85rem; color:var(--muted); }
+  .sure-settings__result { white-space:pre-wrap; word-break:break-word; margin:0; font-size:0.85rem; }`],
 }
