@@ -68,8 +68,15 @@ export const MAIL_COMPONENTS = [
   'mail-list', 'mail-search', 'mail-thread',
 ] as const
 
+/**
+ * Shared families that are opt-in by design, like MAIL_COMPONENTS: they live
+ * in components/shared.ts but never in the generated theme runs, so
+ * compose(all) stays byte-identical to the frozen 0.1.9 fixture.
+ */
+export const SHARED_OPT_IN = ['settings'] as const
+
 export const COMPONENTS = [
-  'auth', 'buttons', 'composites', 'crud', 'dialog', 'document', 'figure',
+  'auth', 'buttons', 'composites', 'crud', 'dialog', 'document', 'figure', 'settings',
   'footer', 'form', 'markdown', 'menu', 'modal', 'page', 'regions', 'search',
   'sessions', 'sidepanel', 'status', 'table', 'toast',
   ...MAIL_COMPONENTS,

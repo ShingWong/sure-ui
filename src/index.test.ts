@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { VERSION, nord, forest, dracula, dark, themes, compose, stripLayers, COMPONENTS, MAIL_COMPONENTS, showNotification, clearNotifications } from './index.js'
+import { VERSION, nord, forest, dracula, dark, themes, compose, stripLayers, COMPONENTS, MAIL_COMPONENTS, SHARED_OPT_IN, showNotification, clearNotifications } from './index.js'
 
 describe('sure-ui', () => {
   it('exports VERSION matching package.json', () => {
@@ -544,8 +544,9 @@ describe('compose: compile-time assembly', () => {
     // byte-identical to the fixture — and COMPONENTS must not grow beyond
     // generated families + exactly that namespace.
     const mailSet = new Set<string>(MAIL_COMPONENTS)
-    const generated = [...fams].filter((f) => !mailSet.has(f)).sort()
-    expect(generated).toEqual([...COMPONENTS].filter((c) => !mailSet.has(c)).sort())
+    const optIn = new Set<string>([...MAIL_COMPONENTS, ...SHARED_OPT_IN])
+    const generated = [...fams].filter((f) => !optIn.has(f)).sort()
+    expect(generated).toEqual([...COMPONENTS].filter((c) => !optIn.has(c)).sort())
     expect([...fams].filter((f) => mailSet.has(f)), 'mail families leaked into the frozen runs').toEqual([])
     expect(MAIL_COMPONENTS.length).toBe(6)
     for (const m of MAIL_COMPONENTS) expect(COMPONENTS).toContain(m)

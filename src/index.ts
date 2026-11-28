@@ -32,7 +32,7 @@ export type TypographyKind = keyof typeof SURE_TYPOGRAPHY
 
 export { nord, forest, dracula, dark, themes, positronic, mobileLayer } from './styles/index.js'
 export type { ThemeName } from './styles/index.js'
-export { compose, stripLayers, LAYER_DECL, COMPONENTS, MAIL_COMPONENTS } from './compose.js'
+export { compose, stripLayers, LAYER_DECL, COMPONENTS, MAIL_COMPONENTS, SHARED_OPT_IN } from './compose.js'
 export type { ComponentName, ComposeOptions } from './compose.js'
 
 export { showNotification, clearNotifications } from './notifications.js'
